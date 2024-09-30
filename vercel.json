@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://backend-for-raise-social.vercel.app/api/:path*"
+    }
+  ]
+}

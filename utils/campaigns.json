@@ -1,0 +1,514 @@
+{
+  "campaigns": [
+    {
+      "campaignId": "CAMP001",
+      "campaignName": "Save the Local Animal Shelter",
+      "campaignImage": "https://images.unsplash.com/photo-1480554840075-72cbdabbf689?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "goalAmount": 500,
+      "achievedAmount": 250,
+      "category": "Animal Welfare",
+      "location": "San Francisco, CA",
+      "createdDate": "2024-08-15",
+      "createdBy": {
+        "avatar": "https://example.com/avatars/user1.jpg",
+        "profession": "Veterinarian",
+        "location": "San Francisco, CA",
+        "name": "Dr. Emily Chen"
+      },
+      "description": "<p>Our local animal shelter is in dire need of renovations and supplies. Your donation will help provide better living conditions for rescued animals and support our adoption programs.</p>",
+      "reactions": {
+        "like": 245,
+        "heart": 189,
+        "appreciated": 56
+      },
+      "proofDocument": "https://example.com/documents/shelter_renovation_plan.pdf",
+      "donors": [
+        {
+          "name": "John Doe",
+          "amount": 50,
+          "hash": "0x1234abcd...",
+          "dateTime": "2024-08-16T14:30:00Z"
+        },
+        {
+          "name": "Jane Smith",
+          "amount": 100,
+          "hash": "0x5678efgh...",
+          "dateTime": "2024-08-17T09:15:00Z"
+        }
+      ],
+      "filteredDonors": {
+        "topDonors": [
+          {
+            "name": "Jane Smith",
+            "amount": 100
+          },
+          {
+            "name": "John Doe",
+            "amount": 50
+          }
+        ],
+        "recentDonors": [
+          {
+            "name": "Jane Smith",
+            "amount": 100,
+            "dateTime": "2024-08-17T09:15:00Z"
+          },
+          {
+            "name": "John Doe",
+            "amount": 50,
+            "dateTime": "2024-08-16T14:30:00Z"
+          }
+        ]
+      },
+      "updates": [
+        {
+          "date": "2024-08-20",
+          "content": "We've reached 30% of our goal! Thank you to all our supporters. We've already ordered new beds for the dogs."
+        },
+        {
+          "date": "2024-08-25",
+          "content": "Renovation of the cat area has begun. We're excited to provide a more comfortable space for our feline friends."
+        }
+      ],
+      "wordsOfSupport": [
+        {
+          "avatar": "https://example.com/avatars/user2.jpg",
+          "name": "Sarah Johnson",
+          "dateTime": "2024-08-18T16:45:00Z",
+          "description": "This is such an important cause. Every animal deserves a safe and comfortable home while waiting for adoption. Keep up the great work!"
+        },
+        {
+          "avatar": "https://example.com/avatars/user3.jpg",
+          "name": "Mike Brown",
+          "dateTime": "2024-08-19T11:20:00Z",
+          "description": "As a former volunteer at this shelter, I can attest to the need for these improvements. Donated and shared!"
+        }
+      ]
+    },
+    {
+      "campaignId": "CAMP002",
+      "campaignName": "Tech Education for Underprivileged Youth",
+      "campaignImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=3272&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "goalAmount": 1000,
+      "achievedAmount": 650,
+      "category": "Education",
+      "location": "New York, NY",
+      "createdDate": "2024-09-01",
+      "createdBy": {
+        "avatar": "https://example.com/avatars/user4.jpg",
+        "profession": "Software Engineer",
+        "location": "New York, NY",
+        "name": "Alex Rodriguez"
+      },
+      "description": "<p>We aim to provide coding bootcamps and computer equipment to underprivileged youth in our community. Your donation will help bridge the digital divide and create opportunities for the next generation of tech innovators.</p>",
+      "reactions": {
+        "like": 567,
+        "heart": 423,
+        "appreciated": 89
+      },
+      "proofDocument": "https://example.com/documents/tech_education_proposal.pdf",
+      "donors": [
+        {
+          "name": "TechCorp Inc.",
+          "amount": 500,
+          "hash": "0x9876uvwx...",
+          "dateTime": "2024-09-02T10:00:00Z"
+        },
+        {
+          "name": "Anonymous",
+          "amount": 50,
+          "hash": "0x2468yzab...",
+          "dateTime": "2024-09-03T15:45:00Z"
+        }
+      ],
+      "filteredDonors": {
+        "topDonors": [
+          {
+            "name": "TechCorp Inc.",
+            "amount": 500
+          },
+          {
+            "name": "Anonymous",
+            "amount": 50
+          }
+        ],
+        "recentDonors": [
+          {
+            "name": "Anonymous",
+            "amount": 50,
+            "dateTime": "2024-09-03T15:45:00Z"
+          },
+          {
+            "name": "TechCorp Inc.",
+            "amount": 500,
+            "dateTime": "2024-09-02T10:00:00Z"
+          }
+        ]
+      },
+      "updates": [
+        {
+          "date": "2024-09-10",
+          "content": "We've secured a partnership with a local tech company to provide mentorship to our students!"
+        },
+        {
+          "date": "2024-09-20",
+          "content": "First batch of computers arrived today. We're setting up the lab for our first coding class next month."
+        }
+      ],
+      "wordsOfSupport": [
+        {
+          "avatar": "https://example.com/avatars/user5.jpg",
+          "name": "Lisa Chang",
+          "dateTime": "2024-09-05T09:30:00Z",
+          "description": "As someone who benefited from a similar program, I can't stress enough how important this is. You're changing lives!"
+        },
+        {
+          "avatar": "https://example.com/avatars/user6.jpg",
+          "name": "David Patel",
+          "dateTime": "2024-09-06T14:15:00Z",
+          "description": "Great initiative! Education is the key to breaking the cycle of poverty. Count me in as a volunteer instructor!"
+        }
+      ]
+    },
+    {
+      "campaignId": "CAMP003",
+      "campaignName": "Community Garden Project",
+      "campaignImage": "https://images.unsplash.com/photo-1546580594-a64816022c1b?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "goalAmount": 750,
+      "achievedAmount": 450,
+      "category": "Environment",
+      "location": "Austin, TX",
+      "createdDate": "2024-08-20",
+      "createdBy": {
+        "avatar": "https://example.com/avatars/user7.jpg",
+        "profession": "Urban Planner",
+        "location": "Austin, TX",
+        "name": "Maria Gonzalez"
+      },
+      "description": "<p>Help us transform an empty lot into a thriving community garden! Your donations will go towards soil, seeds, tools, and irrigation systems. Together, we can create a green space that provides fresh produce and brings our neighborhood together.</p>",
+      "reactions": {
+        "like": 312,
+        "heart": 289,
+        "appreciated": 45
+      },
+      "proofDocument": "https://example.com/documents/community_garden_plan.pdf",
+      "donors": [
+        {
+          "name": "Green Thumb Nursery",
+          "amount": 200,
+          "hash": "0x3698dcba...",
+          "dateTime": "2024-08-22T11:20:00Z"
+        },
+        {
+          "name": "Bob Wilson",
+          "amount": 75,
+          "hash": "0x1472fedc...",
+          "dateTime": "2024-08-23T16:05:00Z"
+        }
+      ],
+      "filteredDonors": {
+        "topDonors": [
+          {
+            "name": "Green Thumb Nursery",
+            "amount": 200
+          },
+          {
+            "name": "Bob Wilson",
+            "amount": 75
+          }
+        ],
+        "recentDonors": [
+          {
+            "name": "Bob Wilson",
+            "amount": 75,
+            "dateTime": "2024-08-23T16:05:00Z"
+          },
+          {
+            "name": "Green Thumb Nursery",
+            "amount": 200,
+            "dateTime": "2024-08-22T11:20:00Z"
+          }
+        ]
+      },
+      "updates": [
+        {
+          "date": "2024-08-25",
+          "content": "The city has approved our plans! We'll begin clearing the lot next week."
+        },
+        {
+          "date": "2024-09-05",
+          "content": "Soil delivery is scheduled for next Monday. We're looking for volunteers to help spread it."
+        }
+      ],
+      "wordsOfSupport": [
+        {
+          "avatar": "https://example.com/avatars/user8.jpg",
+          "name": "Emma Thompson",
+          "dateTime": "2024-08-24T10:30:00Z",
+          "description": "This is exactly what our neighborhood needs! I can't wait to get my hands dirty and help out."
+        },
+        {
+          "avatar": "https://example.com/avatars/user9.jpg",
+          "name": "Carlos Mendez",
+          "dateTime": "2024-08-26T18:45:00Z",
+          "description": "As a local chef, I'm excited about the prospect of fresh, locally grown produce. Count me in for some cooking classes once the garden is up and running!"
+        }
+      ]
+    },
+    {
+      "campaignId": "CAMP004",
+      "campaignName": "Renewable Energy for Rural Schools",
+      "campaignImage": "https://images.unsplash.com/photo-1474631245212-32dc3c8310c6?q=80&w=1981&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "goalAmount": 5000,
+      "achievedAmount": 1250,
+      "category": "Education & Environment",
+      "location": "Multiple Locations, India",
+      "createdDate": "2024-09-15",
+      "createdBy": {
+        "avatar": "https://example.com/avatars/user10.jpg",
+        "profession": "Renewable Energy Engineer",
+        "location": "Mumbai, India",
+        "name": "Raj Patel"
+      },
+      "description": "<p>Our mission is to bring sustainable energy to rural schools across India. We aim to install solar panels in 10 schools, providing reliable electricity for lighting, computers, and other educational resources. This project will enhance learning opportunities and demonstrate the power of renewable energy to the next generation.</p>",
+      "reactions": {
+        "like": 1876,
+        "heart": 1543,
+        "appreciated": 421
+      },
+      "proofDocument": "https://example.com/documents/solar_schools_project_plan.pdf",
+      "donors": [
+        {
+          "name": "SunTech Solutions",
+          "amount": 2000,
+          "hash": "0x5678wxyz...",
+          "dateTime": "2024-09-17T09:30:00Z"
+        },
+        {
+          "name": "Priya Sharma",
+          "amount": 100,
+          "hash": "0x1234stuv...",
+          "dateTime": "2024-09-18T14:45:00Z"
+        }
+      ],
+      "filteredDonors": {
+        "topDonors": [
+          {
+            "name": "SunTech Solutions",
+            "amount": 2000
+          },
+          {
+            "name": "Priya Sharma",
+            "amount": 100
+          }
+        ],
+        "recentDonors": [
+          {
+            "name": "Priya Sharma",
+            "amount": 100,
+            "dateTime": "2024-09-18T14:45:00Z"
+          },
+          {
+            "name": "SunTech Solutions",
+            "amount": 2000,
+            "dateTime": "2024-09-17T09:30:00Z"
+          }
+        ]
+      },
+      "updates": [
+        {
+          "date": "2024-09-25",
+          "content": "We've completed our initial survey of the first 5 schools. The enthusiasm from students and teachers is overwhelming!"
+        },
+        {
+          "date": "2024-10-05",
+          "content": "Great news! We've received approval from the local government to proceed with installations in 3 schools."
+        }
+      ],
+      "wordsOfSupport": [
+        {
+          "avatar": "https://example.com/avatars/user11.jpg",
+          "name": "Anika Gupta",
+          "dateTime": "2024-09-20T11:15:00Z",
+          "description": "As a teacher in a rural school, I can't express how much this will mean for our students. Thank you for this incredible initiative!"
+        },
+        {
+          "avatar": "https://example.com/avatars/user12.jpg",
+          "name": "Thomas Lee",
+          "dateTime": "2024-09-22T16:30:00Z",
+          "description": "Combining education and renewable energy is a brilliant approach. This project will have a lasting impact on these communities."
+        }
+      ]
+    },
+    {
+      "campaignId": "CAMP005",
+      "campaignName": "Virtual Reality for Pain Management",
+      "campaignImage": "https://images.unsplash.com/photo-1617802690658-1173a812650d?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "goalAmount": 3000,
+      "achievedAmount": 1250,
+      "category": "Healthcare & Technology",
+      "location": "Boston, MA",
+      "createdDate": "2024-10-01",
+      "createdBy": {
+        "avatar": "https://example.com/avatars/user13.jpg",
+        "profession": "Anesthesiologist",
+        "location": "Boston, MA",
+        "name": "Dr. Sarah Thompson"
+      },
+      "description": "<p>We're pioneering the use of virtual reality (VR) technology to help manage chronic pain and reduce opioid dependence. Your donation will fund a pilot program to provide VR headsets and specially designed software to patients in our pain management clinic. Help us explore innovative, drug-free pain relief methods!</p>",
+      "reactions": {
+        "like": 956,
+        "heart": 874,
+        "appreciated": 203
+      },
+      "proofDocument": "https://example.com/documents/vr_pain_management_study.pdf",
+      "donors": [
+        {
+          "name": "TechHealth Innovations",
+          "amount": 1500,
+          "hash": "0x9876defg...",
+          "dateTime": "2024-10-03T10:15:00Z"
+        },
+        {
+          "name": "Anonymous",
+          "amount": 50,
+          "hash": "0x5432hijk...",
+          "dateTime": "2024-10-04T13:20:00Z"
+        }
+      ],
+      "filteredDonors": {
+        "topDonors": [
+          {
+            "name": "TechHealth Innovations",
+            "amount": 1500
+          },
+          {
+            "name": "Anonymous",
+            "amount": 50
+          }
+        ],
+        "recentDonors": [
+          {
+            "name": "Anonymous",
+            "amount": 50,
+            "dateTime": "2024-10-04T13:20:00Z"
+          },
+          {
+            "name": "TechHealth Innovations",
+            "amount": 1500,
+            "dateTime": "2024-10-03T10:15:00Z"
+          }
+        ]
+      },
+      "updates": [
+        {
+          "date": "2024-10-10",
+          "content": "We've partnered with a leading VR developer to create custom pain management experiences. Development is underway!"
+        },
+        {
+          "date": "2024-10-20",
+          "content": "Our first batch of VR headsets has arrived. Staff training on the new technology begins next week."
+        }
+      ],
+      "wordsOfSupport": [
+        {
+          "avatar": "https://example.com/avatars/user14.jpg",
+          "name": "Michael Chen",
+          "dateTime": "2024-10-05T09:45:00Z",
+          "description": "As someone who has struggled with chronic pain, I'm excited to see innovative approaches like this. Wishing you all the success!"
+        },
+        {
+          "avatar": "https://example.com/avatars/user15.jpg",
+          "name": "Dr. Emily Rodriguez",
+          "dateTime": "2024-10-06T14:30:00Z",
+          "description": "This initiative has the potential to revolutionize pain management. Proud to support such forward-thinking research."
+        }
+      ]
+    },
+    {
+      "campaignId": "CAMP006",
+      "campaignName": "Ocean Plastic Cleanup Drone",
+      "campaignImage": "https://images.unsplash.com/photo-1595902392414-16c64fe8d048?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "goalAmount": 10000,
+      "achievedAmount": 4550,
+      "category": "Environment & Technology",
+      "location": "San Diego, CA",
+      "createdDate": "2024-10-15",
+      "createdBy": {
+        "avatar": "https://example.com/avatars/user16.jpg",
+        "profession": "Marine Biologist & Roboticist",
+        "location": "San Diego, CA",
+        "name": "Dr. Alex Martinez"
+      },
+      "description": "<p>We're developing an autonomous drone capable of collecting plastic waste from the ocean surface. Your contribution will fund the prototype development, testing, and deployment of our first cleanup drone. Join us in combating ocean pollution and protecting marine life!</p>",
+      "reactions": {
+        "like": 3245,
+        "heart": 2987,
+        "appreciated": 756
+      },
+      "proofDocument": "https://example.com/documents/ocean_cleanup_drone_specs.pdf",
+      "donors": [
+        {
+          "name": "EcoTech Ventures",
+          "amount": 5000,
+          "hash": "0x7890lmno...",
+          "dateTime": "2024-10-17T11:00:00Z"
+        },
+        {
+          "name": "Ocean Lovers Association",
+          "amount": 1000,
+          "hash": "0x2345pqrs...",
+          "dateTime": "2024-10-18T15:30:00Z"
+        }
+      ],
+      "filteredDonors": {
+        "topDonors": [
+          {
+            "name": "EcoTech Ventures",
+            "amount": 5000
+          },
+          {
+            "name": "Ocean Lovers Association",
+            "amount": 1000
+          }
+        ],
+        "recentDonors": [
+          {
+            "name": "Ocean Lovers Association",
+            "amount": 1000,
+            "dateTime": "2024-10-18T15:30:00Z"
+          },
+          {
+            "name": "EcoTech Ventures",
+            "amount": 5000,
+            "dateTime": "2024-10-17T11:00:00Z"
+          }
+        ]
+      },
+      "updates": [
+        {
+          "date": "2024-10-25",
+          "content": "Exciting progress! Our team has completed the initial design phase for the drone. We're moving into component testing next week."
+        },
+        {
+          "date": "2024-11-05",
+          "content": "We've successfully tested the drone's collection mechanism in a controlled environment. Results are promising!"
+        }
+      ],
+      "wordsOfSupport": [
+        {
+          "avatar": "https://example.com/avatars/user17.jpg",
+          "name": "Linda Torres",
+          "dateTime": "2024-10-20T10:15:00Z",
+          "description": "As a scuba instructor, I've seen the devastating impact of plastic pollution firsthand. This project gives me hope for our oceans' future!"
+        },
+        {
+          "avatar": "https://example.com/avatars/user18.jpg",
+          "name": "David Kim",
+          "dateTime": "2024-10-22T13:45:00Z",
+          "description": "Combining robotics and environmental conservation is ingenious. Can't wait to see these drones in action. Keep up the great work!"
+        }
+      ]
+    }
+  ]
+}

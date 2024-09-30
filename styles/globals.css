@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  @apply font-body;
+}
+
+.main-heading {
+  @apply text-[128px] font-bold font-heading leading-[100%] uppercase tracking-[2px];
+}
+
+.main-heading.main-heading-md {
+  @apply text-[92px] font-bold font-heading leading-[100%] uppercase tracking-[2px];
+}
+
+.heading-2 {
+  @apply font-heading tracking-wide font-bold text-4xl;
+}
