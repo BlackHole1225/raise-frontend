@@ -94,7 +94,7 @@ export default function Page() {
         </div>
         <div className="col-span-5 flex flex-col  gap-6">
             <FeedGetStart />
-            <FeedList feedfontSize={24} height={168} />
+            {/* <FeedList feedfontSize={24} height={168} /> */}
         </div>
     </div>)
 }
