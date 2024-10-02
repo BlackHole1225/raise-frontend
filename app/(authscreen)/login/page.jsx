@@ -3,12 +3,14 @@
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import Link from 'next/link';
+import axios from 'axios'
 import React, { useState, useEffect } from 'react';
-import { SERVER_IP } from '../../../utils/constants';
+import { SERVER_IP, SERVER_LOCAL_IP } from '../../../utils/constants';
 
 function UseClientSideStorage(key, defaultValue) {
   useEffect(() => {
     const value = localStorage.getItem(key) || defaultValue;
+    console.log(value);
     localStorage.setItem(key, value);
   }, [key, defaultValue]);
 }
@@ -23,39 +25,34 @@ const Page = () => {
     setError(null); // Clear previous errors
 
     try {
-      const response = await fetch(`${SERVER_IP}/api/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email,
-          password
-        })
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/login`, {
+        // const response = await fetch(`${SERVER_IP}/api/login`, {
+        email,
+        password
       });
-
+      // sendOTP(email);
       // Check if response is JSON
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
-        const data = await response.json();
-
+       console.log(response.data);
+       const data = response.data;
+      //  login(response.data);
         // If response is not OK, throw error
-        if (!response.ok) {
-          throw new Error(data.message || 'Something went wrong');
-        }
+        // if (!response.ok) {
+        //   throw new Error(data.message || 'Something went wrong');
+        // }
 
         // Handle successful login
-        console.log('Login successful', data);
 
-        // if (typeof window !== 'undefined') {
-        //   // Save user info and token in window.localStorage
-        //   window.localStorage.setItem('userID', data.id);
-        //   window.localStorage.setItem('userName', data.fullName);
-        //   window.localStorage.setItem('userEmail', data.email);
-        //   window.localStorage.setItem('authToken', data.token);
-        //   // Redirect to campaigns page after successful login
-        //   window.location.href = '/campaigns';
-        // }
+        if (typeof window !== 'undefined') {
+          // Save user info and token in window.localStorage
+          window.localStorage.setItem('userID', data.id);
+          window.localStorage.setItem('userName', data.fullName);
+          window.localStorage.setItem('userEmail', data.email);
+          window.localStorage.setItem('authToken', data.token);
+          // Redirect to campaigns page after successful login
+          window.location.href = '/campaigns';
+        }
 
         UseClientSideStorage('userID', data.id);
         UseClientSideStorage('userName', data.fullName);
@@ -72,7 +69,6 @@ const Page = () => {
       setError(err.message || 'Login failed');
     }
   };
-
   return (
     <div className="overflow-hidden p-8 lg:py-14 lg:pr-7 lg:pl-20 bg-brand-ivory max-md:px-5 lg:h-screen">
       <div className="flex gap-5 max-lg:flex-col-reverse h-full">

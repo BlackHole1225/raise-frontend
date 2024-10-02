@@ -8,14 +8,14 @@ const layout = ({ children }) => {
       <Sidebar
         navItems={[
           { label: 'your feed', link: '/forum' },
-          { label: 'Trending posts', link: '/forum/plan' },
-          { label: 'How it works?', link: '/forum/setting' },
-          { label: 'Your Posts', link: '/forum/my-campaigns' },
-          { label: 'Your comments', link: '/forum/my-donation' },
-          { label: 'Content policy', link: '/forum/my-donation' }
+          { label: 'Trending posts', link: '/forum/trend-posts' },
+          { label: 'How it works?', link: '/forum/how-works' },
+          { label: 'Your Posts', link: '/forum/your-posts' },
+          { label: 'Your comments', link: '/forum/your-comments' },
+          { label: 'Content policy', link: '/forum/content-policy' }
         ]}
       />
-      <div className="w-1/2 flex-grow">
+      <div className="w-1/2 flex-grow bg-brand-ivory">
         <div className="pt-[140px] px-8">{children}</div>
       </div>
     </div>

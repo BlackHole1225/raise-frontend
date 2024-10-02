@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import FeedList from './feedList';
+import FeedList from '../feedList';
 // import DonationListComponent from './donationList';
 // import CampaignListComponent from '../../other/CampaignListComponent';
 import { Button } from '@nextui-org/button';
@@ -8,8 +8,8 @@ import { Input } from '@nextui-org/input';
 import { useState, useEffect } from 'react';
 
 import BrandDropdown from '@/components/ui/brandDropdown';
-import FeedAdvertising from './feedAdvertising';
-import FeedGetStart from './feedGetStart';
+import FeedAdvertising from '../feedAdvertising';
+import FeedGetStart from '../feedGetStart';
 const page = () => {
     const hasData = true;
     const [categories, setCategories] = useState([]);
@@ -26,8 +26,8 @@ const page = () => {
     return (
         <div>
             <div>
-                <h1 className="uppercase text-5xl font-bold text-brand-dark mb-8 font-heading ">
-                    Recent feeds just for you!
+                <h1 className="uppercase text-5xl font-bold text-brand-dark mb-8 font-heading">
+                    Posts created by you
                 </h1>
                 <div className='flex justify-between items-center my-12'>
                     <div className="flex gap-8 ">
@@ -35,7 +35,7 @@ const page = () => {
                             variant="bordered"
                             radius="full"
                             size="lg"
-                            className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[40%]"
+                            className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[10%]"
                             startContent={
                                 <svg
                                     width="20"
