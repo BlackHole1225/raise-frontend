@@ -15,7 +15,7 @@ export default function Page() {
         reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__"
     };
     return (<div className="grid grid-cols-12 gap-8 my-12">
-        <div className="col-span-7">
+        <div className="col-span-7 overflow-auto h-screen scrollbar-thin scrollbar-thumb-rounded-lg scrollbar-thumb-gray-600 pr-1">
             <h1 className="uppercase text-5xl font-bold text-brand-dark mb-8 font-heading">
                 {feed.title}
             </h1>
@@ -44,7 +44,7 @@ export default function Page() {
                         size="lg"
                         className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 "
                         startContent={
-                            <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg" className='pt-[2px] border-t-1 border-[black]'>
+                            <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg" className='pb-[2px] border-b-1 border-[black]'>
                                 <path d="M4.75 11.615V11.865H5H6H6.25V11.615V3.48573L8.94239 6.17295L9.11904 6.34926L9.29565 6.1729L9.98465 5.4849L10.1617 5.30813L9.98478 5.13122L5.67678 0.823223L5.5 0.646447L5.32322 0.823223L1.01522 5.13122L0.838447 5.308L1.01522 5.48478L1.70322 6.17278L1.8798 6.34935L2.05658 6.17298L4.75 3.4856V11.615Z" fill="black" stroke="black" stroke-width="0.5" />
                             </svg>
 
@@ -58,7 +58,7 @@ export default function Page() {
                         size="lg"
                         className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 "
                         startContent={
-                            <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg" className='pb-[2px] border-b-1 border-[black]'>
+                            <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg" className='pt-[2px] border-t-1 border-[black]'>
                                 <path d="M6.25 3.385V3.135H6L5 3.135H4.75V3.385L4.75 11.5143L2.05761 8.82705L1.88096 8.65074L1.70435 8.8271L1.01535 9.5151L0.838318 9.69187L1.01522 9.86878L5.32322 14.1768L5.5 14.3536L5.67678 14.1768L9.98478 9.86878L10.1616 9.692L9.98478 9.51522L9.29678 8.82722L9.1202 8.65065L8.94342 8.82702L6.25 11.5144L6.25 3.385Z" fill="black" stroke="black" stroke-width="0.5" />
                             </svg>
 
@@ -94,7 +94,7 @@ export default function Page() {
         </div>
         <div className="col-span-5 flex flex-col  gap-6">
             <FeedGetStart />
-            <FeedList feedfontSize={24} />
+            <FeedList feedfontSize={24} height={168} />
         </div>
     </div>)
 }

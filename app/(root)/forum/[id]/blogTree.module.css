@@ -6,19 +6,21 @@
 .firstChild::before {
   content: '';
   position: absolute;
-  left: -20px;
+  left: -25px;
   top: 15px; /* Adjust according to the height of your item */
   width: 20px;
   height: 1px;
-  border-top: 2px solid black;
+  opacity: 50%;
+  border-top: 1px solid #25282B;
 }
 
 .firstChild::after {
   content: '';
   position: absolute;
-  left: -20px;
-  top: 0;
+  left: -25px;
+  top: -34px;
   width: 1px;
-  height: 15px;
-  border-left: 2px solid black;
+  height: 50px;
+  opacity: 50%;
+  border-left: 1px solid #25282B;
 }
