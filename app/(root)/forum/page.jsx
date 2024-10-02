@@ -118,7 +118,7 @@ const page = () => {
             </div>
             <div className="grid grid-cols-12 gap-8 my-12">
                 <div className="col-span-7">
-                    <FeedList />
+                    <FeedList feedfontSize={32} height={205} />
                 </div>
                 <div className="col-span-5 flex flex-col  gap-6">
                     <FeedAdvertising />

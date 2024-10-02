@@ -4,7 +4,7 @@ import React from 'react';
 
 
 
-const FeedList = ({feedfontSize}) => {
+const FeedList = ({feedfontSize, height}) => {
   const hasData = true;
 
     return (
@@ -12,6 +12,7 @@ const FeedList = ({feedfontSize}) => {
        {hasData ? (
         <section className="flex flex-col gap-6">
             <FeedItem
+            height={height}
             title='DU Students’ camp for Saving birds from radiation reaching to hearts'
             comments={10}
             votes={5}
@@ -22,6 +23,7 @@ const FeedList = ({feedfontSize}) => {
 
             />
              <FeedItem
+            height={height}
             title='DU Students’ camp for Saving birds from radiation reaching to hearts'
             comments={10}
             votes={5}
@@ -33,6 +35,7 @@ const FeedList = ({feedfontSize}) => {
 
             />
              <FeedItem
+            height={height}
             title='DU Students’ camp for Saving birds from radiation reaching to hearts'
             comments={10}
             votes={5}
@@ -55,9 +58,9 @@ const FeedList = ({feedfontSize}) => {
        </>
     );
 };
-const FeedItem = ({ title, comments, votes, imageUrl, fontSize, accessTime, reporterPhoto, reporterName }) => (
+const FeedItem = ({ title, comments, votes, imageUrl, fontSize, accessTime, reporterPhoto, reporterName, height }) => (
     <article className="flex">
-        <img src={imageUrl} alt={imageUrl} className="w-[260px] h-[205px] object-cover" />
+        <img src={imageUrl} alt={imageUrl} className="w-[260px] object-cover" style={{height}} />
         <div className="flex flex-col bg-[#FAFF7D] pt-[30px] px-[22px]">
             <h2 className=" font-bold tracking-wider uppercase text-brand-olive-green font-heading" style={{fontSize:fontSize}}>
                 {title}
