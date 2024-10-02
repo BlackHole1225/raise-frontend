@@ -21,3 +21,8 @@ textarea {
 .heading-2 {
   @apply font-heading tracking-wide font-bold text-4xl;
 }
+
+.text-small {
+  font-size: 20px;
+  font-weight: bold;
+}

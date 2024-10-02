@@ -5,10 +5,12 @@ import axios from 'axios';
 import Image from 'next/image';
 import { Avatar } from '@nextui-org/avatar';
 import { Input, Textarea } from '@nextui-org/input';
+import { Select, SelectSection, SelectItem } from "@nextui-org/select";
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import DragDropUpload from '@/components/ui/dragDropUpload';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
 
 const Setting = () => {
   const [openModal, setOpenModal] = useState(null);
@@ -270,13 +272,23 @@ const Setting = () => {
                   label: 'font-bold text-xl'
                 }}
               />
+              <Select
+                placeholder="Select a reason why you're changing email"
+                style={{ backgroundColor: 'transparent' }}
+                className="border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark h-full font-bold text-xl rounded-lg mt-4 py-1"
+              >
+                <SelectItem>
+                  Lost the previous email account.
+                </SelectItem>
+              </Select>
             </div>
             <button
-              onClick={handleCloseModal}
+              onClick={() => handleOpenModal(5)}
               className="mt-6 w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green hover:text-red-500 hover:border-red-500"
             >
               Send OTP
             </button>
+            <p className='text-xl font-bold mt-36 text-nowrap'>A notification will be sent on your previous email about this.</p>
           </div>
         </div>
       )}
@@ -290,23 +302,129 @@ const Setting = () => {
             >
               &times;
             </button>
-            <p className="mb-4">Change your Phone here.</p>
-
-            <div className='flex items-center gap-2'>
-            </div>          <div className='flex items-center gap-2 mt-[58px]'>
-              <button
-                onClick={handleCloseModal}
-                className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
+            <p className="mb-6 text-lg font-bold">Enter your new phone and then verify your phone by adding the otp sent on your phone to change your account phone.</p>
+            <div className='mt-9'>
+              <Input
+                size="lg"
+                variant="bordered"
+                label="New Phone Number"
+                radius="sm"
+                placeholder=""
+                classNames={{
+                  inputWrapper:
+                    'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark h-full',
+                  input: 'py-1',
+                  label: 'font-bold text-xl'
+                }}
+              />
+              <Select
+                placeholder="Select a reason why you're changing phone number"
+                style={{ backgroundColor: 'transparent' }}
+                className="border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark h-full font-bold text-xl rounded-lg mt-4 py-1"
               >
-                <IoMdClose size={16} />
-                Close
-              </button>
-              <button className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
-              >
-                <FaCheck size={16} />
-                Save
-              </button>
+                <SelectItem>
+                  Lost the previous phone number.
+                </SelectItem>
+              </Select>
             </div>
+            <button
+              onClick={() => handleOpenModal(6)}
+              className="mt-6 w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green hover:text-red-500 hover:border-red-500"
+            >
+              Send OTP
+            </button>
+            <p className='text-xl font-bold mt-36 text-nowrap'>A notification will be sent on your previous phone about this.</p>
+          </div>
+        </div>
+      )}
+      {openModal === 5 && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative bg-brand-lemon-yellow px-9 pt-10 pb-[50px] rounded-lg shadow-lg w-1/3 text-brand-olive-green">
+            <h3 className="text-3xl font-bold mb-4">VERIFY NEW EMAIL ADDRESS</h3>
+            <button
+              onClick={handleCloseModal}
+              className="absolute top-10 right-9 text-5xl hover:text-red-500"
+            >
+              &times;
+            </button>
+            <p className="text-lg font-bold">
+              We have sent an one time password on your email address, fill it in below and move to the next step.
+            </p>
+            <p className="mt-14 text-lg font-bold">
+              One Time Password
+            </p>
+            <div className="mt-6">
+              <InputOTP
+                containerClassName="w-full"
+                maxLength={6}
+              // onChange={(v) => setOtpValue(v.toString())}
+              >
+                <InputOTPGroup className="w-full flex gap-2">
+                  <InputOTPSlot className="flex-grow h-12" index={0} />
+                  <InputOTPSlot className="flex-grow h-12" index={1} />
+                  <InputOTPSlot className="flex-grow h-12" index={2} />
+                  <InputOTPSlot className="flex-grow h-12" index={3} />
+                  <InputOTPSlot className="flex-grow h-12" index={4} />
+                  <InputOTPSlot className="flex-grow h-12" index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
+            <div className="flex gap-1 mt-12 max-w-full font-bold">
+              <div className="opacity-70">Have not received the OTP yet?</div>
+              <button>Resend OTP</button>
+            </div>
+            <button
+              className="mt-9 w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green hover:text-red-500 hover:border-red-500"
+            >
+              Verify
+            </button>
+            <p className="mt-[105px] text-lg font-bold">A notification will be sent on your previous email about this.</p>
+          </div>
+        </div>
+      )}
+
+      {openModal === 6 && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative bg-brand-lemon-yellow px-9 pt-10 pb-[50px] rounded-lg shadow-lg w-1/3 text-brand-olive-green">
+            <h3 className="text-3xl font-bold mb-4">VERIFY NEW PHONE NUMBER</h3>
+            <button
+              onClick={handleCloseModal}
+              className="absolute top-10 right-9 text-5xl hover:text-red-500"
+            >
+              &times;
+            </button>
+            <p className="text-lg font-bold">
+              We have sent an one time password on your email address, fill it in below and move to the next step.
+            </p>
+            <p className="mt-14 text-lg font-bold">
+              One Time Password
+            </p>
+            <div className="mt-6">
+              <InputOTP
+                containerClassName="w-full"
+                maxLength={6}
+              // onChange={(v) => setOtpValue(v.toString())}
+              >
+                <InputOTPGroup className="w-full flex gap-2">
+                  <InputOTPSlot className="flex-grow h-12" index={0} />
+                  <InputOTPSlot className="flex-grow h-12" index={1} />
+                  <InputOTPSlot className="flex-grow h-12" index={2} />
+                  <InputOTPSlot className="flex-grow h-12" index={3} />
+                  <InputOTPSlot className="flex-grow h-12" index={4} />
+                  <InputOTPSlot className="flex-grow h-12" index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
+            <div className="flex gap-1 mt-12 max-w-full font-bold">
+              <div className="opacity-70">Have not received the OTP yet?</div>
+              <button>Resend OTP</button>
+            </div>
+            <button
+              className="mt-9 w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green hover:text-red-500 hover:border-red-500"
+            >
+              Verify
+            </button>
+            <p className="mt-[105px] text-lg font-bold">A notification will be sent on your previous email about this.</p>
           </div>
         </div>
       )}
