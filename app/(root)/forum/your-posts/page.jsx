@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import Link from 'next/link';
 import FeedList from '../feedList';
 // import DonationListComponent from './donationList';
 // import CampaignListComponent from '../../other/CampaignListComponent';
@@ -105,14 +106,16 @@ const page = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <Button
-                        variant="bordered"
-                        radius="full"
-                        size="lg"
-                        className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[10%]"
-                    >
-                        Create a post
-                    </Button>
+                    <Link href='/forum/create-post' passHref>
+                        <Button
+                            variant="bordered"
+                            radius="full"
+                            size="lg"
+                            className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[10%]"
+                        >
+                            Create a post
+                        </Button>
+                    </Link>
                 </div>
 
             </div>
