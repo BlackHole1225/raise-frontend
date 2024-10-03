@@ -11,7 +11,7 @@ import { IoMdClose } from "react-icons/io";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
-import { SERVER_IP, SERVER_LOCAL_IP } from '/utils/constants';
+import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 
 function UseClientSideStorage(key, defaultValue) {
   useEffect(() => {
@@ -45,9 +45,9 @@ const Setting = () => {
       });
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
-       console.log(response.data);
-       const data = response.data;
-      //  login(response.data);
+        console.log(response.data);
+        const data = response.data;
+        //  login(response.data);
         // If response is not OK, throw error
         // if (!response.ok) {
         //   throw new Error(data.message || 'Something went wrong');

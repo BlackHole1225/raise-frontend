@@ -7,12 +7,16 @@ import FeedList from './feedList';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 
 import BrandDropdown from '@/components/ui/brandDropdown';
 import FeedAdvertising from './feedAdvertising';
 import FeedGetStart from './feedGetStart';
+import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import axios from "axios";
 const page = () => {
     const hasData = true;
+    const [posts, setPosts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [filters, setFilters] = useState({
@@ -24,6 +28,25 @@ const page = () => {
     const handleFilterChange = (filterType, selectedKeys) => {
         setFilters((prev) => ({ ...prev, [filterType]: new Set(selectedKeys) }));
     };
+    const getPost = async () => {
+        const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/all`);
+        setPosts(response.data.Posts)
+    }
+    // Filter and search campaigns
+    const filteredPosts = useMemo(() => {
+        return posts.filter((post) => {
+            const matchesCategory =
+                filters.category.size === 0 || filters.category.has(post.categoryId);
+            const matchesLocation =
+                filters.location.size === 0 || filters.location.has(post.countryId);
+            const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase());
+            return matchesCategory && matchesLocation && matchesSearch;
+        });
+    }, [filters, searchTerm, posts]);
+
+    useEffect(() => {
+        getPost();
+    }, [])
     return (
         <div>
             <div>
@@ -121,7 +144,7 @@ const page = () => {
             </div>
             <div className="grid grid-cols-12 gap-8 my-12">
                 <div className="col-span-7">
-                    <FeedList feedfontSize={32} height={205} />
+                    <FeedList feeds={posts} feedfontSize={32} height={205} />
                 </div>
                 <div className="col-span-5 flex flex-col  gap-6">
                     <FeedAdvertising />

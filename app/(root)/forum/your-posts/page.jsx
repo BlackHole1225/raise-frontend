@@ -7,6 +7,8 @@ import FeedList from '../feedList';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import { useState, useEffect } from 'react';
+import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import axios from "axios";
 
 import BrandDropdown from '@/components/ui/brandDropdown';
 import FeedAdvertising from '../feedAdvertising';
@@ -15,15 +17,22 @@ const page = () => {
     const hasData = true;
     const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [posts, setPosts] = useState([]);
     const [filters, setFilters] = useState({
         category: new Set([]),
         location: new Set([]),
         closeToGoal: new Set([])
     });
-
     const handleFilterChange = (filterType, selectedKeys) => {
         setFilters((prev) => ({ ...prev, [filterType]: new Set(selectedKeys) }));
     };
+    const getPosts = async () => {
+        const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/all`);
+        setPosts(response.data.Posts)
+    }
+    useEffect(() => {
+        getPosts();
+    }, [])
     return (
         <div>
             <div>
@@ -121,7 +130,7 @@ const page = () => {
             </div>
             <div className="grid grid-cols-12 gap-8 my-12">
                 <div className="col-span-7">
-                    <FeedList feedfontSize={32} height={205} />
+                    <FeedList feeds={posts} feedfontSize={32} height={205} />
                 </div>
                 <div className="col-span-5 flex flex-col  gap-6">
                     <FeedAdvertising />
