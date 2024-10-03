@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation'
 import { Avatar } from '@nextui-org/avatar';
 import { Input, Textarea } from '@nextui-org/input';
 import { Select, SelectSection, SelectItem } from "@nextui-org/select";
@@ -32,13 +33,7 @@ const Setting = () => {
   const [newConfirmPassword, setNewConfirmPassword] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [error, setError] = useState(null);
-  // const editProfile = async() =>{
-  //   await axios.post('https:/',{
-  //     email:'',
-  //     fullName,
-  //     address
-  //   })
-  // }
+  const router = useRouter()
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
@@ -73,7 +68,8 @@ const Setting = () => {
     window.localStorage.setItem('userID', '');
     window.localStorage.setItem('userName', '');
     window.localStorage.setItem('userEmail','');
-    window.localStorage.setItem('authToken', '')
+    window.localStorage.setItem('authToken', '');
+    router.push('/login')
   }
   const updateProfile = async () => {
     setError(null); // Clear previous errors
