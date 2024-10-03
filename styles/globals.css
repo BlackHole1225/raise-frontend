@@ -36,3 +36,7 @@ textarea {
   border: transparent !important;
   min-height: 135px;
 }
+
+.bg-default-100 {
+  background-color: transparent !important;
+}
