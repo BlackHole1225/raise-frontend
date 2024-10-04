@@ -1,17 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import { Avatar } from '@nextui-org/avatar';
-import { Input, Textarea } from '@nextui-org/input';
-import { Select, SelectSection, SelectItem } from "@nextui-org/select";
+import { Input } from '@nextui-org/input';
+import { Select, SelectItem } from "@nextui-org/select";
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 
 function UseClientSideStorage(key, defaultValue) {
   useEffect(() => {
@@ -23,8 +23,8 @@ function UseClientSideStorage(key, defaultValue) {
 
 const Setting = () => {
   const [openModal, setOpenModal] = useState(null);
-  const [fullName, setFullName] = useState(localStorage.getItem('userName'));
-  const [address, setAddress] = useState(localStorage.getItem('address'));
+  // const [fullName, setFullName] = useState(localStorage.getItem('userName'));
+  // const [address, setAddress] = useState(localStorage.getItem('address'));
   // const editProfile = async() =>{
   //   await axios.post('https:/',{
   //     email:'',
@@ -33,53 +33,53 @@ const Setting = () => {
   //   })
   // }
 
-  const updateProfile = async (event) => {
-    event.preventDefault();
-    setError(null); // Clear previous errors
+  // const updateProfile = async (event) => {
+  //   event.preventDefault();
+  //   setError(null); // Clear previous errors
 
-    try {
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/updateUserProfile`, {
-        // const response = await fetch(`${SERVER_IP}/api/login`, {
-        email,
-        password
-      });
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        console.log(response.data);
-        const data = response.data;
-        //  login(response.data);
-        // If response is not OK, throw error
-        // if (!response.ok) {
-        //   throw new Error(data.message || 'Something went wrong');
-        // }
+  //   try {
+  //     const response = await axios.post(`${SERVER_LOCAL_IP}/api/updateUserProfile`, {
+  //       // const response = await fetch(`${SERVER_IP}/api/login`, {
+  //       email,
+  //       password
+  //     });
+  //     const contentType = response.headers.get('content-type');
+  //     if (contentType && contentType.includes('application/json')) {
+  //       console.log(response.data);
+  //       const data = response.data;
+  //       //  login(response.data);
+  //       // If response is not OK, throw error
+  //       // if (!response.ok) {
+  //       //   throw new Error(data.message || 'Something went wrong');
+  //       // }
 
-        // Handle successful login
+  //       // Handle successful login
 
-        if (typeof window !== 'undefined') {
-          // Save user info and token in window.localStorage
-          window.localStorage.setItem('userID', data.id);
-          window.localStorage.setItem('userName', data.fullName);
-          window.localStorage.setItem('userEmail', data.email);
-          window.localStorage.setItem('authToken', data.token);
-          // Redirect to campaigns page after successful login
-          window.location.href = '/campaigns';
-        }
+  //       if (typeof window !== 'undefined') {
+  //         // Save user info and token in window.localStorage
+  //         window.localStorage.setItem('userID', data.id);
+  //         window.localStorage.setItem('userName', data.fullName);
+  //         window.localStorage.setItem('userEmail', data.email);
+  //         window.localStorage.setItem('authToken', data.token);
+  //         // Redirect to campaigns page after successful login
+  //         window.location.href = '/campaigns';
+  //       }
 
-        UseClientSideStorage('userID', data.id);
-        UseClientSideStorage('userName', data.fullName);
-        UseClientSideStorage('userEmail', data.email);
-        UseClientSideStorage('authToken', data.token);
+  //       UseClientSideStorage('userID', data.id);
+  //       UseClientSideStorage('userName', data.fullName);
+  //       UseClientSideStorage('userEmail', data.email);
+  //       UseClientSideStorage('authToken', data.token);
 
-      } else {
-        // Handle unexpected content-type
-        throw new Error('Unexpected response format');
-      }
+  //     } else {
+  //       // Handle unexpected content-type
+  //       throw new Error('Unexpected response format');
+  //     }
 
-    } catch (err) {
-      console.error('Login error:', err);
-      setError(err.message || 'Login failed');
-    }
-  };
+  //   } catch (err) {
+  //     console.error('Login error:', err);
+  //     setError(err.message || 'Login failed');
+  //   }
+  // };
   const handleOpenModal = (modalNumber) => {
     setOpenModal(modalNumber);
   };

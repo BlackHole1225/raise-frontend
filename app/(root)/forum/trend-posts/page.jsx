@@ -5,14 +5,14 @@ import FeedList from '../feedList';
 // import CampaignListComponent from '../../other/CampaignListComponent';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import BrandDropdown from '@/components/ui/brandDropdown';
 import FeedAdvertising from '../feedAdvertising';
 import FeedGetStart from '../feedGetStart';
 const page = () => {
-    const hasData = true;
-    const [categories, setCategories] = useState([]);
+    // const hasData = true;
+    // const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     // const [filters, setFilters] = useState({
     //     category: new Set([]),

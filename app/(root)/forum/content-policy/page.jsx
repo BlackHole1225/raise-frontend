@@ -2,7 +2,7 @@
 import React from 'react';
 import FeedGetStart from "../feedGetStart";
 import FeedList from '../feedList';
-import { Button } from '@nextui-org/button';
+// import { Button } from '@nextui-org/button';
 
 export default function Page() {
     const data = {

@@ -5,7 +5,7 @@ import { Input } from '@nextui-org/input';
 import Link from 'next/link';
 import axios from 'axios'
 import React, { useState, useEffect } from 'react';
-import { SERVER_IP, SERVER_LOCAL_IP } from '../../../utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 
 function UseClientSideStorage(key, defaultValue) {
   useEffect(() => {
@@ -34,9 +34,9 @@ const Page = () => {
       // Check if response is JSON
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
-       console.log(response.data);
-       const data = response.data;
-      //  login(response.data);
+        console.log(response.data);
+        const data = response.data;
+        //  login(response.data);
         // If response is not OK, throw error
         // if (!response.ok) {
         //   throw new Error(data.message || 'Something went wrong');

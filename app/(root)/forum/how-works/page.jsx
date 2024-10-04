@@ -2,7 +2,6 @@
 import React from 'react';
 import FeedGetStart from "../feedGetStart";
 import FeedList from '../feedList';
-import { Button } from '@nextui-org/button';
 
 export default function Page() {
     const data = {
@@ -43,7 +42,7 @@ export default function Page() {
             {data.contents?.map((content, index) => (
                 <div className='ml-1'>
                     <p className="text-2xl font-bold text-black text-opacity-70 font-heading">
-                        {index+1+". "+ content.subTitle}
+                        {index + 1 + ". " + content.subTitle}
                     </p>
                     <p className="text-2xl font-bold text-brand-dark mb-7 text-opacity-70 font-heading ml-4">
                         {content.subContent}

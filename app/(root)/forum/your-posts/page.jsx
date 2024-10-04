@@ -7,7 +7,7 @@ import FeedList from '../feedList';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import { useState, useEffect } from 'react';
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 import axios from "axios";
 
 import BrandDropdown from '@/components/ui/brandDropdown';
