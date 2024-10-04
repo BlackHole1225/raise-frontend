@@ -87,7 +87,7 @@ const Header = () => {
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          className="sm:hidden"
+          className="sm:hidden text-brand-lemon-yellow font-bold"
         />
         <NavbarBrand>
           <Link href='/' className='gap-4'>
@@ -130,10 +130,10 @@ const Header = () => {
           )}
         </NavbarItem>
       </NavbarContent>
-      <NavbarMenu>
+      <NavbarMenu className='bg-brand-lemon-yellow'>
         {menus.map((item, index) => (
           <NavbarMenuItem key={`${item.href}-${index}`}>
-            <Link className="w-full" href={item.href} size="lg">
+            <Link className="w-full text-brand-olive-green font-bold border-b border-b-brand-olive-green py-1" href={item.href} size="lg">
               {item.label}
             </Link>
           </NavbarMenuItem>

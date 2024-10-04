@@ -17,9 +17,9 @@ const page = () => {
       <InputOTP
         containerClassName="w-full mb-12"
         maxLength={6}
-        // onChange={(v) => setOtpValue(v.toString())}
+      // onChange={(v) => setOtpValue(v.toString())}
       >
-        <InputOTPGroup className="w-full">
+        <InputOTPGroup className="w-full gap-2">
           <InputOTPSlot className="flex-grow h-12" index={0} />
           <InputOTPSlot className="flex-grow h-12" index={1} />
           <InputOTPSlot className="flex-grow h-12" index={2} />
