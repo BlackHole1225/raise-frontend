@@ -28,10 +28,6 @@ const page = () => {
     const handleFilterChange = (filterType, selectedKeys) => {
         setFilters((prev) => ({ ...prev, [filterType]: new Set(selectedKeys) }));
     };
-    const getPost = async () => {
-        const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/all`);
-        setPosts(response.data.Posts)
-    }
     // Filter and search campaigns
     const filteredPosts = useMemo(() => {
         return posts.filter((post) => {
@@ -43,7 +39,11 @@ const page = () => {
             return matchesCategory && matchesLocation && matchesSearch;
         });
     }, [filters, searchTerm, posts]);
-
+    
+    const getPost = async () => {
+        const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/all`);
+        setPosts(response.data.Posts)
+    }
     useEffect(() => {
         getPost();
     }, [])
@@ -144,7 +144,7 @@ const page = () => {
             </div>
             <div className="grid grid-cols-12 gap-8 my-12">
                 <div className="col-span-7">
-                    <FeedList feeds={posts} feedfontSize={32} height={205} />
+                    <FeedList feeds={posts} feedfontSize={32} height={205} isPagination={true}/>
                 </div>
                 <div className="col-span-5 flex flex-col  gap-6">
                     <FeedAdvertising />

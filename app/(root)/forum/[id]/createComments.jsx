@@ -2,38 +2,50 @@
 import React from 'react';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 import axios from 'axios';
 import { useParams } from 'next/navigation'
-const CreateComments = ({ setIsReply, setIsOpen }) => {
+import {PostContext} from './page';
+
+const CreateComments = ({ setIsReply, setIsOpen, parentId }) => {
+
     const params = useParams();
+    const {setSentComment} = useContext(PostContext);
     const [commentData, setCommentData] = useState({
         accessTime: 0,
         votes: 0,
-        reporterPhoto: '',
-        reporterName: '',
-        parentId: null,
+        reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__",
+        reporterName: 'ddd',
+        parentId,
         description: ''
     });
     const newComment = async () => {
         try {
-            const response = await axios.post(`${SERVER_LOCAL_IP}/api/blog/${params.id}/comment`, commentData);
+            console.log(parentId);
+            const response = await axios.post(`${SERVER_LOCAL_IP}/api/post/${params.id}/comment`, commentData);
             // setBlog(response.data.blog);
+            setSentComment(response.data.comment);
             setCommentData({
                 accessTime: 0,
                 votes: 0,
                 reporterPhoto: '',
                 reporterName: '',
-                parentId: null,
+                parentId: 'null',
                 description: ''
             });
+            // addSentComment(commentData);
         } catch (error) {
             console.error("Error adding comment:", error);
         }
     };
-    useEffect(()=>{
-    },[])
+    
+    useEffect(() => {
+        setCommentData((prev)=>({
+            ...prev,
+            parentId
+        }))
+    }, [parentId])
     return (
         <div className='py-5 px-4 relative  border border-brand-dark rounded-2xl ml-4 mb-[24px] mt-[-16px]' onClick={() => setIsOpen(false)}>
             <textarea

@@ -130,7 +130,7 @@ const page = () => {
             </div>
             <div className="grid grid-cols-12 gap-8 my-12">
                 <div className="col-span-7">
-                    <FeedList feeds={posts} feedfontSize={32} height={205} />
+                    <FeedList feeds={posts} feedfontSize={32} height={205} isPagination={true}/>
                 </div>
                 <div className="col-span-5 flex flex-col  gap-6">
                     <FeedAdvertising />

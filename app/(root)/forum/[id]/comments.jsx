@@ -3,39 +3,45 @@ import React from 'react';
 
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import BrandDropdown from '@/components/ui/brandDropdown';
 // data/blogTree.js
 import styles from './blogTree.module.css';
 import CreateComments from './createComments';
+import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import { useParams } from 'next/navigation'
+import axios from 'axios';
+import {PostContext} from './page';
+
 // Flat list of blog data
 const blogData = [
-    { id: 1, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: null, description: 'The fundraiser, if there is one, has a communications, marketing, events, or sales background. They get by on events, grants, government funding or service contracts, a few sponsorships, and luck.' },
-    { id: 2, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 1 },
-    { id: 3, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 2, description: 'The fundraiser, if there is one, has a communications, marketing, events, or sales background. They get by on events, grants, government funding or service contracts, a few sponsorships, and luck.' },
-    { id: 4, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 1 },
-    { id: 5, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 4, description: 'The fundraiser, if there is one, has a communications, marketing, events, or sales background. They get by on events, grants, government funding or service contracts, a few sponsorships, and luck.' },
-    { id: 6, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: null },
-    { id: 7, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 6 },
-    { id: 8, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 7, description: 'The fundraiser, if there is one, has a communications, marketing, events, or sales background. They get by on events, grants, government funding or service contracts, a few sponsorships, and luck.' },
-    { id: 9, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 6 },
-    { id: 10, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 9, description: 'The fundraiser, if there is one, has a communications, marketing, events, or sales background. They get by on events, grants, government funding or service contracts, a few sponsorships, and luck.' }
+    { _id: 1, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: null, description: 'The fundraiser, if there is one, has a communications, marketing, events, or sales background. They get by on events, grants, government funding or service contracts, a few sponsorships, and luck.' },
+    { _id: 2, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 1 },
+    { _id: 3, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 2, description: 'The fundraiser, if there is one, has a communications, marketing, events, or sales background. They get by on events, grants, government funding or service contracts, a few sponsorships, and luck.' },
+    { _id: 4, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 1 },
+    { _id: 5, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 4, description: 'The fundraiser, if there is one, has a communications, marketing, events, or sales background. They get by on events, grants, government funding or service contracts, a few sponsorships, and luck.' },
+    { _id: 6, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: null },
+    { _id: 7, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 6 },
+    { _id: 8, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 7, description: 'The fundraiser, if there is one, has a communications, marketing, events, or sales background. They get by on events, grants, government funding or service contracts, a few sponsorships, and luck.' },
+    { _id: 9, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 6 },
+    { _id: 10, accessTime: 10, votes: 30, reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__", reporterName: 'Lara Peterson', parentId: 9, description: 'The fundraiser, if there is one, has a communications, marketing, events, or sales background. They get by on events, grants, government funding or service contracts, a few sponsorships, and luck.' }
 ];
 const buildTree = (data) => {
+    console.log(data);
     const map = {}; // Dictionary to hold references to each node
     const tree = [];
 
-    data.forEach((item) => {
-        map[item.id] = { ...item, children: [] }; // Initialize each node with empty children array
+    data?.forEach((item) => {
+        map[item._id] = { ...item, children: [] }; // Initialize each node with empty children array
     });
 
-    data.forEach((item) => {
+    data?.forEach((item) => {
         if (item.parentId === null) {
             // Top-level blogs
-            tree.push(map[item.id]);
+            tree.push(map[item._id]);
         } else {
             // Add to the parent's children array
-            map[item.parentId].children.push(map[item.id]);
+            map[item.parentId].children.push(map[item._id]);
         }
     });
 
@@ -72,12 +78,9 @@ const TreeNode = ({ node, isFirst }) => {
                     isReply={isReply}
                     setIsReply={(e) => setIsReply(e)}
                     setIsOpen={(e) => setIsOpen(e)}
+                    parentId={node._id}
                     hasChildren={hasChildren}
-                    description={node.description}
-                    votes={node.votes}
-                    accessTime={node.accessTime}
-                    reporterPhoto={node.reporterPhoto}
-                    reporterName={node.reporterName}
+                    {...node}
 
                 />
             </div>
@@ -93,10 +96,10 @@ const TreeNode = ({ node, isFirst }) => {
         </div>
     );
 };
-const FeedComments = ({ feedfontSize }) => {
+const FeedComments = ({ feedfontSize, comments }) => {
     const hasData = true;
     const commentsCounts = 10;
-
+    console.log(comments);
     return (
         <>
             <div className='items-center my-12'>
@@ -128,7 +131,7 @@ const FeedComments = ({ feedfontSize }) => {
                     </Button>
                     <div className="basis-[20%] ">
                         <BrandDropdown
-                            label={`Comment (${commentsCounts})`}
+                            label={`Comment (${comments?.length})`}
                             // data={categories.map((cat) => ({ key: cat._id, label: cat.name }))}
                             icon={
                                 <svg
@@ -177,12 +180,43 @@ const FeedComments = ({ feedfontSize }) => {
                 </div>
             </div>
             <div>
-                <BlogTree nodes={blogTree} />
+                {/* <BlogTree nodes={blogTree} /> */}
+                <BlogTree nodes={buildTree(comments)} />
             </div>
         </>
     );
 };
-const CommentItem = ({ description, votes, accessTime, reporterPhoto, reporterName, hasChildren, isOpen, isReply, setIsOpen, setIsReply }) => (<>
+const CommentItem = ({ description, votes, accessTime, reporterPhoto, reporterName, hasChildren, parentId, isOpen, isReply, setIsOpen, setIsReply,_id }) =>{ 
+    const params = useParams();
+    const {setVotedComment} = useContext(PostContext);
+
+    const voteOnComment = async (isVote) => {
+        console.log(isVote);
+        try {
+          const response = await axios.put(`${SERVER_LOCAL_IP}/api/post/comment/${_id}/vote`,{isVote, postId:params.id },{
+            headers: {
+                Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+              },
+          });
+          setVotedComment(response.data.comment)
+        //   setPost((d)=>({
+        //     ...d,
+        //     votes:response.data.votes
+        //   }));
+          console.log(response.data.votes);
+          const data = await response.json();
+      
+          if (response.ok) {
+            console.log(data.message); // "Vote successful"
+            console.log(`Total Votes: ${data.votes}`);
+          } else {
+            console.error(data.message); // Handle error messages (e.g., "You have already voted")
+          }
+        } catch (error) {
+          console.error('Error voting on blog:', error);
+        }
+      };
+    return(<>
     <article className='pb-9' onClick={() => { setIsOpen(!isOpen); setIsReply(false) }}>
         <div className='flex gap-2 items-center'>
             <img src={reporterPhoto} alt={reporterPhoto} className="w-[30px] h-[30px] object-cover rounded-full" />
@@ -216,6 +250,7 @@ const CommentItem = ({ description, votes, accessTime, reporterPhoto, reporterNa
                 variant="bordered"
                 radius="full"
                 size="sm"
+                onClick={()=>voteOnComment(true)}
                 className="font-bold text-brand-olive-green border-brand-olive-green h-[30px] "
                 startContent={
                     <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg" className='pb-[1px] border-b-1 border-[black]'>
@@ -230,6 +265,7 @@ const CommentItem = ({ description, votes, accessTime, reporterPhoto, reporterNa
                 variant="bordered"
                 radius="full"
                 size="sm"
+                onClick={()=>voteOnComment(false)}
                 className="font-bold text-brand-olive-green border-brand-olive-green h-[30px] "
                 startContent={
                     <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg" className='pt-[1px] border-t-1 border-[black]'>
@@ -278,8 +314,8 @@ const CommentItem = ({ description, votes, accessTime, reporterPhoto, reporterNa
         </div>
 
     </article>
-    {isReply && <CreateComments setIsReply={setIsReply} setIsOpen={setIsOpen}/>}
+    {isReply && <CreateComments setIsReply={setIsReply} setIsOpen={setIsOpen} parentId={_id}/>}
 
 </>
-);
+)};
 export default FeedComments;

@@ -5,7 +5,7 @@ import { Input } from '@nextui-org/input';
 import Link from 'next/link';
 import axios from 'axios'
 import React, { useState, useEffect } from 'react';
-import { SERVER_IP, SERVER_LOCAL_IP } from '../../../utils/constants';
+import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 import { notifySuccess, notifyError } from '@/components/notification';
 
 
