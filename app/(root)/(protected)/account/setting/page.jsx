@@ -33,6 +33,7 @@ const Setting = () => {
   const [newConfirmPassword, setNewConfirmPassword] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [error, setError] = useState(null);
+  const [info, setInfo] = useState(null);
   const router = useRouter()
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -58,7 +58,7 @@ const Page = () => {
         imgUrl="/images/home-hero-banner.jpeg"
         title={
           <h1 className="text-brand-ivory main-heading">
-            localhost <br /> Can Make a Change
+            TOGETHER WE <br /> CAN MAKE A CHANGE
           </h1>
         }
         action={
@@ -91,18 +91,18 @@ const Page = () => {
         <header className="">
           <div className="flex flex-wrap">
             <div className="w-full md:w-1/3 p-10">
-              <h1 className="text-4xl md:text-6xl font-heading font-bold uppercase text-brand-dark tracking-wider mt-8">
+              <h1 className="text-4xl lg:text-5xl xl:text-6xl font-heading font-bold uppercase text-brand-dark tracking-wider mt-4 lg:mt-8">
                 Raise allows you to create trusted campaigns easily
               </h1>
             </div>
             <div className="w-full md:w-2/3">
-              <div className="relative min-h-[559px]">
-                <img
+              <div className="relative">
+                {/* <img
                   loading="lazy"
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/12a1b07640395ca10913b819c0dfad898ea7f734c2cc73843f029c28f01757fb"
                   alt="Background"
                   className="absolute inset-0 w-full h-full object-cover"
-                />
+                /> */}
                 <div className="relative flex items-center justify-center h-full">
                   <video
                     src="https://videos.pexels.com/video-files/6646687/6646687-hd_1920_1080_24fps.mp4"

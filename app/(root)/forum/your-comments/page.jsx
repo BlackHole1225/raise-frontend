@@ -4,8 +4,19 @@ import FeedGetStart from "../feedGetStart";
 import FeedList from '../feedList';
 import { Button } from '@nextui-org/button';
 import FeedComments from '../[id]/comments';
+import { useState, useEffect } from 'react';
+import axios from "axios";
+import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 
 export default function Page() {
+    const [posts, setPosts] = useState([]);
+    const getPost = async () => {
+        const response = await await axios.get(`${SERVER_LOCAL_IP}/api/post/get`);
+        setPosts(response.data.Posts)
+    }
+    useEffect(() => {
+        getPost();
+    }, [])
     const feed = {
         title: 'Firefighters saved the girl from a burning house.',
         reporterName: 'Diana Roobert',
@@ -16,12 +27,11 @@ export default function Page() {
     };
     return (<div className="grid grid-cols-12 gap-8 my-12">
         <div className="col-span-7 overflow-auto h-screen scrollbar-thin scrollbar-thumb-rounded-lg scrollbar-thumb-gray-600 pr-1">
-           
             <FeedComments />
         </div>
         <div className="col-span-5 flex flex-col  gap-6">
             <FeedGetStart />
-            <FeedList feedfontSize={24} height={168} />
+            <FeedList feeds={posts} feedfontSize={24} height={168} />
         </div>
     </div>)
 }

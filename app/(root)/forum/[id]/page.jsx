@@ -4,8 +4,20 @@ import FeedGetStart from "../feedGetStart";
 import FeedList from '../feedList';
 import { Button } from '@nextui-org/button';
 import FeedComments from './comments';
-
+import { useState, useEffect } from 'react';
+import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import axios from 'axios';
+import CreateComments from './createComments';
 export default function Page() {
+    const [isReply, setIsReply] = useState(false);
+    const [post, setPost] = useState([]);
+    const getPosts = async () => {
+        const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/get`);
+        setPost(response.data.Post)
+    }
+    useEffect(() => {
+        getPosts();
+    }, [])
     const feed = {
         title: 'Firefighters saved the girl from a burning house.',
         reporterName: 'Diana Roobert',
@@ -14,6 +26,7 @@ export default function Page() {
         description: 'Connor and I are so grateful to have shared a snippet of life with you. We love you so. Care and condolences to Matt and your family.',
         reporterPhoto: "https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__"
     };
+
     return (<div className="grid grid-cols-12 gap-8 my-12">
         <div className="col-span-7 overflow-auto h-screen scrollbar-thin scrollbar-thumb-rounded-lg scrollbar-thumb-gray-600 pr-1">
             <h1 className="uppercase text-5xl font-bold text-brand-dark mb-8 font-heading">
@@ -67,6 +80,20 @@ export default function Page() {
                         Downvote
                     </Button>
                     <Button
+                        onClick={() => { setIsReply(true), setIsOpen(false) }}
+                        variant="bordered"
+                        radius="full"
+                        size="lg"
+                        className="font-bold text-brand-olive-green border-brand-olive-green  xl:py-6 xl:px-7"
+                        startContent={
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M2.90078 1.63722C2.6223 1.63722 2.35523 1.74784 2.15832 1.94476C1.96141 2.14167 1.85078 2.40874 1.85078 2.68722V6.88722C1.85078 7.1657 1.96141 7.43277 2.15832 7.62968C2.35523 7.82659 2.6223 7.93722 2.90078 7.93722H3.95078V9.05722L5.39768 8.03382L5.53348 7.93722H9.90078C10.1793 7.93722 10.4463 7.82659 10.6432 7.62968C10.8402 7.43277 10.9508 7.1657 10.9508 6.88722V2.68722C10.9508 2.40874 10.8402 2.14167 10.6432 1.94476C10.4463 1.74784 10.1793 1.63722 9.90078 1.63722H2.90078ZM0.800781 2.68722C0.800781 2.13026 1.02203 1.59612 1.41586 1.20229C1.80968 0.808469 2.34383 0.587219 2.90078 0.587219H9.90078C10.4577 0.587219 10.9919 0.808469 11.3857 1.20229C11.7795 1.59612 12.0008 2.13026 12.0008 2.68722V6.88722C12.0008 7.44417 11.7795 7.97832 11.3857 8.37214C10.9919 8.76597 10.4577 8.98722 9.90078 8.98722H5.86808L3.72888 10.5006L2.90078 11.0872V8.98722C2.34383 8.98722 1.80968 8.76597 1.41586 8.37214C1.02203 7.97832 0.800781 7.44417 0.800781 6.88722L0.800781 2.68722Z" fill="black" />
+                            </svg>
+                        }
+                    >
+                        Reply
+                    </Button>
+                    <Button
                         variant="bordered"
                         radius="full"
                         size="lg"
@@ -90,6 +117,7 @@ export default function Page() {
                 </div>
 
             </div>
+            {isReply &&<CreateComments setIsReply={setIsReply} />}
             <FeedComments />
         </div>
         <div className="col-span-5 flex flex-col  gap-6">
