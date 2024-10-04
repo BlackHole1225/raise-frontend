@@ -9,6 +9,9 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { SERVER_IP } from '../../utils/constants';
+import { TbWorld, TbCurrencyDollarOff } from "react-icons/tb";
+import { BsFillPeopleFill } from "react-icons/bs";
+import { SlEarphonesAlt } from "react-icons/sl";
 
 const Page = () => {
   const [campaigns, setCampaigns] = useState([]);
@@ -52,12 +55,32 @@ const Page = () => {
     // setPlatformFee()
   }, []);
 
+  const values = [
+    {
+      icon: <TbWorld className="text-7xl xl:text-9xl rounded-2xl xl:rounded-[32px] p-3 xl:p-6 bg-brand-olive-green text-amber-50" />,
+      title: 'Based on Web3',
+    },
+    {
+      icon: <TbCurrencyDollarOff className="text-7xl xl:text-9xl rounded-2xl xl:rounded-[32px] p-3 xl:p-6 bg-brand-olive-green text-amber-50" />,
+      title: 'No Fee for Campaigns',
+    },
+    {
+      icon: <BsFillPeopleFill className="text-7xl xl:text-9xl rounded-2xl xl:rounded-[32px] p-3 xl:p-6 bg-brand-olive-green text-amber-50" />,
+      title: 'Worldwide Community',
+    },
+    {
+      icon: <SlEarphonesAlt className="text-7xl xl:text-9xl rounded-2xl xl:rounded-[32px] p-3 xl:p-6 bg-brand-olive-green text-amber-50" />,
+      title: 'Active Support',
+    }
+  ];
+
+
   return (
     <>
       <HeroSection
         imgUrl="/images/home-hero-banner.jpeg"
         title={
-          <h1 className="text-brand-ivory main-heading">
+          <h1 className="text-5xl md:text-7xl xl:text-9xl text-brand-ivory main-heading">
             TOGETHER WE <br /> CAN MAKE A CHANGE
           </h1>
         }
@@ -68,7 +91,7 @@ const Page = () => {
                 variant="bordered"
                 radius="full"
                 size="lg"
-                className="font-medium text-brand-ivory border-brand-ivory xl:py-6 xl:px-7"
+                className="font-medium text-brand-ivory border-brand-ivory py-1 md:py-6 md:px-7"
               >
                 Browse Campaigns
               </Button>
@@ -78,7 +101,7 @@ const Page = () => {
                 variant="bordered"
                 radius="full"
                 size="lg"
-                className="font-medium text-brand-ivory border-brand-ivory xl:py-6 xl:px-7"
+                className="font-medium text-brand-ivory border-brand-ivory md:py-6 md:px-7"
               >
                 Start a Campaign
               </Button>
@@ -121,20 +144,13 @@ const Page = () => {
         <main>
           <section className="flex flex-wrap">
             <div className="w-full md:w-2/3">
-              <div className="bg-yellow-200 p-8 md:p-16">
+              <div className="bg-brand-lemon-yellow p-8 xl:p-32 2xl:p-44">
                 <div className="max-w-3xl mx-auto">
-                  <div className="flex flex-wrap justify-center text-center">
-                    {campaigns.map((item, index) => (
-                      <div key={index} className="w-full sm:w-1/2 md:w-1/4 p-4">
-                        <img
-                          loading="lazy"
-                          src={`https://cdn.builder.io/api/v1/image/assets/TEMP/${item.file}`}
-                          alt={item.title}
-                          className="w-32 h-32 mx-auto rounded-3xl object-contain"
-                        />
-                        <h3 className="mt-4 text-xl font-bold tracking-wide text-stone-700">
-                          {item.title}
-                        </h3>
+                  <div className="flex flex-wrap gap-[60px] justify-center text-center">
+                    {values.map((value, index) => (
+                      <div key={index} className="flex flex-col items-center text-center max-w-32">
+                        {value.icon}
+                        <h3 className="text-xl font-bold tracking-wide text-brand-olive-green mt-4">{value.title}</h3>
                       </div>
                     ))}
                   </div>
@@ -142,13 +158,13 @@ const Page = () => {
               </div>
             </div>
             <div className="w-full md:w-1/3">
-              <div className="bg-stone-700 text-amber-50 p-8 md:p-16 flex items-center justify-center h-full">
+              <div className="bg-brand-olive-green text-amber-50 p-8 md:p-16 flex items-center justify-center h-full">
                 <div className="text-center">
-                  <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-wider mb-6 font-heading">
-                    Have any Doubts?
+                  <h2 className="text-5xl xl:text-6xl font-bold uppercase tracking-wider mb-6 font-heading">
+                    ENGAGE WITH <br /> RAISE COMMUNTITY
                   </h2>
                   <button className="px-8 py-4 text-xl font-medium border border-amber-50 rounded-full hover:bg-amber-50 hover:text-stone-700 transition-colors">
-                    Check FAQs
+                    Go to Forum
                   </button>
                 </div>
               </div>

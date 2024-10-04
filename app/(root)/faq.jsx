@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 const FaqItem = ({ question, answer }) => (
-  <div className={`bg-brand-eucalyptus p-8 h-full`}>
+  <div className="bg-brand-eucalyptus p-8 h-full hover:bg-brand-lemon-yellow">
     <h3 className="text-3xl font-bold tracking-widest uppercase text-stone-700 mb-2 font-heading">
       {question}
     </h3>
@@ -46,7 +46,7 @@ function FAQComponent() {
 
   return (
     <section className="bg-amber-50 px-6 py-16 md:px-16 md:py-32">
-      <h2 className="text-4xl md:text-7xl font-bold uppercase text-brand-dark font-heading tracking-wider mb-12">
+      <h2 className="text-4xl md:text-5xl xl:text-7xl font-bold uppercase text-brand-dark font-heading tracking-wider mb-12">
         Clear your every <br />
         single question!
       </h2>

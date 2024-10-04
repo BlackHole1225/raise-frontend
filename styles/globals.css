@@ -11,7 +11,7 @@ textarea {
 }
 
 .main-heading {
-  @apply text-[128px] font-bold font-heading leading-[100%] uppercase tracking-[2px];
+  @apply font-bold font-heading leading-[100%] uppercase tracking-[2px];
 }
 
 .main-heading.main-heading-md {
