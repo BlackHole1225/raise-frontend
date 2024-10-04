@@ -20,8 +20,8 @@ export default function Page() {
             <h1 className="uppercase text-5xl font-bold text-brand-dark mb-8 font-heading">
                 {data.title}
             </h1>
-            {data.contents?.map((content) => (
-                <p className="text-2xl font-bold text-brand-dark mb-7 text-opacity-70 font-heading ">
+            {data.contents?.map((content, index) => (
+                <p key={index} className="text-2xl font-bold text-brand-dark mb-7 text-opacity-70 font-heading ">
                     {content}
                 </p>
             ))}
