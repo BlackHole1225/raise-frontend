@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 import { Providers } from './providers';
 import { fontHeading, fontBody } from '@/config/fonts';
-
+import Notification from '@/components/notification';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html suppressHydrationWarning lang="en">
@@ -16,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           fontHeading.variable
         )}
       >
+         <Notification />
         <Providers>{children}</Providers>
       </body>
     </html>

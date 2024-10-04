@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation'
 import { Avatar } from '@nextui-org/avatar';
 import { Input, Textarea } from '@nextui-org/input';
 import { Select, SelectSection, SelectItem } from "@nextui-org/select";
@@ -11,7 +12,8 @@ import { IoMdClose } from "react-icons/io";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import { SERVER_IP, SERVER_LOCAL_IP } from '../../../../../utils/constants';
+import { notifySuccess, notifyError } from '@/components/notification';
 
 function UseClientSideStorage(key, defaultValue) {
   useEffect(() => {
@@ -23,26 +25,71 @@ function UseClientSideStorage(key, defaultValue) {
 
 const Setting = () => {
   const [openModal, setOpenModal] = useState(null);
-  const [fullName, setFullName] = useState(localStorage.getItem('userName'));
-  const [address, setAddress] = useState(localStorage.getItem('address'));
-  // const editProfile = async() =>{
-  //   await axios.post('https:/',{
-  //     email:'',
-  //     fullName,
-  //     address
-  //   })
-  // }
-
-  const updateProfile = async (event) => {
-    event.preventDefault();
-    setError(null); // Clear previous errors
+  const [file, setFile] = useState(null);
+  const [fullName, setFullName] = useState('');
+  const [address, setAddress] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [newConfirmPassword, setNewConfirmPassword] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [error, setError] = useState(null);
+  const router = useRouter()
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+  const updateAvatar = async () => {
+    const formData = new FormData();
+    console.log(file);
+    formData.append('files', file);
 
     try {
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/updateUserProfile`, {
-        // const response = await fetch(`${SERVER_IP}/api/login`, {
-        email,
-        password
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/file/upload`, formData, {
+        // headers: {
+        //   'Content-Type': 'multipart/form-data'
+        // }
       });
+
+      // Ensure the response contains the uploaded file information
+      const uploadedFiles = response.data.uploaded;
+      console.log('Uploaded Files:', uploadedFiles);
+
+      if (uploadedFiles != undefined) {
+        // Map the file IDs
+        const fileIds = uploadedFiles.map((file) => file._id);
+        return fileIds;
+      }
+    } catch (error) {
+      console.error('Error uploading files:', error);
+      throw error;
+    }
+  };
+  const logout = () =>{
+    window.localStorage.setItem('userID', '');
+    window.localStorage.setItem('userName', '');
+    window.localStorage.setItem('userEmail','');
+    window.localStorage.setItem('authToken', '');
+    router.push('/login')
+  }
+  const updateProfile = async () => {
+    setError(null); // Clear previous errors
+    const formData = new FormData();
+    // formData.append('avatar', file);
+    formData.append('fullName', fullName);
+    formData.append('address', address);
+    formData.append('email', localStorage?.getItem('userEmail'));
+    updateAvatar();
+    try {
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/updateUserProfile`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+          },
+        }
+      );
+      notifySuccess('Updated successfully!');
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         console.log(response.data);
@@ -62,13 +109,13 @@ const Setting = () => {
           window.localStorage.setItem('userEmail', data.email);
           window.localStorage.setItem('authToken', data.token);
           // Redirect to campaigns page after successful login
-          window.location.href = '/campaigns';
+          // window.location.href = '/campaigns';
         }
 
-        UseClientSideStorage('userID', data.id);
-        UseClientSideStorage('userName', data.fullName);
-        UseClientSideStorage('userEmail', data.email);
-        UseClientSideStorage('authToken', data.token);
+        // UseClientSideStorage('userID', data.id);
+        // UseClientSideStorage('userName', data.fullName);
+        // UseClientSideStorage('userEmail', data.email);
+        // UseClientSideStorage('authToken', data.token);
 
       } else {
         // Handle unexpected content-type
@@ -78,6 +125,52 @@ const Setting = () => {
     } catch (err) {
       console.error('Login error:', err);
       setError(err.message || 'Login failed');
+    }
+  };
+  const changePassword = async () => {
+    if (newPassword && newConfirmPassword && currentPassword) {
+      if (newPassword !== newConfirmPassword) {
+        setError('The passwords for verification do not match.');
+        return;
+      }
+      try {
+        await axios.post(`${SERVER_LOCAL_IP}/api/changePassword`, {
+          email: localStorage?.getItem('userEmail'),         // User's email
+          currentPassword, // Current password
+          newPassword,     // New password
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+          },
+        });
+
+        notifySuccess('Password was updated successfully');
+        setOpenModal(null)
+      } catch (error) {
+        console.error("Error changing password:", error);
+      }
+    } else {
+      setError('The input value is incorrect.')
+    }
+
+  };
+  const changeEmail = async () => {
+    if (!validateEmail(newEmail)) {
+      setError("New email address is incorrect.");
+      return;
+    }
+    try {
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/changeEmail`, {
+        email: localStorage?.getItem('userEmail'),  // Old password for verification
+        newEmail: newEmail,    // New email to update
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,  // JWT token for authentication
+        },
+      });
+      notifySuccess(response.data.message);
+    } catch (error) {
+      setError("Error changing email:");
     }
   };
   const handleOpenModal = (modalNumber) => {
@@ -148,7 +241,7 @@ const Setting = () => {
             </div>
             <div className="flex justify-between pb-[14px] border-b border-b-brand-olive-green/20">
               <h3>Log Out</h3>
-              <button>
+              <button onClick={()=>logout()}>
                 <Image src="/images/logout.svg" width={24} height={24} alt="Logout Icon" />
               </button>
             </div>
@@ -170,7 +263,8 @@ const Setting = () => {
               acceptedFormats={{
                 'image/*': ['.jpeg', '.png', '.jpg', '.gif']
               }}
-              isMultiple={false}
+              onChange={(e) => setFile(e)}
+              isMultiple={true}
               label=""
             />
             <Input
@@ -178,6 +272,7 @@ const Setting = () => {
               variant="bordered"
               label="Name"
               radius="sm"
+              onChange={(e) => setFullName(e.target.value)}
               placeholder=""
               classNames={{
                 inputWrapper:
@@ -191,6 +286,7 @@ const Setting = () => {
               variant="bordered"
               label="Address"
               radius="sm"
+              onChange={(e) => setAddress(e.target.value)}
               placeholder=""
               classNames={{
                 inputWrapper:
@@ -207,7 +303,7 @@ const Setting = () => {
                 <IoMdClose size={16} />
                 Close
               </button>
-              <button className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
+              <button onClick={updateProfile} className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
               >
                 <FaCheck size={16} />
                 Save
@@ -233,6 +329,7 @@ const Setting = () => {
                 variant="bordered"
                 label="Previous Password"
                 radius="sm"
+                onChange={(e) => setCurrentPassword(e.target.value)}
                 classNames={{
                   inputWrapper:
                     'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark mt-4 h-full',
@@ -255,6 +352,7 @@ const Setting = () => {
                 variant="bordered"
                 label="New Password"
                 radius="sm"
+                onChange={(e) => setNewPassword(e.target.value)}
                 classNames={{
                   inputWrapper:
                     'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark mt-4 h-full',
@@ -277,6 +375,7 @@ const Setting = () => {
                 variant="bordered"
                 label="New Password(Again)"
                 radius="sm"
+                onChange={(e) => setNewConfirmPassword(e.target.value)}
                 classNames={{
                   inputWrapper:
                     'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark mt-4 h-full',
@@ -303,7 +402,9 @@ const Setting = () => {
                 <IoMdClose size={16} />
                 Close
               </button>
-              <button className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
+              <button
+                onClick={() => changePassword()}
+                className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
               >
                 <FaCheck size={16} />
                 Save
@@ -329,6 +430,7 @@ const Setting = () => {
                 variant="bordered"
                 label="New Email Address"
                 radius="sm"
+                onChange={(e) => setNewEmail(e.target.value)}
                 placeholder=""
                 classNames={{
                   inputWrapper:
