@@ -94,19 +94,19 @@ const Campaigns = () => {
   console.log('>>> campaigns : ', campaigns);
 
   return (
-    <section className="bg-brand-pale-lemon p-14 pt-52 pb-20">
+    <section className="bg-brand-pale-lemon p-6 md:p-14 pt-10 md:pt-52 md:pb-20">
       <div className="w-full flex justify-between items-end">
         <h1 className="text-brand-olive-green main-heading">
           Discover fundraisers
           <br /> inspired by what you care
         </h1>
       </div>
-      <div className="flex gap-8 items-center my-12">
+      <div className="flex flex-wrap xl:flex-nowrap gap-8 items-center my-12">
         <Button
           variant="bordered"
           radius="full"
           size="lg"
-          className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[20%]"
+          className="min-w-36 max-w-36 font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[20%]"
           startContent={
             <svg
               width="20"
@@ -217,6 +217,7 @@ const Campaigns = () => {
           variant="bordered"
           placeholder="Search"
           radius="full"
+          className='w-fit'
           classNames={{
             inputWrapper: 'border-brand-olive-green'
           }}
@@ -224,7 +225,7 @@ const Campaigns = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {paginatedCampaigns.map((campaign, i) => (
           <Link href={`/campaigns/${campaign._id}`} key={campaign._id}>
             <CampaignCard
