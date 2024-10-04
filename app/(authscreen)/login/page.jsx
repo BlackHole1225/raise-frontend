@@ -5,9 +5,8 @@ import { Input } from '@nextui-org/input';
 import Link from 'next/link';
 import axios from 'axios'
 import React, { useState, useEffect } from 'react';
-import { SERVER_IP, SERVER_LOCAL_IP } from '../../../utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { notifySuccess, notifyError } from '@/components/notification';
-
 
 const Page = () => {
   const [email, setEmail] = useState('');
@@ -35,6 +34,14 @@ const Page = () => {
       if (contentType && contentType.includes('application/json')) {
         console.log(response.data);
         const data = response.data;
+        //  login(response.data);
+        // If response is not OK, throw error
+        // if (!response.ok) {
+        //   throw new Error(data.message || 'Something went wrong');
+        // }
+
+        // Handle successful login
+
 
         notifySuccess('Login successful!');
         if (typeof window !== 'undefined') {

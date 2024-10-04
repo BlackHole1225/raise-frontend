@@ -1,18 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation'
 import { Avatar } from '@nextui-org/avatar';
-import { Input, Textarea } from '@nextui-org/input';
-import { Select, SelectSection, SelectItem } from "@nextui-org/select";
+import { Input } from '@nextui-org/input';
+import { Select, SelectItem } from "@nextui-org/select";
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
-import { SERVER_IP, SERVER_LOCAL_IP } from '../../../../../utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { notifySuccess, notifyError } from '@/components/notification';
 
 function UseClientSideStorage(key, defaultValue) {
@@ -100,8 +100,7 @@ const Setting = () => {
         //   throw new Error(data.message || 'Something went wrong');
         // }
 
-        // Handle successful login
-
+  //       // Handle successful login
         if (typeof window !== 'undefined') {
           // Save user info and token in window.localStorage
           window.localStorage.setItem('userID', data.id);
@@ -117,10 +116,10 @@ const Setting = () => {
         // UseClientSideStorage('userEmail', data.email);
         // UseClientSideStorage('authToken', data.token);
 
-      } else {
-        // Handle unexpected content-type
-        throw new Error('Unexpected response format');
-      }
+  //     } else {
+  //       // Handle unexpected content-type
+  //       throw new Error('Unexpected response format');
+  //     }
 
     } catch (err) {
       console.error('Login error:', err);

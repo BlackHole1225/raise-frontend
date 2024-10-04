@@ -3,13 +3,12 @@ import React, { useState, useEffect } from 'react';
 import FeedAdvertising from '../feedAdvertising';
 import FeedGetStart from '../feedGetStart';
 import { Input } from '@nextui-org/input';
-import { Select, SelectItem } from "@nextui-org/select";
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
-import { SERVER_IP, SERVER_LOCAL_IP } from '../../../../utils/constants';
+import { SERVER_LOCAL_IP } from '../../../../utils/constants';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
 
 import axios from "axios";
@@ -30,10 +29,10 @@ const Page = () => {
   ]);
   const [category, setCategory] = useState();
 
-  const [donation, setDonation] = useState('');
+  // const [donation, setDonation] = useState('');
   const [campaign, setCampagin] = useState('');
   const [content, setContent] = useState('');
-  const [image, setImage] = useState();
+  // const [image, setImage] = useState();
   useEffect(() => {
     const fetchData = async () => {
       try {
