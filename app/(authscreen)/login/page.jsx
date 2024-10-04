@@ -4,9 +4,9 @@ import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import Link from 'next/link';
 import axios from 'axios'
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
-import { notifySuccess, notifyError } from '@/components/notification';
+import { notifySuccess } from '@/components/notification';
 
 const Page = () => {
   const [email, setEmail] = useState('');

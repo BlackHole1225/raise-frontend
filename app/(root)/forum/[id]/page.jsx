@@ -3,13 +3,14 @@ import React from 'react';
 import FeedGetStart from "../feedGetStart";
 // import FeedList from '../feedList';
 import { Button } from '@nextui-org/button';
+import axios from 'axios'
 import FeedComments from './comments';
 import { useState, useEffect } from 'react';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 
 export default function Page() {
     const [isReply, setIsReply] = useState(false);
-    // const [post, setPost] = useState([]);
+    const [post, setPost] = useState([]);
     const getPosts = async () => {
         const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/get`);
         setPost(response.data.Post)
