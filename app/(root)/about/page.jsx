@@ -10,7 +10,7 @@ const page = () => {
       <HeroSection
         imgUrl="https://images.unsplash.com/photo-1713865472031-ed36fd2b879a?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         title={
-          <h1 className="text-brand-ivory main-heading">
+          <h1 className="text-5xl md:text-7xl xl:text-9xl text-brand-ivory main-heading">
             We’re Helping <br /> people to help Others
           </h1>
         }
