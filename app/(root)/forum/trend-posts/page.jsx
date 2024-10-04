@@ -14,15 +14,16 @@ const page = () => {
     const hasData = true;
     const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [filters, setFilters] = useState({
-        category: new Set([]),
-        location: new Set([]),
-        closeToGoal: new Set([])
-    });
+    // const [filters, setFilters] = useState({
+    //     category: new Set([]),
+    //     location: new Set([]),
+    //     closeToGoal: new Set([])
+    // });
 
-    const handleFilterChange = (filterType, selectedKeys) => {
-        setFilters((prev) => ({ ...prev, [filterType]: new Set(selectedKeys) }));
-    };
+    // const handleFilterChange = (filterType, selectedKeys) => {
+    //     setFilters((prev) => ({ ...prev, [filterType]: new Set(selectedKeys) }));
+    // };
+
     return (
         <div>
             <div>

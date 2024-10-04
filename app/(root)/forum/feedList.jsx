@@ -2,14 +2,60 @@
 import React from 'react';
 
 import { Button } from '@nextui-org/button';
+import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
+import { Pagination } from '@nextui-org/pagination';
+
+import axios from 'axios';
 import Link from 'next/link';
 const FeedList = ({ feedfontSize, height, feeds }) => {
-    const hasData = true;
+    const [categories, setCategories] = useState([]);
+    const [locations, setLocations] = useState([]);
+    const [campaigns, setCampaigns] = useState([]);
+    const [filters, setFilters] = useState({
+        category: new Set([]),
+        location: new Set([]),
+        closeToGoal: new Set([])
+    });
+    const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 3;
+
+    // const hasData = true;
+    const filteredFeeds = useMemo(() => {
+        return feeds.filter((feed) => {
+            const matchesCategory =
+                filters.category.size === 0 || filters.category.has(feed.categoryId);
+            const matchesLocation =
+                filters.location.size === 0 || filters.location.has(feed.countryId);
+            const matchesSearch = feed.title.toLowerCase().includes(searchTerm.toLowerCase());
+            return matchesCategory && matchesLocation && matchesSearch;
+        });
+    }, [filters, searchTerm, feeds]);
+    const storedFeeds = useMemo(() => {
+        return [...filteredFeeds].sort((a, b) => {
+            const aProgress = a.totalAmount / a.amount;
+            const bProgress = b.totalAmount / b.amount;
+            return bProgress - aProgress;
+        });
+    }, [filteredFeeds]);
+
+    // Paginate campaigns
+    const paginatedFeeds = useMemo(() => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        return storedFeeds.slice(startIndex, startIndex + itemsPerPage);
+    }, [storedFeeds, currentPage]);
+
+    const totalPages = Math.ceil(storedFeeds.length / itemsPerPage);
+
+    const handleFilterChange = (filterType, selectedKeys) => {
+        setFilters((prev) => ({ ...prev, [filterType]: new Set(selectedKeys) }));
+    };
     return (
         <>
-            {feeds?.length ? (
+            {paginatedFeeds?.length ? (<>
                 <section className="flex flex-col gap-6">
-                    {feeds.map((feed, index) => (
+                    {paginatedFeeds.map((feed, index) => (
                         <Link href={`/forum/${feed._id}`}>
                             <FeedItem
                                 height={height}
@@ -26,6 +72,20 @@ const FeedList = ({ feedfontSize, height, feeds }) => {
 
                     ))}
                 </section>
+                <div className="flex justify-end mt-8">
+                    <Pagination
+                        total={totalPages}
+                        initialPage={1}
+                        page={currentPage}
+                        onChange={setCurrentPage}
+                        size="lg"
+                        classNames={{
+                            item: '!rounded-none border border-brand-olive-green bg-transparent hover:!bg-transparent',
+                            cursor: '!rounded-none bg-brand-olive-green'
+                        }}
+                    />
+                </div>
+            </>
             ) : (
                 <div className="border border-dashed border-brand-dark border-opacity-50 rounded-xl h-full flex flex-col gap-0 items-center justify-center">
                     <h4 className="uppercase text-3xl font-bold text-brand-dark font-heading">
