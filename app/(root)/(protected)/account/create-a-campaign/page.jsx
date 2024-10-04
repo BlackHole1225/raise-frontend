@@ -130,7 +130,7 @@ const Page = () => {
     try {
       const response = await axios.post(`${FSERVER_IP}/api/file/upload`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          // 'Content-Type': 'multipart/form-data'
         }
       });
 

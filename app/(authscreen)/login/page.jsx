@@ -6,20 +6,20 @@ import Link from 'next/link';
 import axios from 'axios'
 import React, { useState, useEffect } from 'react';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
-
-function UseClientSideStorage(key, defaultValue) {
-  useEffect(() => {
-    const value = localStorage.getItem(key) || defaultValue;
-    console.log(value);
-    localStorage.setItem(key, value);
-  }, [key, defaultValue]);
-}
+import { notifySuccess, notifyError } from '@/components/notification';
 
 const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
 
+  // function UseClientSideStorage(key, defaultValue) {
+  //   useEffect(() => {
+  //     const value = localStorage.getItem(key) || defaultValue;
+  //     console.log(value);
+  //     localStorage.setItem(key, value);
+  //   }, [key, defaultValue]);
+  // }
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null); // Clear previous errors
@@ -30,8 +30,6 @@ const Page = () => {
         email,
         password
       });
-      // sendOTP(email);
-      // Check if response is JSON
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         console.log(response.data);
@@ -44,6 +42,8 @@ const Page = () => {
 
         // Handle successful login
 
+
+        notifySuccess('Login successful!');
         if (typeof window !== 'undefined') {
           // Save user info and token in window.localStorage
           window.localStorage.setItem('userID', data.id);
@@ -54,10 +54,10 @@ const Page = () => {
           window.location.href = '/campaigns';
         }
 
-        UseClientSideStorage('userID', data.id);
-        UseClientSideStorage('userName', data.fullName);
-        UseClientSideStorage('userEmail', data.email);
-        UseClientSideStorage('authToken', data.token);
+        // UseClientSideStorage('userID', data.id);
+        // UseClientSideStorage('userName', data.fullName);
+        // UseClientSideStorage('userEmail', data.email);
+        // UseClientSideStorage('authToken', data.token);
 
       } else {
         // Handle unexpected content-type
