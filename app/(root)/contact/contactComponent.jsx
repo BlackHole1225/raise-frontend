@@ -76,7 +76,7 @@ const ContactForm = () => (
 function ContactComponent() {
   return (
     <section className="bg-brand-ivory">
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="w-full pt-[140px] flex flex-col justify-between">
           <div className="px-6">
             <h1 className="text-5xl lg:text-7xl font-bold uppercase text-zinc-800 tracking-wider mb-12 font-heading">
@@ -86,7 +86,7 @@ function ContactComponent() {
           </div>
           <ContactForm />
         </div>
-        <div className="w-full h-full">
+        <div className="w-full h-full hidden md:block">
           <img
             loading="lazy"
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/09118c984a5834dc514b621966abb77e02519dd249a46aa1a3ba1dd969e724a9"
