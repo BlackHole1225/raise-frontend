@@ -307,6 +307,7 @@ const Setting = () => {
                 variant="bordered"
                 label="Previous Password"
                 radius="sm"
+                onChange={(e) => setCurrentPassword(e.target.value)}
                 classNames={{
                   inputWrapper:
                     'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark mt-4 h-full',
@@ -329,6 +330,7 @@ const Setting = () => {
                 variant="bordered"
                 label="New Password"
                 radius="sm"
+                onChange={(e) => setNewPassword(e.target.value)}
                 classNames={{
                   inputWrapper:
                     'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark mt-4 h-full',
@@ -351,6 +353,7 @@ const Setting = () => {
                 variant="bordered"
                 label="New Password(Again)"
                 radius="sm"
+                onChange={(e) => setNewConfirmPassword(e.target.value)}
                 classNames={{
                   inputWrapper:
                     'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark mt-4 h-full',
@@ -377,7 +380,9 @@ const Setting = () => {
                 <IoMdClose size={16} />
                 Close
               </button>
-              <button className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
+              <button
+                onClick={() => changePassword()}
+                className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
               >
                 <FaCheck size={16} />
                 Save
