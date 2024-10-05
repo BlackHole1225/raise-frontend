@@ -73,8 +73,8 @@ const Setting = () => {
 
       if (uploadedFiles != undefined) {
         // Map the file IDs
-        const avatarId = uploadedFiles[0]?._id;
-        return avatarId;
+        const avatar = uploadedFiles[0]?._id;
+        return avatar;
       }
     } catch (error) {
       console.error('Error uploading files:', error);
@@ -167,10 +167,13 @@ const Setting = () => {
       </h1>
       <div className="grid grid-cols-12 gap-5 mt-5">
         <div className="bg-brand-eucalyptus pt-[46px] px-10 pb-[90px] col-span-6 text-brand-olive-green text-2xl font-bold">
-          <Avatar
-            src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+          {info?.avatar?<Avatar
+            src={`${SERVER_LOCAL_IP}/api/file/download/${info?.avatar}`}
             className="w-[180px] h-[180px]"
-          />
+          />:<Avatar
+          src={``}
+          className="w-[180px] h-[180px]"
+        />}
           <h3 className="mt-[22px]">{info?.fullName}</h3>
           <div className="flex flex-col gap-6 mt-[60px]">
             <h3 className="pb-[14px] border-b border-b-brand-olive-green/20">
@@ -239,7 +242,7 @@ const Setting = () => {
                 'image/*': ['.jpeg', '.png', '.jpg', '.gif']
               }}
               onChange={(e) => setFile(e)}
-              isMultiple={false}
+              isMultiple={true}
               label=""
             />
             <Input
@@ -247,6 +250,7 @@ const Setting = () => {
               variant="bordered"
               label="Name"
               radius="sm"
+              onChange={(e) => setFullName(e.target.value)}
               placeholder=""
               classNames={{
                 inputWrapper:
@@ -260,6 +264,7 @@ const Setting = () => {
               variant="bordered"
               label="Address"
               radius="sm"
+              onChange={(e) => setAddress(e.target.value)}
               placeholder=""
               classNames={{
                 inputWrapper:
@@ -276,7 +281,7 @@ const Setting = () => {
                 <IoMdClose size={16} />
                 Close
               </button>
-              <button className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
+              <button onClick={updateProfile} className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
               >
                 <FaCheck size={16} />
                 Save
