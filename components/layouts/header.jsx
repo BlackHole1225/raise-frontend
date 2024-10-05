@@ -29,7 +29,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const pathname = usePathname();
   // const token = window.localStorage.getItem('authToken');
-  const token = GetClientSideStorage('authToken');
+  const token = localStorage?.getItem('authToken');
 
   // const menuItems = [
   //   'Profile',
@@ -73,7 +73,6 @@ const Header = () => {
       setIsNavTransparent(false);
     }
   }, [pathname]);
-
   return (
     <Navbar
       classNames={{

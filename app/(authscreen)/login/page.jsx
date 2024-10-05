@@ -41,6 +41,8 @@ const Page = () => {
           // Save user info and token in window.localStorage
           window.localStorage.setItem('userID', data.id);
           window.localStorage.setItem('userName', data.fullName);
+          window.localStorage.setItem('userAddress', data.address);
+          window.localStorage.setItem('phoneNumber', data.phoneNumber);
           window.localStorage.setItem('userEmail', data.email);
           window.localStorage.setItem('authToken', data.token);
           // Redirect to campaigns page after successful login

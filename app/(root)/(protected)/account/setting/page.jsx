@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation'
@@ -39,16 +39,32 @@ const Setting = () => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
   };
+  const getUserInfo = async () => {
+    try {
+      console.log('here');
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/user/`, {
+        email: localStorage?.getItem('userEmail'),  // Old password for verification
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage?.getItem("authToken")}`,  // JWT token for authentication
+        },
+      });
+      setInfo(response.data.user)
+    } catch (error) {
+      setError("Error changing email:");
+    }
+  }
   const updateAvatar = async () => {
     const formData = new FormData();
-    console.log(file);
-    formData.append('files', file);
-
+    Array.from(file).forEach(f => {
+      formData.append('files', f);
+    });
+ 
     try {
       const response = await axios.post(`${SERVER_LOCAL_IP}/api/file/upload`, formData, {
-        // headers: {
-        //   'Content-Type': 'multipart/form-data'
-        // }
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
 
       // Ensure the response contains the uploaded file information
@@ -57,8 +73,8 @@ const Setting = () => {
 
       if (uploadedFiles != undefined) {
         // Map the file IDs
-        const fileIds = uploadedFiles.map((file) => file._id);
-        return fileIds;
+        const avatarId = uploadedFiles[0]?._id;
+        return avatarId;
       }
     } catch (error) {
       console.error('Error uploading files:', error);
@@ -79,7 +95,8 @@ const Setting = () => {
     formData.append('fullName', fullName);
     formData.append('address', address);
     formData.append('email', localStorage?.getItem('userEmail'));
-    updateAvatar();
+    const avatar = await updateAvatar();
+    formData.append('avatar', avatar);
     try {
       const response = await axios.post(`${SERVER_LOCAL_IP}/api/updateUserProfile`,
         formData,
@@ -94,21 +111,22 @@ const Setting = () => {
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         console.log(response.data);
-        const data = response.data;
+        const user = response.data.user;
         //  login(response.data);
         // If response is not OK, throw error
         // if (!response.ok) {
-        //   throw new Error(data.message || 'Something went wrong');
+          //   throw new Error(data.message || 'Something went wrong');
         // }
 
         // Handle successful login
-
+        
         if (typeof window !== 'undefined') {
           // Save user info and token in window.localStorage
-          window.localStorage.setItem('userID', data.id);
-          window.localStorage.setItem('userName', data.fullName);
-          window.localStorage.setItem('userEmail', data.email);
-          window.localStorage.setItem('authToken', data.token);
+          // window.localStorage.setItem('userID', user.id);
+          // window.localStorage.setItem('userName', user.fullName);
+          window.localStorage.setItem('userEmail', user.email);
+          getUserInfo();
+          // window.localStorage.setItem('authToken', data.token);
           // Redirect to campaigns page after successful login
           // window.location.href = '/campaigns';
         }
@@ -185,7 +203,9 @@ const Setting = () => {
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
-
+  useEffect(()=>{
+    getUserInfo();
+  },[])
   return (
     <div className="pt-20 pb-[232px]">
       <h1 className="uppercase text-5xl font-bold text-brand-dark font-heading">
@@ -197,19 +217,19 @@ const Setting = () => {
             src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
             className="w-[180px] h-[180px]"
           />
-          <h3 className="mt-[22px]">SHUDDEESHA PATNAYAK</h3>
+          <h3 className="mt-[22px]">{info?.fullName}</h3>
           <div className="flex flex-col gap-6 mt-[60px]">
             <h3 className="pb-[14px] border-b border-b-brand-olive-green/20">
-              <span className="opacity-70">Name:</span> Sudeesha Patnayak
+              <span className="opacity-70">Name:</span> {info?.fullName}
             </h3>
             <h3 className="pb-[14px] border-b border-b-brand-olive-green/20">
-              <span className="opacity-70">Email:</span> mesudeesha@outlook.com
+              <span className="opacity-70">Email:</span> {info?.email}
             </h3>
             <h3 className="pb-[14px] border-b border-b-brand-olive-green/20">
-              <span className="opacity-70">Phone:</span> +91-9837398489
+              <span className="opacity-70">Phone:</span> {info?.phoneNumber}
             </h3>
             <h3 className="pb-[14px] border-b border-b-brand-olive-green/20">
-              <span className="opacity-70">Address:</span> 1A, 115 C-Scheme, Jaipur, Rajasthan (302016)
+              <span className="opacity-70">Address:</span> {info?.address}
             </h3>
           </div>
         </div>
@@ -265,7 +285,7 @@ const Setting = () => {
                 'image/*': ['.jpeg', '.png', '.jpg', '.gif']
               }}
               onChange={(e) => setFile(e)}
-              isMultiple={true}
+              isMultiple={false}
               label=""
             />
             <Input
