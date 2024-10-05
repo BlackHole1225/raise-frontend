@@ -8,7 +8,6 @@ import FeedComments from './comments';
 import { useState, createContext, useEffect } from 'react';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 import { useParams } from 'next/navigation'
-import axios from 'axios';
 import CreateComments from './createComments';
 export const PostContext = createContext();
 export default function Page() {

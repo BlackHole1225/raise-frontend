@@ -12,7 +12,6 @@ import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 import { notifySuccess, notifyError } from '@/components/notification';
 
 function UseClientSideStorage(key, defaultValue) {
