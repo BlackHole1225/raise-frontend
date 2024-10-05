@@ -6,9 +6,9 @@ const HeroSection = ({ imgUrl, title, action }) => {
       className="h-screen bg-fixed bg-center bg-no-repeat bg-cover w-full flex items-end"
       style={{ backgroundImage: `url(${imgUrl})` }}
     >
-      <div className="px-14 pb-14 w-full flex justify-between items-end">
+      <div className="px-14 pb-14 w-full flex flex-col md:flex-row gap-8 justify-between items-center md:items-end">
         {title}
-        <div className="flex gap-8 mb-4">{action}</div>
+        <div className="flex flex-col md:flex-row items-center gap-8 mb-4">{action}</div>
       </div>
     </section>
   );

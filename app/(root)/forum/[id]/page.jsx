@@ -1,8 +1,9 @@
 'use client';
 import React from 'react';
 import FeedGetStart from "../feedGetStart";
-import FeedList from '../feedList';
+// import FeedList from '../feedList';
 import { Button } from '@nextui-org/button';
+import axios from 'axios'
 import FeedComments from './comments';
 import { useState, createContext, useEffect } from 'react';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';

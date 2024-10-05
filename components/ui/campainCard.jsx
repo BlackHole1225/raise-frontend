@@ -20,7 +20,7 @@ const CampaignCard = (props) => {
       </div>
       <div className="flex flex-col p-5 mt-3.5 w-full">
         <div
-          className={`text-4xl font-heading font-bold tracking-widest  uppercase ${((type === 'v1' || type === 'v4') && 'text-brand-pale-lemon') || ((type === 'v2' || type === 'v3' || type === 'v5') && 'text-brand-olive-green')}`}
+          className={`truncate text-2xl xl:text-4xl font-heading font-bold tracking-widest  uppercase ${((type === 'v1' || type === 'v4') && 'text-brand-pale-lemon') || ((type === 'v2' || type === 'v3' || type === 'v5') && 'text-brand-olive-green')}`}
         >
           {title}
         </div>

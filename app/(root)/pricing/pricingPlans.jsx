@@ -118,7 +118,7 @@ function PricingPlans() {
         Raise allows you to highlight your campaign by increasing its visibility. You can feature
         your listed campaign from your user dashboard. Click on the following button to learn more.
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
         {plans.map((plan, index) => (
           <PricingCard key={index} {...plan} />
         ))}

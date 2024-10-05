@@ -12,7 +12,7 @@ import { useMemo } from 'react';
 import BrandDropdown from '@/components/ui/brandDropdown';
 import FeedAdvertising from './feedAdvertising';
 import FeedGetStart from './feedGetStart';
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 import axios from "axios";
 const page = () => {
     const hasData = true;

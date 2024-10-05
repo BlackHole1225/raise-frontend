@@ -47,7 +47,7 @@ function WhyChooseUs() {
         These applications leverage blockchain technology to ensure decentralization, meaning no
         single entity has control, which fosters trust and transparency through an immutable ledger.
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         {reasons.map((reason, index) => (
           <ReasonCard
             key={index}

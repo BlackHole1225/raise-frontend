@@ -2,7 +2,7 @@
 import React from 'react';
 import FeedGetStart from "../feedGetStart";
 import FeedList from '../feedList';
-import { Button } from '@nextui-org/button';
+// import { Button } from '@nextui-org/button';
 
 export default function Page() {
     const data = {
@@ -20,8 +20,8 @@ export default function Page() {
             <h1 className="uppercase text-5xl font-bold text-brand-dark mb-8 font-heading">
                 {data.title}
             </h1>
-            {data.contents?.map((content) => (
-                <p className="text-2xl font-bold text-brand-dark mb-7 text-opacity-70 font-heading ">
+            {data.contents?.map((content, index) => (
+                <p key={index} className="text-2xl font-bold text-brand-dark mb-7 text-opacity-70 font-heading ">
                     {content}
                 </p>
             ))}

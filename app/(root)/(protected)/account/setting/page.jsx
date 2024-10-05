@@ -3,16 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation'
 import { Avatar } from '@nextui-org/avatar';
-import { Input, Textarea } from '@nextui-org/input';
-import { Select, SelectSection, SelectItem } from "@nextui-org/select";
+import { Input } from '@nextui-org/input';
+import { Select, SelectItem } from "@nextui-org/select";
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
-import { SERVER_IP, SERVER_LOCAL_IP } from '../../../../../utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
+import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 import { notifySuccess, notifyError } from '@/components/notification';
 
 function UseClientSideStorage(key, defaultValue) {
@@ -140,56 +140,10 @@ const Setting = () => {
         // Handle unexpected content-type
         throw new Error('Unexpected response format');
       }
-
+    
     } catch (err) {
       console.error('Login error:', err);
       setError(err.message || 'Login failed');
-    }
-  };
-  const changePassword = async () => {
-    if (newPassword && newConfirmPassword && currentPassword) {
-      if (newPassword !== newConfirmPassword) {
-        setError('The passwords for verification do not match.');
-        return;
-      }
-      try {
-        await axios.post(`${SERVER_LOCAL_IP}/api/changePassword`, {
-          email: localStorage?.getItem('userEmail'),         // User's email
-          currentPassword, // Current password
-          newPassword,     // New password
-        }, {
-          headers: {
-            Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
-          },
-        });
-
-        notifySuccess('Password was updated successfully');
-        setOpenModal(null)
-      } catch (error) {
-        console.error("Error changing password:", error);
-      }
-    } else {
-      setError('The input value is incorrect.')
-    }
-
-  };
-  const changeEmail = async () => {
-    if (!validateEmail(newEmail)) {
-      setError("New email address is incorrect.");
-      return;
-    }
-    try {
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/changeEmail`, {
-        email: localStorage?.getItem('userEmail'),  // Old password for verification
-        newEmail: newEmail,    // New email to update
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,  // JWT token for authentication
-        },
-      });
-      notifySuccess(response.data.message);
-    } catch (error) {
-      setError("Error changing email:");
     }
   };
   const handleOpenModal = (modalNumber) => {
@@ -262,7 +216,7 @@ const Setting = () => {
             </div>
             <div className="flex justify-between pb-[14px] border-b border-b-brand-olive-green/20">
               <h3>Log Out</h3>
-              <button onClick={()=>logout()}>
+              <button>
                 <Image src="/images/logout.svg" width={24} height={24} alt="Logout Icon" />
               </button>
             </div>
@@ -293,7 +247,6 @@ const Setting = () => {
               variant="bordered"
               label="Name"
               radius="sm"
-              onChange={(e) => setFullName(e.target.value)}
               placeholder=""
               classNames={{
                 inputWrapper:
@@ -307,7 +260,6 @@ const Setting = () => {
               variant="bordered"
               label="Address"
               radius="sm"
-              onChange={(e) => setAddress(e.target.value)}
               placeholder=""
               classNames={{
                 inputWrapper:
@@ -324,7 +276,7 @@ const Setting = () => {
                 <IoMdClose size={16} />
                 Close
               </button>
-              <button onClick={updateProfile} className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
+              <button className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
               >
                 <FaCheck size={16} />
                 Save
@@ -350,7 +302,6 @@ const Setting = () => {
                 variant="bordered"
                 label="Previous Password"
                 radius="sm"
-                onChange={(e) => setCurrentPassword(e.target.value)}
                 classNames={{
                   inputWrapper:
                     'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark mt-4 h-full',
@@ -373,7 +324,6 @@ const Setting = () => {
                 variant="bordered"
                 label="New Password"
                 radius="sm"
-                onChange={(e) => setNewPassword(e.target.value)}
                 classNames={{
                   inputWrapper:
                     'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark mt-4 h-full',
@@ -396,7 +346,6 @@ const Setting = () => {
                 variant="bordered"
                 label="New Password(Again)"
                 radius="sm"
-                onChange={(e) => setNewConfirmPassword(e.target.value)}
                 classNames={{
                   inputWrapper:
                     'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark mt-4 h-full',
@@ -423,9 +372,7 @@ const Setting = () => {
                 <IoMdClose size={16} />
                 Close
               </button>
-              <button
-                onClick={() => changePassword()}
-                className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
+              <button className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
               >
                 <FaCheck size={16} />
                 Save
@@ -451,7 +398,6 @@ const Setting = () => {
                 variant="bordered"
                 label="New Email Address"
                 radius="sm"
-                onChange={(e) => setNewEmail(e.target.value)}
                 placeholder=""
                 classNames={{
                   inputWrapper:

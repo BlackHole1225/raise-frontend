@@ -2,11 +2,10 @@
 import React from 'react';
 import FeedGetStart from "../feedGetStart";
 import FeedList from '../feedList';
-import { Button } from '@nextui-org/button';
 import FeedComments from '../[id]/comments';
 import { useState, useEffect } from 'react';
 import axios from "axios";
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 
 export default function Page() {
     const [posts, setPosts] = useState([]);

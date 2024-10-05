@@ -13,8 +13,8 @@ import BrandDropdown from '@/components/ui/brandDropdown';
 import FeedAdvertising from '../feedAdvertising';
 import FeedGetStart from '../feedGetStart';
 const page = () => {
-    const hasData = true;
-    const [categories, setCategories] = useState([]);
+    // const hasData = true;
+    // const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [posts, setPosts] = useState([]);
     const getPost = async () => {

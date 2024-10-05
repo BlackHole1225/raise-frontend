@@ -50,9 +50,9 @@ const FundraisersSection = () => {
     return <div>Error loading data. Please try again later.</div>;
   }
   return (
-    <section className="min-h-screen bg-brand-eucalyptus px-14 py-20 flex flex-col justify-center">
-      <div className="w-full flex justify-between items-end mb-8">
-        <h1 className=" text-brand-olive-green main-heading">
+    <section className="min-h-screen bg-brand-eucalyptus p-6 md:px-14 md:pt-32 md:pb-36 flex flex-col justify-center">
+      <div className="w-full flex flex-col md:flex-row justify-between items-end">
+        <h1 className="text-6xl xl:text-8xl text-brand-dark main-heading">
           Discover fundraisers
           <br /> inspired by what you care
         </h1>
@@ -67,9 +67,9 @@ const FundraisersSection = () => {
           </Button>
         </Link>
       </div>
-      <div className="grid grid-cols-4 grid-rows-1 grid-flow-row gap-6 overflow-x-auto flex-nowrap">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-rows-1 grid-flow-row gap-6 overflow-x-auto flex-nowrap mt-11">
         {campaigns.length > 0 ? (
-          campaigns.map((campaign, i) => (
+          campaigns.slice(0, 4).map((campaign, i) => (
             <Link href={`/campaigns/${campaign._id}`} key={campaign._id}>
               <CampaignCard
                 // imgUrl={campaign.file}
