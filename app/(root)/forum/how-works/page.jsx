@@ -1,21 +1,9 @@
 'use client';
 import React from 'react';
 import FeedGetStart from "../feedGetStart";
-import FeedList from '../feedList';
-import { Button } from '@nextui-org/button';
-import axios from "axios";
-import { useState, useEffect } from 'react';
+import FeedList2 from '../feedList2';
 
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 export default function Page() {
-    const [posts, setPosts] = useState([]);
-    const getPost = async () => {
-        const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/all`);
-        setPosts(response.data.Posts)
-    }
-    useEffect(() => {
-        getPost();
-    }, [])
     const data = {
         title: 'About Raise forum and how it works?',
         summary: "Raise Forum is your gateway to participating in the future of crowdfunding on Web3. Here's how you can get involved:",
@@ -65,7 +53,7 @@ export default function Page() {
         </div>
         <div className="col-span-5 flex flex-col  gap-6">
             <FeedGetStart />
-            <FeedList feeds={posts} feedfontSize={24} height={168} />
+            <FeedList2 />
         </div>
     </div>)
 }

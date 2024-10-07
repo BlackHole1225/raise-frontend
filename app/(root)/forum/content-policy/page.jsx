@@ -1,8 +1,7 @@
 'use client';
 import React from 'react';
 import FeedGetStart from "../feedGetStart";
-import FeedList from '../feedList';
-// import { Button } from '@nextui-org/button';
+import FeedList2 from '../feedList2';
 
 export default function Page() {
     const data = {
@@ -29,7 +28,7 @@ export default function Page() {
         </div>
         <div className="col-span-5 flex flex-col  gap-6">
             <FeedGetStart />
-            <FeedList feedfontSize={24} height={168} />
+            <FeedList2/>
         </div>
     </div>)
 }

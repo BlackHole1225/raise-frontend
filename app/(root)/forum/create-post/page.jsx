@@ -5,10 +5,11 @@ import FeedGetStart from '../feedGetStart';
 import { Input } from '@nextui-org/input';
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import dynamic from 'next/dynamic';
+import { notifySuccess } from '@/components/notification';
 import 'react-quill/dist/quill.snow.css';
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
-import { SERVER_LOCAL_IP } from '../../../../utils/constants';
+import { SERVER_LOCAL_IP, SERVER_IP } from '../../../../utils/constants';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
 
 import axios from "axios";
@@ -19,13 +20,11 @@ const Page = () => {
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [categories, setCategories] = useState([
+  const [file, setFile] = useState(null);
 
-  ]);
+  const [categories, setCategories] = useState([]);
   const [campaigns, setCampains] = useState([
-    // { _id: 0, name: 'Popular Donations' },
-    // { _id: 1, name: 'Popular Donations' },
-    // { _id: 2, name: 'Popular Donations' },
+    { _id: 0, name: 'Popular Donations' },
   ]);
   const [category, setCategory] = useState();
 
@@ -33,19 +32,48 @@ const Page = () => {
   const [campaign, setCampagin] = useState('');
   const [content, setContent] = useState('');
   // const [image, setImage] = useState();
+  const imageUpload = async () => {
+    const formData = new FormData();
+    Array.from(file).forEach(f => {
+      formData.append('files', f);
+    });
+
+    try {
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/file/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      // Ensure the response contains the uploaded file information
+      const uploadedFiles = response.data.uploaded;
+      console.log('Uploaded Files:', uploadedFiles);
+
+      if (uploadedFiles != undefined) {
+        // Map the file IDs
+        const avatar = uploadedFiles[0]?._id;
+        return avatar;
+      }
+    } catch (error) {
+      console.error('Error uploading files:', error);
+      throw error;
+    }
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const [categoriesRes, campaignRes] = await Promise.all([
-          axios.get(`${SERVER_LOCAL_IP}/api/category`),
-          axios.get(`${SERVER_IP}/api/campaign`)
+          axios.get(`${SERVER_IP}/api/category`),
+          axios.get(`${SERVER_IP}/api/campaign/`),
+          // axios.get(`${SERVER_IP}/api/campaign/category`),
         ]);
+        // axios.get(`${SERVER_IP}/api/campaign`)
 
         setCategories(categoriesRes.data.category || [{ _id: 0, name: 'Popular Donations' },
         { _id: 1, name: 'Popular Donations' },
         { _id: 2, name: 'Popular Donations' },]);
-        console.log(campaignRes.data);
+        // console.log(campaignRes.data);
         setCampains(campaignRes.data.data || []);
         setLoading(false);
       } catch (error) {
@@ -58,7 +86,7 @@ const Page = () => {
   }, []);
   const createPost = async () => {
     console.log(title, category, campaign, content);
-
+    const file = await imageUpload();
     if (title && category && campaign && content) {
       try {
         const response = await axios.post(`${SERVER_LOCAL_IP}/api/post/create`, {
@@ -66,8 +94,9 @@ const Page = () => {
           categoryId: category,
           campaignId: campaign,
           content,
+          file
         });
-        console.log('successfully posted', response.data);
+        notifySuccess(response.data.message);
         setTitle('');
         setDonation('');
         setCampagin('');
@@ -154,7 +183,8 @@ const Page = () => {
                     acceptedFormats={{
                       'image/*': ['.jpeg', '.png', '.jpg', '.gif']
                     }}
-                    isMultiple={false}
+                    onChange={(e) => setFile(e)}
+                    isMultiple={true}
                     label="Image"
                   />
                 </div>

@@ -49,7 +49,7 @@ const Setting = () => {
           Authorization: `Bearer ${localStorage?.getItem("authToken")}`,  // JWT token for authentication
         },
       });
-      setInfo(response.data.user)
+      setInfo(response.data.user);
     } catch (error) {
       setError("Error changing email:");
     }
@@ -92,8 +92,8 @@ const Setting = () => {
     setError(null); // Clear previous errors
     const formData = new FormData();
     // formData.append('avatar', file);
-    formData.append('fullName', fullName);
-    formData.append('address', address);
+    formData.append('fullName', info?.fullName);
+    formData.append('address', info?.address);
     formData.append('email', localStorage?.getItem('userEmail'));
     const avatar = await updateAvatar();
     formData.append('avatar', avatar);
@@ -108,6 +108,7 @@ const Setting = () => {
         }
       );
       notifySuccess('Updated successfully!');
+      setOpenModal(null)
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         console.log(response.data);
@@ -145,6 +146,33 @@ const Setting = () => {
       console.error('Login error:', err);
       setError(err.message || 'Login failed');
     }
+  };
+  const changePassword = async () => {
+    if (newPassword && newConfirmPassword && currentPassword) {
+      if (newPassword !== newConfirmPassword) {
+        setError('The passwords for verification do not match.');
+        return;
+      }
+      try {
+        await axios.post(`${SERVER_LOCAL_IP}/api/changePassword`, {
+          email: localStorage?.getItem('userEmail'),         // User's email
+          currentPassword, // Current password
+          newPassword,     // New password
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+          },
+        });
+
+        notifySuccess('Password was updated successfully');
+        setOpenModal(null)
+      } catch (error) {
+        console.error("Error changing password:", error);
+      }
+    } else {
+      setError('The input value is incorrect.')
+    }
+
   };
   const handleOpenModal = (modalNumber) => {
     setOpenModal(modalNumber);
@@ -217,7 +245,7 @@ const Setting = () => {
                 <Image src="/images/phone.svg" width={24} height={24} alt="Phone Icon" />
               </button>
             </div>
-            <div className="flex justify-between pb-[14px] border-b border-b-brand-olive-green/20">
+            <div onClick={()=>logout()} className="flex justify-between pb-[14px] border-b border-b-brand-olive-green/20">
               <h3>Log Out</h3>
               <button>
                 <Image src="/images/logout.svg" width={24} height={24} alt="Logout Icon" />
@@ -250,7 +278,8 @@ const Setting = () => {
               variant="bordered"
               label="Name"
               radius="sm"
-              onChange={(e) => setFullName(e.target.value)}
+              value={info?.fullName}
+              onChange={(e) => setInfo({...info, fullName:e.target.value})}
               placeholder=""
               classNames={{
                 inputWrapper:
@@ -264,7 +293,8 @@ const Setting = () => {
               variant="bordered"
               label="Address"
               radius="sm"
-              onChange={(e) => setAddress(e.target.value)}
+              value={info?.address}
+              onChange={(e) => setInfo({...info, address:e.target.value})}
               placeholder=""
               classNames={{
                 inputWrapper:

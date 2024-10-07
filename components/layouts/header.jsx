@@ -17,19 +17,11 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-function GetClientSideStorage(key) {
-  let value = '';
-  useEffect(() => {
-    value = localStorage.getItem(key);
-  }, [key]);
-  return value;
-}
-
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const pathname = usePathname();
-  // const token = window.localStorage.getItem('authToken');
-  const token = localStorage?.getItem('authToken');
+  const [token, setToken] = useState('');
+  
 
   // const menuItems = [
   //   'Profile',
@@ -73,6 +65,9 @@ const Header = () => {
       setIsNavTransparent(false);
     }
   }, [pathname]);
+  useEffect(()=>{
+    setToken(localStorage?.getItem('authToken'))
+  }, [])
   return (
     <Navbar
       classNames={{

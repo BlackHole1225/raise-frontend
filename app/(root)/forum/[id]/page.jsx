@@ -9,6 +9,7 @@ import { useState, createContext, useEffect } from 'react';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 import { useParams } from 'next/navigation'
 import CreateComments from './createComments';
+import FeedList from '../feedList';
 export const PostContext = createContext();
 export default function Page() {
     const [isReply, setIsReply] = useState(false);
@@ -93,9 +94,8 @@ export default function Page() {
                     <h1 className="uppercase text-5xl font-bold text-brand-dark mb-8 font-heading">
                         {post?.title}
                     </h1>
-                    <img src={feed.imageUrl} alt={feed.imageUrl} className="w-full object-cover" />
-                    <p className="text-[24px] font-bold tracking-wider  text-brand-olive-green font-heading mt-8 mb-10">
-                        {post?.content}
+                    <img src={`${SERVER_LOCAL_IP}/api/file/download/${post?.file}`} alt={`${SERVER_LOCAL_IP}/api/file/download/${post?.file}`} className="w-full object-cover" />
+                    <p  dangerouslySetInnerHTML={{ __html: post?.content }} className="text-[24px] font-bold tracking-wider  text-brand-olive-green font-heading mt-8 mb-10">
                     </p>
                     <div className='flex justify-between items-center my-12'>
                         <div className='flex gap-2'>
