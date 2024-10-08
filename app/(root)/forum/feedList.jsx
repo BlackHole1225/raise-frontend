@@ -6,12 +6,15 @@ import { Input } from '@nextui-org/input';
 import { useState, useEffect } from 'react';
 import { useMemo } from 'react';
 import { Pagination } from '@nextui-org/pagination';
-import { SERVER_LOCAL_IP,SERVER_IP } from '@/utils/constants';
+import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
 import BrandDropdown from '@/components/ui/brandDropdown';
+import { notifySuccess } from '@/components/notification';
 
 import axios from 'axios';
 import Link from 'next/link';
-const FeedList = ({ feedfontSize, height, feeds, isPagination }) => {
+import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, ModalFooter } from '@nextui-org/modal';
+
+const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
 
     const [filters, setFilters] = useState({
         category: new Set([]),
@@ -19,10 +22,12 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination }) => {
         closeToGoal: new Set([])
     });
     const [searchTerm, setSearchTerm] = useState('');
+    const [feed, setFeed] = useState({});
+    const [isDelete, setIsDelete] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 3;
     const [categories, setCategories] = useState([]);
-   
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     // const hasData = true;
@@ -79,7 +84,7 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination }) => {
         fetchData();
     }, []);
     return (
-        <>{isPagination&& <div className="flex gap-8 mb-6">
+        <>{isPagination && <div className="flex gap-8 mb-6">
             <Button
                 variant="bordered"
                 radius="full"
@@ -154,23 +159,22 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination }) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
         </div>}
-       
+            {isDelete && <DeletePost setPosts={setPosts} height={height} fontSize={feedfontSize} isDelete={isDelete} setIsDelete={setIsDelete} feed={feed} />}
             {paginatedFeeds?.length ? (<>
                 <section className="flex flex-col gap-6">
                     {paginatedFeeds.map((feed, index) => (
-                        <Link href={`/forum/${feed._id}`}>
-                            <FeedItem
-                                height={height}
-                                title={feed.title}
-                                comments={10}
-                                votes={feed.votes}
-                                accessTime={feed.accessTime}
-                                fontSize={feedfontSize}
-                                onClick
-                                imageUrl={feed?.file ? `${SERVER_LOCAL_IP}/api/file/download/${feed?.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
-                                reporterPhoto="https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__"
-                            />
-                        </Link>
+                        <FeedItem
+                            setFeed={setFeed}
+                            feed={feed}
+                            height={height}
+                            setIsDelete={setIsDelete}
+                            comments={10}
+                            fontSize={feedfontSize}
+                            onClick
+                            imageUrl={feed?.file ? `${SERVER_LOCAL_IP}/api/file/download/${feed?.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
+                            reporterPhoto="https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__"
+                        />
+
 
                     ))}
                 </section>
@@ -208,13 +212,73 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination }) => {
         </>
     );
 };
-const FeedItem = ({ title, comments, votes, imageUrl, fontSize, accessTime, reporterPhoto, reporterName, height }) => (
+const FeedItem = ({ feed, setIsDelete, setFeed, imageUrl, fontSize, reporterPhoto, reporterName, height }) => (
     <article className="flex">
-        <img src={imageUrl || 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'} alt={imageUrl} className="w-[260px] object-cover" style={{ height }} />
+        <img src={imageUrl || 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'} alt={imageUrl} className="max-w-[260px] min-w-[260px] object-cover" style={{ height }} />
         <div className="flex flex-col bg-[#FAFF7D] pt-[30px] px-[22px] w-full pb-6 justify-between">
-            <h2 className=" font-bold tracking-wider uppercase text-brand-olive-green font-heading" style={{ fontSize: fontSize }}>
-                {title}
-            </h2>
+            <Link href={`/forum/${feed._id}`}>
+                <h2 className=" font-bold tracking-wider uppercase text-brand-olive-green font-heading" style={{ fontSize: fontSize }}>
+                    {feed.title}
+                </h2>
+            </Link>
+            <div className=' '>
+                <div className='flex gap-2 pb-2 items-center'>
+                    <p className="text-base font-bold  tracking-wider text-brand-olive-green">{feed.comments.length} Comments</p>
+                    <svg width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle opacity="0.7" cx="2.5" cy="2.5" r="2.5" fill="#25282B" />
+                    </svg>
+                    <p className="text-base font-bold  tracking-wider text-brand-olive-green">{feed.votes.length || 0} Votes</p>
+                    <svg width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle opacity="0.7" cx="2.5" cy="2.5" r="2.5" fill="#25282B" />
+                    </svg>
+                    <p className="text-base font-bold  tracking-wider text-brand-olive-green">{feed.accessTime} min ago</p>
+                </div>
+                <div className='flex justify-between'>
+                    <div className='flex gap-2'>
+                        <img src={reporterPhoto} alt={reporterPhoto} className="w-[34px] h-[28px] object-cover rounded-lg" />
+                        <p className="text-base font-bold tracking-wider text-brand-dark">{reporterName}</p>
+                    </div>
+                    <div className='flex gap-2'>
+                        <Button
+                            variant="bordered"
+                            radius="full"
+                            size="lg"
+                            onClick={() => {
+                                setFeed(feed)
+                                setIsDelete(true)
+                            }}
+                            className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[10%]"
+                        >
+                            Delete
+                        </Button>
+                        <Link href={`/forum/edit-post/${feed._id}`} passHref>
+                            <Button
+                                variant="bordered"
+                                radius="full"
+                                size="lg"
+                                className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[10%]"
+                            >
+                                Edit
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </article>
+);
+const FeedItem2 = ({ title, id, comments, votes, imageUrl, fontSize, accessTime, reporterPhoto, reporterName, height }) => (
+    <article className="flex">
+        <img src={imageUrl || 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'} alt={imageUrl} className="max-w-[260px] min-w-[260px] object-cover" style={{ height }} />
+        <div className="flex flex-col bg-opacity-60 bg-brand-olive-green pt-[30px] px-[22px] w-full pb-6 justify-between">
+            <Link href={`/forum/${id}`}>
+                <h2 className=" font-bold tracking-wider uppercase  text-brand-olive-green font-heading" style={{ fontSize: fontSize }}>
+                    {title}
+                </h2>
+            </Link>
             <div className=' '>
                 <div className='flex gap-2 pb-2 items-center'>
                     <p className="text-base font-bold  tracking-wider text-brand-olive-green">{comments}Comments</p>
@@ -227,14 +291,80 @@ const FeedItem = ({ title, comments, votes, imageUrl, fontSize, accessTime, repo
                     </svg>
                     <p className="text-base font-bold  tracking-wider text-brand-olive-green">{accessTime}min ago</p>
                 </div>
-                <div className='flex gap-2'>
-                    <img src={reporterPhoto} alt={reporterPhoto} className="w-[34px] h-[28px] object-cover rounded-lg" />
-                    <p className="text-base font-bold tracking-wider text-brand-dark">{reporterName}</p>
+                <div className='flex justify-between'>
+                    <div className='flex gap-2'>
+                        <img src={reporterPhoto} alt={reporterPhoto} className="w-[34px] h-[28px] object-cover rounded-lg" />
+                        <p className="text-base font-bold tracking-wider text-brand-dark">{reporterName}</p>
+                    </div>
                 </div>
+
             </div>
 
         </div>
 
     </article>
 );
+const DeletePost = ({ isDelete, setIsDelete, feed, height, feedfontSize,setPosts }) => {
+    const deleteAPost = async () => {
+        await axios.delete(`${SERVER_LOCAL_IP}/api/post/delete/${feed._id}`);
+        notifySuccess(`Post ${feed.title} was deleted successfully.`);
+        setIsDelete(false);
+        setPosts((d) => Array.isArray(d) ? d.filter((a) => a._id !== feed._id) : []);
+    }
+    return (
+        <Modal
+            isOpen={isDelete}
+            onOpenChange={() => setIsDelete(false)}
+            size="4xl"
+            classNames={{
+                base: 'rounded-none bg-brand-lemon-yellow py-4 px-2',
+                closeButton: 'top-2.5 right-2.5 hover:bg-brand-transparent'
+            }}
+        >
+            <ModalContent>
+                {() => (
+                    <>
+                        <ModalHeader className="flex flex-col gap-1 heading-2 text-brand-olive-green">
+                            Are you sure you want to delete this Post?
+                        </ModalHeader>
+                        <ModalBody>
+                            <FeedItem2
+                                height={height}
+                                setIsDelete={() => { }}
+                                title={feed.title}
+                                id={feed._id}
+                                comments={10}
+                                votes={feed.votes}
+                                accessTime={feed.accessTime}
+                                fontSize={feedfontSize}
+                                imageUrl={feed?.file ? `${SERVER_LOCAL_IP}/api/file/download/${feed?.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
+                                reporterPhoto="https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__"
+                            />
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button
+                                variant="bordered"
+                                radius="full"
+                                size="lg"
+                                onClick={() => setIsDelete(false)}
+                                className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[10%]"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                variant="bordered"
+                                radius="full"
+                                size="lg"
+                                onClick={() => deleteAPost()}
+                                className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[10%]"
+                            >
+                                Delete
+                            </Button>
+                        </ModalFooter>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
+    );
+};
 export default FeedList;
