@@ -20,9 +20,7 @@ npm install
 
 ### Run the development server
 
-```bash
-npm run dev
-```
+    
 
 ### Setup pnpm (optional)
 
