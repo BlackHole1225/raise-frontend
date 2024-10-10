@@ -84,12 +84,12 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
         fetchData();
     }, []);
     return (
-        <>{isPagination && <div className="flex gap-8 mb-6">
+        <>{isPagination && <div className="flex flex-wrap md:flex-nowrap justify-between gap-2 md:gap-8 mb-6">
             <Button
                 variant="bordered"
                 radius="full"
                 size="lg"
-                className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[40%]"
+                className="min-w-36 max-w-36 font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[40%]"
                 startContent={
                     <svg
                         width="20"
@@ -214,7 +214,7 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
 };
 const FeedItem = ({ feed, setIsDelete, setFeed, imageUrl, fontSize, reporterPhoto, reporterName, height }) => (
     <article className="flex">
-        <img src={imageUrl || 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'} alt={imageUrl} className="min-w-[260px] w-[260px] object-cover" style={{ height }} />
+        <img src={imageUrl || 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'} alt={imageUrl} className="w-[100px] md:w-[260px] min-w-[100px] md:min-w-[260px] object-cover" style={{ height }} />
         <div className="flex flex-col bg-[#FAFF7D] pt-[30px] px-[22px] w-full pb-6 justify-between">
             <Link href={`/forum/${feed._id}`}>
                 <h2 className=" font-bold tracking-wider uppercase text-brand-olive-green font-heading" style={{ fontSize: fontSize }}>
@@ -222,7 +222,7 @@ const FeedItem = ({ feed, setIsDelete, setFeed, imageUrl, fontSize, reporterPhot
                 </h2>
             </Link>
             <div className=' '>
-                <div className='flex gap-2 pb-2 items-center'>
+                <div className='flex flex-wrap md:flex-nowrap gap-1 md:gap-2 pb-2 items-center'>
                     <p className="text-base font-bold  tracking-wider text-brand-olive-green">{feed.comments.length} Comments</p>
                     <svg width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle opacity="0.7" cx="2.5" cy="2.5" r="2.5" fill="#25282B" />
@@ -234,8 +234,8 @@ const FeedItem = ({ feed, setIsDelete, setFeed, imageUrl, fontSize, reporterPhot
                     <p className="text-base font-bold  tracking-wider text-brand-olive-green">{feed.accessTime} min ago</p>
                 </div>
                 <div className='flex justify-between'>
-                    <div className='flex gap-2'>
-                        <img src={reporterPhoto} alt={reporterPhoto} className="w-[34px] h-[28px] object-cover rounded-lg" />
+                    <div className='flex items-center gap-2'>
+                        <img src={reporterPhoto} alt={reporterPhoto} className="w-[34px] min-w-[34px] h-[28px] min-h-[28px] object-cover rounded-lg" />
                         <p className="text-base font-bold tracking-wider text-brand-dark">{reporterName}</p>
                     </div>
                     <div className='flex gap-2'>
@@ -272,7 +272,7 @@ const FeedItem = ({ feed, setIsDelete, setFeed, imageUrl, fontSize, reporterPhot
 );
 const FeedItem2 = ({ title, id, comments, votes, imageUrl, fontSize, accessTime, reporterPhoto, reporterName, height }) => (
     <article className="flex">
-        <img src={imageUrl || 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'} alt={imageUrl} className="max-w-[260px] min-w-[260px] object-cover" style={{ height }} />
+        <img src={imageUrl || 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'} alt={imageUrl} className="w-[100px] md:w-[260px] object-cover" style={{ height }} />
         <div className="flex flex-col bg-opacity-60 bg-brand-olive-green pt-[30px] px-[22px] w-full pb-6 justify-between">
             <Link href={`/forum/${id}`}>
                 <h2 className=" font-bold tracking-wider uppercase  text-brand-olive-green font-heading" style={{ fontSize: fontSize }}>
