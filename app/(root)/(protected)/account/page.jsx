@@ -1,9 +1,11 @@
+"use client"
 import React from 'react';
 import DonationChart from './donationChart';
 import DonationListComponent from './donationList';
 import CampaignListComponent from '../../other/CampaignListComponent';
 
-const page = () => {
+const page = ({params}) => {
+  
   return (
     <div>
       <DonationChart />
@@ -12,7 +14,7 @@ const page = () => {
           <DonationListComponent />
         </div>
         <div className="col-span-7">
-          <CampaignListComponent />
+          <CampaignListComponent params={params}/>
         </div>
       </div>
     </div>

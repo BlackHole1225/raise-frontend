@@ -1,7 +1,93 @@
-import React from 'react';
+'use client';
+import { Button } from '@nextui-org/button';
+import { Input } from '@nextui-org/input';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+const CampaignListComponent = ({params}) => {
+  const [categories, setCategories] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [campaigns, setCampaigns] = useState([]);
+  const [filters, setFilters] = useState({
+    category: new Set([]),
+    location: new Set([]),
+    closeToGoal: new Set([])
+  });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
+  const itemsPerPage = 16;
 
-const CampaignListComponent = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log(">>> server IP = ", SERVER_IP)
+        const [categoriesRes, locationsRes, campaignsRes] = await Promise.all([
+          axios.get(`${SERVER_IP}/api/category`),
+          axios.get(`${SERVER_IP}/api/location`),
+          axios.get(`${SERVER_LOCAL_IP}/api/campaign`)
+        ]);
+
+        setCategories(categoriesRes.data.category);
+        setLocations(locationsRes.data.country);
+        setCampaigns(campaignsRes.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+  function getValueBasedOnIndex(i) {
+    switch (i % 4) {
+      case 0:
+        return 'v1';
+      case 1:
+        return 'v2';
+      case 2:
+        return 'v3';
+      case 3:
+        return 'v4';
+    }
+  }
+
+  // Filter and search campaigns
+  const filteredCampaigns = useMemo(() => {
+    return campaigns.filter((campaign) => {
+      const matchesCategory =
+        filters.category.size === 0 || filters.category.has(campaign.categoryId);
+      const matchesLocation =
+        filters.location.size === 0 || filters.location.has(campaign.countryId);
+      const matchesSearch = campaign.title.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesCategory && matchesLocation && matchesSearch;
+    });
+  }, [filters, searchTerm, campaigns]);
+
+  // Sort campaigns by how close they are to their goal
+  const sortedCampaigns = useMemo(() => {
+    return [...filteredCampaigns].sort((a, b) => {
+      const aProgress = a.totalAmount / a.amount;
+      const bProgress = b.totalAmount / b.amount;
+      return bProgress - aProgress;
+    });
+  }, [filteredCampaigns]);
+
+  // Paginate campaigns
+  const paginatedCampaigns = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return sortedCampaigns.slice(startIndex, startIndex + itemsPerPage);
+  }, [sortedCampaigns, currentPage]);
+
+  const totalPages = Math.ceil(sortedCampaigns.length / itemsPerPage);
+
+  const handleFilterChange = (filterType, selectedKeys) => {
+    setFilters((prev) => ({ ...prev, [filterType]: new Set(selectedKeys) }));
+  };
+
+  console.log('>>> categories : ', categories);
+  console.log('>>> locations : ', locations);
+  console.log('>>> campaigns : ', campaigns);
   return (
     <main className="bg-stone-300 max-w-[771px] p-8 pb-28">
       <header className="flex justify-between items-center font-bold">
@@ -17,14 +103,21 @@ const CampaignListComponent = () => {
       <FilterSection />
 
       <section className="mt-10">
-        <CampaignItem
-          title="Beekeeping Community Development Zimbabwe"
-          amountRaised="400 SOL"
-          progressPercentage={80}
-          imageUrl="https://cdn.builder.io/api/v1/image/assets/TEMP/793c80c23e08cf30921f97c1e260306f28c41ce2839846dc1ecfd8f2bded4309"
-        />
-        <hr className="border-stone-700 my-4" />
-       
+        {filteredCampaigns?.map((d) => (
+          <>
+            <CampaignItem
+              title={d.title}
+              params={params}
+              id={d._id}
+              amountRaised={d.totalAmount}
+              progressPercentage={d.amount / d.totalAmount * 100}
+              imageUrl={d?.file ? ` ${SERVER_LOCAL_IP}/api/file/download/${d?.file}` : `https://cdn.builder.io/api/v1/image/assets/TEMP/793c80c23e08cf30921f97c1e260306f28c41ce2839846dc1ecfd8f2bded4309`}
+            />
+            <hr className="border-stone-700 my-4" />
+          </>
+        ))}
+
+
       </section>
     </main>
   );
@@ -62,7 +155,7 @@ const SearchButton = () => (
   </button>
 );
 
-const CampaignItem = ({ title, amountRaised, progressPercentage, imageUrl }) => (
+const CampaignItem = ({ title, amountRaised, progressPercentage, imageUrl,params, id }) => (
   <article className="flex gap-5">
     <img src={imageUrl} alt={imageUrl} className="w-[121px] h-[111px] object-cover" />
     <div className="flex-1">
@@ -74,10 +167,11 @@ const CampaignItem = ({ title, amountRaised, progressPercentage, imageUrl }) => 
           label="Edit"
           icon="https://cdn.builder.io/api/v1/image/assets/TEMP/8625ca56f29f59699991011c4fc201619ea99d62c7578481ae856563a9fde052"
         />
-        <ActionButton
-          label="View"
-          icon="https://cdn.builder.io/api/v1/image/assets/TEMP/ffdd7597123ffc9d10d0fd934db1e42628cb4430c63c6bf659e29eb31f1a4e2c"
-        />
+        <Link href={`/account/my-campaigns/${id}`}>
+          <ActionButton
+            label="View"
+            icon="https://cdn.builder.io/api/v1/image/assets/TEMP/ffdd7597123ffc9d10d0fd934db1e42628cb4430c63c6bf659e29eb31f1a4e2c"
+          /></Link>
         <ActionButton
           label="Share"
           icon="https://cdn.builder.io/api/v1/image/assets/TEMP/bd0d3c016418a4b43cfc53e9c726afa01ec894ed8f455a5be43d275527e37c29"

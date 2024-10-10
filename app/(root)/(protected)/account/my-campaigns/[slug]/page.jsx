@@ -29,7 +29,9 @@ const page = ({ params }) => {
   const [loading, setLoading] = useState(false);
   const [campaignData, setCampaignData] = useState(null);
   const [update, setUpdate] = useState({});
-  const [isUpdate, setIsUpdate] = useState(false);
+  const [isCUModal, setIsCUModal] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(true);
+  const [item, setItem] = useState({});
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,6 +47,9 @@ const page = ({ params }) => {
     };
     fetchData();
   }, [params.slug]);
+  useEffect(() => {
+    console.log('item', item)
+  }, [item])
   return (
     <div>
       <div className="flex justify-between mb-6">
@@ -128,7 +133,7 @@ const page = ({ params }) => {
       <div className="grid grid-cols-12 gap-8 my-12 ">
         <div className="col-span-7 ">
           <img
-            src={campaignData?.file?`${SERVER_LOCAL_IP}/api/file/download/${campaignData?.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
+            src={campaignData?.file ? `${SERVER_LOCAL_IP}/api/file/download/${campaignData?.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
             alt="Campaign"
             className="w-full object-cover h-[484px]"
           />
@@ -144,21 +149,26 @@ const page = ({ params }) => {
             variant="bordered"
             radius="full"
             size="lg"
-            onClick={() => setIsUpdate(true)}
+            onClick={() => {
+              setIsCUModal(true)
+              setIsUpdate(false)
+            }}
             className="font-medium text-brand-olive-green border-brand-olive-green xl:y-10 xl:px-6"
           >
             Add an Update
           </Button>
         </div>
         {campaignData?.formattedContent?.map((d) => (
-          <UpdateItem params={params} item={d} isDelete={isDelete} isUpdate={isUpdate} setIsUpdate={setIsUpdate} setUpdates={setCampaignData} setIsDelete={setIsDelete} />
+          <UpdateItem isUpdate={isUpdate} setIsUpdate={setIsUpdate} params={params} item={d} setItem={setItem} isDelete={isDelete} isCUModal={isCUModal} setIsCUModal={setIsCUModal} setUpdates={setCampaignData} setIsDelete={setIsDelete} />
         ))}
       </div>
+      <DeleteUpdate params={params} setUpdates={setCampaignData} isDelete={isDelete} setIsDelete={setIsDelete} item={item} />
+      <AddNewUpdate isUpdate={isUpdate} setIsUpdate={setIsUpdate} params={params} setItem={setItem} item={item} setUpdates={setCampaignData} isCUModal={isCUModal} setIsCUModal={setIsCUModal} />
 
     </div>
   );
 };
-const UpdateItem = ({ item, isDelete, setIsDelete, isUpdate, setIsUpdate, params, setUpdates }) => {
+const UpdateItem = ({ item, setIsDelete, setIsUpdate, setIsCUModal, setItem }) => {
   return (<div className='border-b border-brand-dark w-full pb-1'>
     <div className='flex w-full justify-between '>
       <p className="text-2xl font-bold w-1/2 flex-grow text-brand-dark">{item?.formattedDate}</p>
@@ -167,7 +177,11 @@ const UpdateItem = ({ item, isDelete, setIsDelete, isUpdate, setIsUpdate, params
           variant="bordered"
           radius="full"
           size="sm"
-          onClick={() => setIsUpdate(true)}
+          onClick={() => {
+            setIsCUModal(true)
+            setIsUpdate(true)
+            setItem(item)
+          }}
           startContent={
             <svg
               width="12"
@@ -197,7 +211,7 @@ const UpdateItem = ({ item, isDelete, setIsDelete, isUpdate, setIsUpdate, params
           variant="bordered"
           radius="full"
           size="sm"
-          onClick={() => setIsDelete(true)}
+          onClick={() => { setIsDelete(true); setItem(item) }}
           startContent={
             <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.75 0.5H7.25V2H10V3H8.9855L8.7355 11.5H1.2645L1.0145 3H0V2H2.75V0.5ZM3.75 2H6.25V1.5H3.75V2ZM2.015 3L2.2355 10.5H7.7645L7.985 3H2.015ZM5.5 4V9.5H4.5V4H5.5Z" fill="#3D4630" />
@@ -212,8 +226,6 @@ const UpdateItem = ({ item, isDelete, setIsDelete, isUpdate, setIsUpdate, params
     </div>
     <p className='mt-2 text-6 font-semibold text-brand-olive-green' dangerouslySetInnerHTML={{ __html: item.text }}>
     </p>
-    <DeleteUpdate params={params} setUpdates={setUpdates} isDelete={isDelete} setIsDelete={setIsDelete} item={item} />
-    <AddNewUpdate params={params} setUpdates={setUpdates} isUpdate={isUpdate} setIsUpdate={setIsUpdate} />
 
   </div>)
 }
@@ -222,7 +234,7 @@ const DeleteUpdate = ({ isDelete, setIsDelete, item, setUpdates, params }) => {
     await axios.delete(`${SERVER_LOCAL_IP}/api/campaign/update/${params.slug}/${item._id}`);
     notifySuccess(`Update was deleted successfully.`);
     setIsDelete(false);
-    setUpdates((d)=>({...d, formattedContent:[...d.formattedContent.filter((e)=>(e._id!==item._id))]}))
+    setUpdates((d) => ({ ...d, formattedContent: [...d.formattedContent.filter((e) => (e._id !== item._id))] }))
   }
   return (
     <Modal
@@ -241,8 +253,8 @@ const DeleteUpdate = ({ isDelete, setIsDelete, item, setUpdates, params }) => {
               Are you sure you want to delete this Fundraiser?
             </ModalHeader>
             <ModalBody>
-            <p className='mt-2 text-6' dangerouslySetInnerHTML={{ __html: item.text }}>
-            </p>
+              <p className='mt-2 text-6' dangerouslySetInnerHTML={{ __html: item.text }}>
+              </p>
             </ModalBody>
             <ModalFooter>
               <Button
@@ -279,22 +291,55 @@ const DeleteUpdate = ({ isDelete, setIsDelete, item, setUpdates, params }) => {
     </Modal>
   );
 };
-const AddNewUpdate = ({ isUpdate, setIsUpdate, setUpdates, params }) => {
+const AddNewUpdate = ({ isUpdate, isCUModal, setIsCUModal, setUpdates, params, item, setItem }) => {
   const [content, setContent] = useState('');
-
   const addUpdate = async () => {
     const result = await axios.post(`${SERVER_LOCAL_IP}/api/campaign/update`, {
-      text:content,
-      campaignId:params.slug
+      text: content,
+      campaignId: params.slug
     });
     notifySuccess(`New update was created successfully.`);
-    setUpdates((e)=>({...e,formattedContent:[...e.formattedContent,result.data.newContent]}))
-    setIsUpdate(false);
+    setUpdates((e) => ({ ...e, formattedContent: [...e.formattedContent, result.data.newContent] }))
+    setIsCUModal(false);
   }
+  const editUpdate = async () => {
+    try {
+      // Make an API request to update the campaign's content
+      const result = await axios.put(`${SERVER_LOCAL_IP}/api/campaign/update`, {
+        text: content,
+        campaignId: params.slug,   // Assuming `params.slug` is the campaign ID
+        updateId: item._id         // Assuming `item._id` is the update ID
+      });
+
+      // Notify the user of success
+      notifySuccess(`Update was updated successfully.`);
+
+      // Update the updates state to reflect the new content
+      setUpdates((e) => ({
+        ...e,
+        formattedContent: [
+          ...e.formattedContent.filter(f => f._id !== item._id),  // Remove the old update
+          result.data.newContent  // Add the updated content
+        ]
+      }));
+
+      // Close the modal after successful update
+      setIsCUModal(false);
+    } catch (error) {
+      console.error("Error updating the update:", error);
+      // Handle errors (optional: add a user-friendly notification)
+    }
+  };
+
+  useEffect(() => {
+    setContent(isUpdate ? item.text : '')
+    console.log(item)
+
+  }, [isUpdate, item])
   return (
     <Modal
-      isOpen={isUpdate}
-      onOpenChange={() => setIsUpdate(false)}
+      isOpen={isCUModal}
+      onOpenChange={() => { setIsCUModal(false) }}
       size="4xl"
       classNames={{
         base: 'rounded-none bg-brand-lemon-yellow py-4 px-2',
@@ -330,7 +375,7 @@ const AddNewUpdate = ({ isUpdate, setIsUpdate, setUpdates, params }) => {
                   <path d="M6.55316 1.14895L3.70211 4M3.70211 4L0.851055 6.85105M3.70211 4L0.851055 1.14895M3.70211 4L6.55316 6.85105" stroke="#3D4630" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 }
-                onClick={() => setIsUpdate(false)}
+                onClick={() => setIsCUModal(false)}
                 className="font-medium text-brand-olive-green border-brand-olive-green xl:y-8 xl:px-75basis-[10%]"
               >
                 Cancel
@@ -339,7 +384,7 @@ const AddNewUpdate = ({ isUpdate, setIsUpdate, setUpdates, params }) => {
                 variant="bordered"
                 radius="full"
                 size="sm"
-                onClick={() => addUpdate()}
+                onClick={() => { isUpdate ? editUpdate() : addUpdate() }}
                 startContent={
                   <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1.1543 4.75L4.6543 8.25L11.6543 0.75" stroke="#3D4630" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -348,7 +393,7 @@ const AddNewUpdate = ({ isUpdate, setIsUpdate, setUpdates, params }) => {
                 }
                 className="font-medium text-brand-olive-green border-brand-olive-green xl:y-8 xl:px-75basis-[10%]"
               >
-                Post
+                {isUpdate ? 'Update' : 'Post'}
               </Button>
             </ModalFooter>
           </>
@@ -357,4 +402,5 @@ const AddNewUpdate = ({ isUpdate, setIsUpdate, setUpdates, params }) => {
     </Modal>
   );
 };
+
 export default page;
