@@ -3,8 +3,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Ensure axios is imported
 import RichTextEditor from '@/components/ui/richTextEditor';
 import DragDropUpload from '@/components/ui/dragDropUpload';
+import dynamic from 'next/dynamic';
 import { Input } from '@nextui-org/input';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
+import 'react-quill/dist/quill.snow.css';
 import { Button } from '@nextui-org/button';
 import { SERVER_IP } from '../../../../../utils/constants';
 import { FSERVER_IP, SERVER_LOCAL_IP } from '../../../../../utils/constants';
@@ -23,7 +25,19 @@ function GetClientSideStorage(key) {
   }, [key]);
   return value;
 }
-
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+const modules = {
+  toolbar: {
+    container: [
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      ['image'],
+      ['blockquote'],
+      ['calendar']
+    ],
+  }
+};
 const Page = () => {
   const [categories, setCategories] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -193,9 +207,9 @@ const Page = () => {
         // file: fileCampaign,
         file,
         kyc: proofDocumentIds,
-        text: getInnerText(description),
+        text: description,
         createrId: localStorage.getItem('userID'),
-        totalAmount: '0'
+        totalAmount: 0
       };
 
       console.log(formData);
@@ -342,11 +356,14 @@ const Page = () => {
             isMultiple={true}
           />
         </div>
-        <RichTextEditor
-          value="{description}"
-          onClick={onHandleContent}
-          placeholder="Hello Everyone, We are raising funds for..........."
-        />
+        <div className="quill-container rounded-lg border border-brand-olive-green mt-3">
+          <ReactQuill
+            theme="snow"
+            value={description}
+            onChange={(e) => setDescription(e)}
+            modules={modules}
+          />
+        </div>
         <div className="col-span-2">
           <DragDropUpload
             acceptedFormats={{

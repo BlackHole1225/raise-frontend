@@ -51,7 +51,7 @@ function CampaignDetailsComponent({ campaignData }) {
     onOpen: donateOnOpen,
     onOpenChange: donateOnOpenChange
   } = useDisclosure();
-
+console.log(campaignData);
   const progressPercentage = (campaignData.totalAmount / campaignData.amount) * 100;
 
   const [donorListType, setDonorListType] = useState('top');

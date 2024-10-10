@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 
 const SectionDivider = () => <hr className="border-t border-stone-700 my-8 w-full" />;
 
@@ -22,20 +23,13 @@ const SupportComment = ({ avatar, name, donation, time, comment }) => (
   </div>
 );
 
-function CampaignDetailsContent() {
+function CampaignDetailsContent({ campaignData }) {
+  const [isSeeOld, setIsSeeOld] = useState(false);
   return (
     <article className="mx-auto p-8 pt-14 font-bold text-zinc-800">
       <section className="opacity-80">
         <h2 className="text-4xl mb-6 font-heading">Welcome to our fundraising campaign</h2>
-        <p className="text-2xl mb-6">
-          We&apos;re dedicated to the preservation and protection of rare species of tigers. These
-          magnificent creatures are on the brink of extinction due to habitat loss, poaching, and
-          climate change. Our mission is to ensure that these majestic animals continue to thrive in
-          the wild for generations to come.
-        </p>
-        <p className="text-2xl mb-6">
-          By contributing to this cause, you are directly supporting efforts to safeguard tiger
-          habitats, enforce anti-poaching laws, and fund research and conservation programs.
+        <p className="text-2xl mb-6" dangerouslySetInnerHTML={{ __html: campaignData.content[0]?.text }}>
         </p>
         <button className="text-xl text-stone-700 hover:underline">Read More</button>
       </section>
@@ -63,17 +57,12 @@ function CampaignDetailsContent() {
 
       <section>
         <h2 className="text-4xl mb-6">Updates</h2>
-        <p className="text-2xl mb-6 opacity-65">
-          We&apos;re dedicated to the preservation and protection of rare species of tigers. These
-          magnificent creatures are on the brink of extinction due to habitat loss, poaching, and
-          climate change. Our mission is to ensure that these majestic animals continue to thrive in
-          the wild for generations to come.
-        </p>
-        <p className="text-2xl mb-6 opacity-65">
-          By contributing to this cause, you are directly supporting efforts to safeguard tiger
-          habitats, enforce anti-poaching laws, and fund research and conservation programs.
-        </p>
-        <button className="text-xl text-stone-700 hover:underline">See Older Updates</button>
+        {campaignData?.content.map((e, index) => (<>
+          {(3>index>0||index>3&&isSeeOld) && <p className="text-2xl mb-6 opacity-65" dangerouslySetInnerHTML={{__html:e.text}}>
+          
+          </p>}
+        </>))}
+        <button onClick={()=>setIsSeeOld(!isSeeOld)} className="text-xl text-stone-700 hover:underline">{isSeeOld?'Close Older Updates':'See Older Updates'}</button>
       </section>
 
       <SectionDivider />

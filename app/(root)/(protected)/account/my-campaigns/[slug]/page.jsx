@@ -34,8 +34,8 @@ const page = ({ params }) => {
     const fetchData = async () => {
       try {
         const campaignsRes = await axios.get(`${SERVER_LOCAL_IP}/api/campaign/${params.slug}`);
-        setCampaignData(campaignsRes.data.data[0]); // Assuming the response has "data"
-        console.log('Fetched Campaign:', campaignsRes.data.data[0]);
+        setCampaignData(campaignsRes.data.data); // Assuming the response has "data"
+        console.log('Fetched Campaign:', campaignsRes.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
         setError('Failed to fetch campaign data');
@@ -48,7 +48,7 @@ const page = ({ params }) => {
   return (
     <div>
       <div className="flex justify-between mb-6">
-        <h1 className="heading-2 w-1/2 flex-grow">{campaignData?.title}</h1>
+        <h1 className="heading-2 w-1/2 flex-grow">{campaignData?.campaign.title}</h1>
         <div className="flex gap-4">
           <Button
             variant="bordered"
@@ -150,7 +150,7 @@ const page = ({ params }) => {
             Add an Update
           </Button>
         </div>
-        {campaignData?.content.map((d) => (
+        {campaignData?.formattedContent?.map((d) => (
           <UpdateItem params={params} item={d} isDelete={isDelete} isUpdate={isUpdate} setIsUpdate={setIsUpdate} setUpdates={setCampaignData} setIsDelete={setIsDelete} />
         ))}
       </div>
@@ -161,7 +161,7 @@ const page = ({ params }) => {
 const UpdateItem = ({ item, isDelete, setIsDelete, isUpdate, setIsUpdate, params, setUpdates }) => {
   return (<div className='border-b border-brand-dark w-full pb-1'>
     <div className='flex w-full justify-between '>
-      <p className="text-2xl font-bold w-1/2 flex-grow">{item?.title}</p>
+      <p className="text-2xl font-bold w-1/2 flex-grow text-brand-dark">{item?.formattedDate}</p>
       <div className='flex gap-2'>
         <Button
           variant="bordered"
@@ -210,7 +210,7 @@ const UpdateItem = ({ item, isDelete, setIsDelete, isUpdate, setIsUpdate, params
       </div>
 
     </div>
-    <p className='mt-2 text-6' dangerouslySetInnerHTML={{ __html: item.text }}>
+    <p className='mt-2 text-6 font-semibold text-brand-olive-green' dangerouslySetInnerHTML={{ __html: item.text }}>
     </p>
     <DeleteUpdate params={params} setUpdates={setUpdates} isDelete={isDelete} setIsDelete={setIsDelete} item={item} />
     <AddNewUpdate params={params} setUpdates={setUpdates} isUpdate={isUpdate} setIsUpdate={setIsUpdate} />
@@ -222,7 +222,7 @@ const DeleteUpdate = ({ isDelete, setIsDelete, item, setUpdates, params }) => {
     await axios.delete(`${SERVER_LOCAL_IP}/api/campaign/update/${params.slug}/${item._id}`);
     notifySuccess(`Update was deleted successfully.`);
     setIsDelete(false);
-    setUpdates((d)=>({...d, content:[...d.content.filter((e)=>(e._id!==item._id))]}))
+    setUpdates((d)=>({...d, formattedContent:[...d.formattedContent.filter((e)=>(e._id!==item._id))]}))
   }
   return (
     <Modal
@@ -288,7 +288,7 @@ const AddNewUpdate = ({ isUpdate, setIsUpdate, setUpdates, params }) => {
       campaignId:params.slug
     });
     notifySuccess(`New update was created successfully.`);
-    setUpdates((e)=>({...e,content:[...e.content,result.data.newContent]}))
+    setUpdates((e)=>({...e,formattedContent:[...e.formattedContent,result.data.newContent]}))
     setIsUpdate(false);
   }
   return (
