@@ -6,7 +6,7 @@ import { Button } from '@nextui-org/button';
 import DonateNowComp from './donateNowComp';
 import { Avatar } from '@nextui-org/avatar';
 import { useState } from 'react';
-
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 const UserProfile = ({ image, name, location }) => (
   <div className="flex items-center gap-3">
     <Avatar showFallback name={name} src={image} />
@@ -77,7 +77,7 @@ console.log(campaignData);
           </div>
           <img
             // src={campaignData.file}
-            src="/images/tiger.png"
+            src={campaignData?.file?`${SERVER_LOCAL_IP}/api/file/download/${campaignData?.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
             alt="Campaign"
             className="w-full mt-8 object-cover max-h-[450px]"
           />
