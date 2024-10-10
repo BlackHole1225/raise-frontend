@@ -215,7 +215,9 @@ const Page = () => {
       console.log(formData);
 
       // Send form data to the server
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/campaign/create`, formData);
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/campaign/create`, formData,{ headers: {
+        Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+      },});
       console.log('Campaign created successfully:', response.data);
 
       // if (!wallet || !amount) await handleConnectWallet();

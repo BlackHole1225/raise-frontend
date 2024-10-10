@@ -24,12 +24,7 @@ const CampaignListComponent = () => {
           imageUrl="https://cdn.builder.io/api/v1/image/assets/TEMP/793c80c23e08cf30921f97c1e260306f28c41ce2839846dc1ecfd8f2bded4309"
         />
         <hr className="border-stone-700 my-4" />
-        <CampaignItem
-          title="Donations for the Rare species of tigers"
-          amountRaised="300 SOL"
-          progressPercentage={60}
-          imageUrl="https://cdn.builder.io/api/v1/image/assets/TEMP/4f0c57db4ea9de3b60f8464c7b8548c66f2006903996ebf3006a8c761e32cabe"
-        />
+       
       </section>
     </main>
   );

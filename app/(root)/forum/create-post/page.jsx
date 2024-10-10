@@ -95,7 +95,9 @@ const Page = () => {
           campaignId: campaign,
           content,
           file
-        });
+        },{ headers: {
+          Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+        },});
         notifySuccess(response.data.message);
         setTitle('');
         setDonation('');

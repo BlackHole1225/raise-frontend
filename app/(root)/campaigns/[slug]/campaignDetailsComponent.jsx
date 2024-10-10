@@ -7,14 +7,20 @@ import DonateNowComp from './donateNowComp';
 import { Avatar } from '@nextui-org/avatar';
 import { useState } from 'react';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
-const UserProfile = ({ image, name, location }) => (
+const UserProfile = ({ creater }) => (
   <div className="flex items-center gap-3">
-    <Avatar showFallback name={name} src={image} />
+    <Avatar
+      showFallback
+      name={creater.fullName}
+      src={creater?.avatar ? ` ${SERVER_LOCAL_IP}/api/file/download/${creater?.avatar}` : `https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__`}
+      alt={creater?.avatar ? ` ${SERVER_LOCAL_IP}/api/file/download/${creater?.avatar}` : `https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__`}
+
+    />
     <div>
-      <h3 className="text-xl font-heading font-bold">{name}</h3>
+      <h3 className="text-xl font-heading font-bold">{creater.fullName}</h3>
       <div className="text-sm flex gap-4">
         <span>Owner</span>
-        <span>{location}</span>
+        <span>{creater.address}</span>
       </div>
     </div>
   </div>
@@ -51,7 +57,7 @@ function CampaignDetailsComponent({ campaignData }) {
     onOpen: donateOnOpen,
     onOpenChange: donateOnOpenChange
   } = useDisclosure();
-console.log(campaignData);
+  console.log(campaignData);
   const progressPercentage = (campaignData.totalAmount / campaignData.amount) * 100;
 
   const [donorListType, setDonorListType] = useState('top');
@@ -68,16 +74,13 @@ console.log(campaignData);
             </h1>
             <div className="mb-4">
               <UserProfile
-                image={campaignData.file}
-                name={campaignData.title}
-                role={campaignData.categoryId}
-                location={campaignData.location}
+                creater={campaignData?.createrId}
               />
             </div>
           </div>
           <img
             // src={campaignData.file}
-            src={campaignData?.file?`${SERVER_LOCAL_IP}/api/file/download/${campaignData?.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
+            src={campaignData?.file ? `${SERVER_LOCAL_IP}/api/file/download/${campaignData?.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
             alt="Campaign"
             className="w-full mt-8 object-cover max-h-[450px]"
           />
@@ -197,23 +200,23 @@ console.log(campaignData);
                 <div className="mb-14">
                   {donorListType === 'top'
                     ? campaignData.donated.topDonors.map((donor, index) => (
-                        <DonationItem
-                          key={index}
-                          image={`https://example.com/avatars/user${index + 1}.jpg`}
-                          name={donor.name}
-                          amount={donor.amount}
-                          label={new Date(donor.dateTime).toLocaleString()}
-                        />
-                      ))
+                      <DonationItem
+                        key={index}
+                        image={`https://example.com/avatars/user${index + 1}.jpg`}
+                        name={donor.name}
+                        amount={donor.amount}
+                        label={new Date(donor.dateTime).toLocaleString()}
+                      />
+                    ))
                     : campaignData.filteredDonors.recentDonors.map((donor, index) => (
-                        <DonationItem
-                          key={index}
-                          image={`https://example.com/avatars/user${index + 1}.jpg`}
-                          name={donor.name}
-                          amount={donor.amount}
-                          label={new Date(donor.dateTime).toLocaleString()}
-                        />
-                      ))}
+                      <DonationItem
+                        key={index}
+                        image={`https://example.com/avatars/user${index + 1}.jpg`}
+                        name={donor.name}
+                        amount={donor.amount}
+                        label={new Date(donor.dateTime).toLocaleString()}
+                      />
+                    ))}
                 </div>
 
                 <h3 className="text-xl font-bold text-stone-700 mb-4">Share this Fundraiser</h3>

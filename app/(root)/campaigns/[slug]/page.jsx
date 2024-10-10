@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import CampaignDetailsComponent from './campaignDetailsComponent';
 import axios from 'axios';
-import { SERVER_IP, SERVER_LOCAL_IP } from '../../../../utils/constants';
+import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 
 const Page = ({ params }) => {
   // State to store a single campaign (not an array)

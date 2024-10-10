@@ -5,6 +5,25 @@ import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 import axios from 'axios';
 
 const SectionDivider = () => <hr className="border-t border-stone-700 my-8 w-full" />;
+function formatDate(isoString) {
+  const date = new Date(isoString);
+
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const day = date.getUTCDate();
+  const month = months[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
+
+  // Add 'st', 'nd', 'rd', or 'th' for the day
+  const suffix = (day % 10 === 1 && day !== 11) ? 'st' :
+    (day % 10 === 2 && day !== 12) ? 'nd' :
+      (day % 10 === 3 && day !== 13) ? 'rd' : 'th';
+
+  return `Created ${month} ${day}${suffix}, ${year}`;
+}
 
 const SupportComment = ({ avatar, name, donation, time, comment }) => (
   <div className="mb-8">
@@ -87,7 +106,7 @@ function CampaignDetailsContent({ campaignData }) {
     <article className="mx-auto p-8 pt-14 font-bold text-zinc-800">
       <section className="opacity-80">
         <h2 className="text-4xl mb-6 font-heading">Welcome to our fundraising campaign</h2>
-        <p className="text-2xl mb-6" dangerouslySetInnerHTML={{ __html: isReadMore ? campaignData.content[0]?.text : campaignData.content[0]?.text.slice(10) }}>
+        <p className={`text-2xl mb-6 ${!isReadMore && 'max-h-20 overflow-hidden'}`} dangerouslySetInnerHTML={{ __html: campaignData.content[0]?.text }}>
         </p>
         <button onClick={() => { setIsReadMore(!isReadMore) }} className="text-xl text-stone-700 hover:underline">Read More</button>
       </section>
@@ -142,27 +161,22 @@ function CampaignDetailsContent({ campaignData }) {
       <SectionDivider />
 
       <section>
-        <h2 className="text-4xl mb-8 font-heading">Words of Support (102)</h2>
-        <SupportComment
-          avatar="https://cdn.builder.io/api/v1/image/assets/TEMP/800c932755c7bc3849ae8eed6ce497c46b8421b967fbc1e9da3d1fd7e59c6ee1"
-          name="Diana Robert"
-          donation="5"
-          time="18 Hours ago"
-          comment="Connor and I are so grateful to have shared a snippet of life with you. We love you so. Care and condolences to Matt and your family."
-        />
-        <SupportComment
-          avatar="https://cdn.builder.io/api/v1/image/assets/TEMP/b3f1324c2210e64c8183775282af6039c7eb5647be498c837edbbafb9f8c1cd7"
-          name="Diana Robert"
-          donation="5"
-          time="18 Hours ago"
-          comment="Lots of hugs and strength to U poppie... you are in our thoughts... love from sammy, sharna, demi and freya"
-        />
+        <h2 className="text-4xl mb-8 font-heading">Words of Support ({campaignData.donated.length})</h2>
+        {campaignData.donated.map((d) => (
+          <SupportComment
+            avatar="https://cdn.builder.io/api/v1/image/assets/TEMP/800c932755c7bc3849ae8eed6ce497c46b8421b967fbc1e9da3d1fd7e59c6ee1"
+            name="Diana Robert"
+            donation="5"
+            time="18 Hours ago"
+            comment="Connor and I are so grateful to have shared a snippet of life with you. We love you so. Care and condolences to Matt and your family."
+          />
+        ))}
         <button className="text-xl text-stone-700 hover:underline">Show more</button>
       </section>
 
       <SectionDivider />
 
-      <footer className="text-xl text-stone-700">Created July 22nd, 2024</footer>
+      <footer className="text-xl text-stone-700">{formatDate(campaignData.createdAt)}</footer>
     </article>
   );
 }
