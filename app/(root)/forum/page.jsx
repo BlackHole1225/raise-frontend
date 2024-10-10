@@ -24,12 +24,12 @@ const page = () => {
                     Recent feeds just for you!
                 </h1>
             </div>
-            <div className="lg:grid lg:grid-cols-12 gap-8 my-12">
-                <div className="col-span-7">
+            <div className="xl:grid xl:grid-cols-12 gap-8 my-12">
+                <div className="xl:col-span-7">
                     <FeedList isPagination={true} setPosts={setPosts} feeds={posts} feedfontSize={32} height={205} />
                 </div>
-                <div className="col-span-5 flex flex-col gap-6">
-                    <div className='flex justify-between flex-row-reverse'>
+                <div className="xl:col-span-5 flex flex-col gap-6 mt-8 xl:mt-0">
+                    <div className='xl:flex justify-end hidden'>
                         <Link href='/forum/create-post' passHref>
                             <Button
                                 variant="bordered"
