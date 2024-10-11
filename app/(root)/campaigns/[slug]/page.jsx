@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import CampaignDetailsComponent from './campaignDetailsComponent';
 import axios from 'axios';
+import apiClient from '@/utils/api';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 
 const Page = ({ params }) => {
@@ -16,7 +17,7 @@ const Page = ({ params }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const campaignsRes = await axios.get(`${SERVER_LOCAL_IP}/api/campaign/${params.slug}`);
+        const campaignsRes = await apiClient.get(`/api/campaign/${params.slug}`);
         setCampaignData(campaignsRes.data.data); // Assuming the response has "data"
         console.log('Fetched Campaign:', campaignsRes.data.data);
       } catch (error) {
