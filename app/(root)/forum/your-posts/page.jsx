@@ -4,14 +4,21 @@ import Link from 'next/link';
 import FeedList from '../feedList';
 import { Button } from '@nextui-org/button';
 import { useState, useEffect } from 'react';
-import { SERVER_LOCAL_IP } from '@/utils/constants';
-import axios from "axios";
+// import { SERVER_LOCAL_IP } from '@/utils/constants';
+// import axios from "axios";
+import apiClient from '@/utils/api';
 import FeedAdvertising from '../feedAdvertising';
 import FeedGetStart from '../feedGetStart';
 const page = () => {
     const [posts, setPosts] = useState([]);
     const getPosts = async () => {
-        const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/all`);
+        const response = await apiClient.get(`/api/post/all/user`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+        );
         setPosts(response.data.Posts)
     }
     useEffect(() => {

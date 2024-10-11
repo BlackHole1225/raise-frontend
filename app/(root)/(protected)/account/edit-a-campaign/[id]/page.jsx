@@ -363,7 +363,7 @@ const Page = ({params}) => {
         <div className="quill-container rounded-lg border border-brand-olive-green mt-3">
           <ReactQuill
             theme="snow"
-            value={campaignData?.content[0].text}
+            value={campaignData?.content[0]?.text}
             onChange={(e) => setCampaignData({...campaignData,content: [{...campaignData?.content[0], text: e}]})}
             modules={modules}
           />

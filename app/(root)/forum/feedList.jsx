@@ -6,6 +6,7 @@ import { Input } from '@nextui-org/input';
 import { useState, useEffect } from 'react';
 import { useMemo } from 'react';
 import apiClient from '@/utils/api';
+import { formatTimeAgo } from '@/utils/formartTime';
 import { Pagination } from '@nextui-org/pagination';
 import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
 import BrandDropdown from '@/components/ui/brandDropdown';
@@ -14,7 +15,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, ModalFooter } from '@nextui-org/modal';
 
-const FeedList = ({ feedfontSize, height, feeds, isPagination }) => {
+const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
 
     const [filters, setFilters] = useState({
         category: new Set([]),
@@ -162,11 +163,12 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination }) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
         </div>}
-            {isDelete && <DeletePost height={height} fontSize={feedfontSize} isDelete={isDelete} setIsDelete={setIsDelete} feed={feed} />}
+            {isDelete && <DeletePost key={feed._id} height={height} fontSize={feedfontSize} isDelete={isDelete} setIsDelete={setIsDelete} feed={feed} setPosts={setPosts} />}
             {paginatedFeeds?.length ? (<>
                 <section className="flex flex-col gap-6">
                     {paginatedFeeds.map((feed, index) => (
                         <FeedItem
+                            key={index} 
                             setFeed={setFeed}
                             feed={feed}
                             height={height}
@@ -176,10 +178,8 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination }) => {
                             fontSize={feedfontSize}
                             onClick
                             imageUrl={feed?.file ? `${SERVER_LOCAL_IP}/api/file/download/${feed?.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
-                            reporterPhoto="https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__"
+                            reporterPhoto={feed?.poster ? `${SERVER_LOCAL_IP}/api/file/download/${feed?.poster.avatar}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
                         />
-
-
                     ))}
                 </section>
                 <div className="flex justify-end mt-8">
@@ -232,11 +232,11 @@ const FeedItem = ({ userId, feed, setIsDelete, setFeed, imageUrl, fontSize, repo
                         <svg width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle opacity="0.7" cx="2.5" cy="2.5" r="2.5" fill="#25282B" />
                         </svg>
-                        <p className="text-base font-bold  tracking-wider text-brand-olive-green">{feed.votes.length || 0} Votes</p>
+                        <p className="text-base font-bold  tracking-wider text-brand-olive-green">{feed.votes || 0} Votes</p>
                         <svg width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle opacity="0.7" cx="2.5" cy="2.5" r="2.5" fill="#25282B" />
                         </svg>
-                        <p className="text-base font-bold  tracking-wider text-brand-olive-green">{feed.accessTime} min ago</p>
+                        <p className="text-base font-bold  tracking-wider text-brand-olive-green">{formatTimeAgo(feed.createdAt)} </p>
                     </div>
                     <div className='flex justify-between'>
                         <div className='flex gap-2'>
@@ -256,7 +256,7 @@ const FeedItem = ({ userId, feed, setIsDelete, setFeed, imageUrl, fontSize, repo
                             >
                                 Delete
                             </Button>
-                            <Link href='/forum/edit-post' passHref>
+                            <Link href={`/forum/edit-post/${feed._id}`} passHref>
                                 <Button
                                     variant="bordered"
                                     radius="full"
@@ -311,10 +311,10 @@ const FeedItem2 = ({ title, id, comments, votes, imageUrl, fontSize, accessTime,
 
     </article>
 );
-const DeletePost = ({ isDelete, setIsDelete, feed, height, feedfontSize }) => {
+const DeletePost = ({ isDelete, setIsDelete, feed, height, feedfontSize, setPosts }) => {
     const deletePost = async (id) => {
-        const response = await apiClient.delete(`/api/post/delete/${id}`)
-        console.log(response)
+        await apiClient.delete(`/api/post/delete/${id}`)
+        setPosts(prevPosts => prevPosts.filter(post => post._id !== id));
     }
     return (
         <Modal

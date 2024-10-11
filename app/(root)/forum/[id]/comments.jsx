@@ -12,6 +12,7 @@ import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 import { useParams } from 'next/navigation'
 import axios from 'axios';
 import {PostContext} from './page';
+import { formatTimeAgo } from '@/utils/formartTime';
 
 // Flat list of blog data
 const blogData = [
@@ -186,7 +187,7 @@ const FeedComments = ({ feedfontSize, comments }) => {
         </>
     );
 };
-const CommentItem = ({ description, votes, accessTime, reporterPhoto, reporterName, hasChildren, parentId, isOpen, isReply, setIsOpen, setIsReply,_id }) =>{ 
+const CommentItem = ({ description, votes, date, reporterPhoto, reporterName, hasChildren, parentId, isOpen, isReply, setIsOpen, setIsReply,_id }) =>{ 
     const params = useParams();
     const {setVotedComment} = useContext(PostContext);
 
@@ -219,7 +220,10 @@ const CommentItem = ({ description, votes, accessTime, reporterPhoto, reporterNa
     return(<>
     <article className='pb-9' onClick={() => { setIsOpen(!isOpen); setIsReply(false) }}>
         <div className='flex gap-2 items-center'>
-            <img src={reporterPhoto} alt={reporterPhoto} className="w-[30px] h-[30px] object-cover rounded-full" />
+            <img 
+            src={reporterPhoto ? ` ${SERVER_LOCAL_IP}/api/file/download/${reporterPhoto}` : `https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__`}
+            
+            alt={reporterPhoto} className="w-[30px] h-[30px] object-cover rounded-full" />
             <div className='flex items-center gap-2'>
                 <h2 className=" font-bold text-2xl tracking-wider uppercase text-brand-olive-green font-heading" >
                     {reporterName}
@@ -228,7 +232,7 @@ const CommentItem = ({ description, votes, accessTime, reporterPhoto, reporterNa
                     <circle opacity="0.7" cx="2.5" cy="2.5" r="2.5" fill="#25282B" />
                 </svg>
                 <p className="text-base font-bold tracking-wider text-brand-olive-green flex items-center gap-1">
-                    {accessTime} min ago</p>
+                    {formatTimeAgo(date)}</p>
             </div>
         </div>
         <p className="text-base font-bold tracking-wider text-brand-olive-green flex items-center gap-1 pl-8 mt-1 pt-3 pb-6 mb-[-2px] border-brand-dark border-opacity-50 ml-[15px] border-l">
