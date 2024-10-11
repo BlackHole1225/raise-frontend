@@ -1,15 +1,15 @@
 'use client';
 import React from 'react';
 import { Button } from '@nextui-org/button';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import apiClient from '@/utils/api';
 import { useParams } from 'next/navigation'
-import { PostContext } from './page';
+import { usePostContext } from './page';
 
 const CreateComments = ({ setIsReply, setIsOpen, parentId }) => {
 
     const params = useParams();
-    const { setSentComment } = useContext(PostContext);
+    const { setSentComment } = usePostContext();
     const [commentData, setCommentData] = useState({
         accessTime: 0,
         votes: 0,

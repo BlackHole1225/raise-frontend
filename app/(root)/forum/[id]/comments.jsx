@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, } from 'react';
 import BrandDropdown from '@/components/ui/brandDropdown';
 // data/blogTree.js
 import styles from './blogTree.module.css';
@@ -11,7 +11,7 @@ import CreateComments from './createComments';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 import { useParams } from 'next/navigation'
 import axios from 'axios';
-import {PostContext} from './page';
+import { usePostContext} from './page';
 import { formatTimeAgo } from '@/utils/formartTime';
 
 // Flat list of blog data
@@ -189,7 +189,7 @@ const FeedComments = ({ feedfontSize, comments }) => {
 };
 const CommentItem = ({ description, votes, date, reporterPhoto, reporterName, hasChildren, parentId, isOpen, isReply, setIsOpen, setIsReply,_id }) =>{ 
     const params = useParams();
-    const {setVotedComment} = useContext(PostContext);
+    const {setVotedComment} = usePostContext();
 
     const voteOnComment = async (isVote) => {
         console.log(isVote);

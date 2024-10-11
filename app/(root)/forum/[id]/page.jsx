@@ -5,7 +5,7 @@ import FeedGetStart from "../feedGetStart";
 import { Button } from '@nextui-org/button';
 import axios from 'axios'
 import FeedComments from './comments';
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect, useContext } from 'react';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 import { useParams } from 'next/navigation'
 import CreateComments from './createComments';
@@ -15,8 +15,8 @@ export default function Page() {
     const [isReply, setIsReply] = useState(false);
     const [posts, setPosts] = useState([]);
     const [post, setPost] = useState({});
-    const [votedComment, setVotedComment] = useState(null);
-    const [sentComment, setSentComment] = useState(null);
+    const [votedComment, setVotedComment] = useState({});
+    const [sentComment, setSentComment] = useState({});
     const params = useParams();
 
     const getPost = async () => {
@@ -76,8 +76,8 @@ export default function Page() {
                 ]
             }));
         }
-        setSentComment(null);
-        setVotedComment(null);
+        setSentComment({});
+        setVotedComment({});
     }, [sentComment, votedComment])
     const feed = {
         title: 'Firefighters saved the girl from a burning house.',
@@ -195,3 +195,4 @@ export default function Page() {
         </PostContext.Provider>
     )
 }
+export const usePostContext = () => useContext(PostContext);
