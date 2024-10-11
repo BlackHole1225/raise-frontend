@@ -31,12 +31,12 @@ const page = () => {
                     Posts created by you
                 </h1>
             </div>
-            <div className="grid grid-cols-12 gap-8 my-12">
-                <div className="col-span-7">
-                    <FeedList feeds={posts} feedfontSize={32} height={205} isPagination={true} />
+            <div className="xl:grid xl:grid-cols-12 gap-8 my-12">
+                <div className="xl:col-span-7">
+                    <FeedList isPagination={true} feeds={posts} feedfontSize={32} height={205} />
                 </div>
-                <div className="col-span-5 flex flex-col  gap-6">
-                    <div className='flex justify-between   flex-row-reverse'>
+                <div className="xl:col-span-5 flex flex-col gap-6 mt-8 xl:mt-0">
+                    <div className='xl:flex justify-end hidden'>
                         <Link href='/forum/create-post' passHref>
                             <Button
                                 variant="bordered"

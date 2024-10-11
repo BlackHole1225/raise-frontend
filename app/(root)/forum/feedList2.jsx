@@ -69,7 +69,7 @@ const FeedList2 = () => {
 };
 const FeedItem = ({ title, comments, votes, imageUrl, fontSize, createdAt, reporterPhoto, reporterName, height }) => (
     <article className="flex">
-        <img src={imageUrl || 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'} alt={imageUrl} className="w-[260px] object-cover" style={{ height }} />
+        <img src={imageUrl || 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'} alt={imageUrl} className="w-[100px] md:w-[260px] min-w-[100px] md:min-w-[260px] object-cover" style={{ height }} />
         <div className="flex flex-col bg-[#FAFF7D] pt-[30px] px-[22px] w-full pb-6 justify-between">
             <h2 className=" font-bold tracking-wider uppercase text-brand-olive-green font-heading" style={{ fontSize: fontSize }}>
                 {title}
@@ -86,8 +86,8 @@ const FeedItem = ({ title, comments, votes, imageUrl, fontSize, createdAt, repor
                     </svg>
                     <p className="text-base font-bold  tracking-wider text-brand-olive-green">{formatTimeAgo(createdAt)}</p>
                 </div>
-                <div className='flex gap-2'>
-                    <img src={reporterPhoto} alt={reporterPhoto} className="w-[34px] h-[28px] object-cover rounded-lg" />
+                <div className='flex items-center gap-2'>
+                    <img src={reporterPhoto} alt={reporterPhoto} className="w-[34px] min-w-[34px] h-[28px] min-h-[28px] object-cover rounded-lg" />
                     <p className="text-base font-bold tracking-wider text-brand-dark">{reporterName}</p>
                 </div>
             </div>

@@ -16,7 +16,7 @@ const layout = ({ children }) => {
         ]}
       />
       <div className="w-1/2 flex-grow bg-brand-ivory">
-        <div className="pt-[140px] md:px-8 max-w-[90%] md:max-w-full mx-auto">{children}</div>
+        <div className="pt-24 md:pt-[140px] md:px-8 max-w-[90%] md:max-w-full mx-auto">{children}</div>
       </div>
     </div>
   );

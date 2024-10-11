@@ -71,12 +71,12 @@ const Header = () => {
   return (
     <Navbar
       classNames={{
-        menu: 'top-[100px]',
+        menu: 'top-[75px] md:top-[100px]',
         wrapper: 'bg-transparent'
       }}
       onMenuOpenChange={setIsMenuOpen}
       maxWidth="full"
-      className={`h-[100px] z-50 duration-500 fixed ${isNavTransparent ? 'bg-transparent backdrop-filter-none' : 'bg-brand-olive-green'}`}
+      className={`h-[75px] md:h-[100px] z-50 duration-500 fixed ${isNavTransparent ? 'bg-transparent backdrop-filter-none' : 'bg-brand-olive-green'}`}
     >
       <NavbarContent>
         <NavbarMenuToggle
