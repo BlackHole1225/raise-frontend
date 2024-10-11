@@ -1,16 +1,17 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { Input } from '@nextui-org/input';
 import { Button } from '@nextui-org/button';
+import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 
 const SignUpPage = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [formData, setFormData] = useState({ fullName: '', email: '', password: '' });
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch('/api/signup', {
+    const res = await fetch(`${SERVER_LOCAL_IP}/api/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,7 +31,7 @@ const SignUpPage = () => {
         size="lg"
         label="Full Name"
         value={formData.name}
-        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
         className="mb-5"
       />
       <Input

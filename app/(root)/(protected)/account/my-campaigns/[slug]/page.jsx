@@ -1,12 +1,54 @@
-import { Button } from '@nextui-org/button';
-import React from 'react';
-import DonationListComponent from '../../donationList';
+'use client';
 
-const page = () => {
+import { Button } from '@nextui-org/button';
+import React, { useEffect, useState } from 'react';
+import DonationListComponent from '../../donationList';
+import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, ModalFooter } from '@nextui-org/modal';
+import 'react-quill/dist/quill.snow.css';
+import dynamic from 'next/dynamic';
+import { SERVER_IP } from '@/utils/constants';
+import axios from 'axios';
+import { notifySuccess } from '@/components/notification';
+import RichTextEditor from '@/components/ui/richTextEditor2';
+import { SERVER_LOCAL_IP } from '../../../../../../utils/constants';
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+const modules = {
+  toolbar: {
+    container: [
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      ['image'],
+      ['blockquote'],
+      ['calendar']
+    ],
+  }
+};
+const page = ({ params }) => {
+  const [isDelete, setIsDelete] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [campaignData, setCampaignData] = useState(null);
+  const [update, setUpdate] = useState({});
+  const [isUpdate, setIsUpdate] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const campaignsRes = await axios.get(`${SERVER_LOCAL_IP}/api/campaign/${params.slug}`);
+        setCampaignData(campaignsRes.data.data); // Assuming the response has "data"
+        console.log('Fetched Campaign:', campaignsRes.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError('Failed to fetch campaign data');
+      } finally {
+        setLoading(false); // Whether success or failure, loading stops
+      }
+    };
+    fetchData();
+  }, [params.slug]);
   return (
     <div>
       <div className="flex justify-between mb-6">
-        <h1 className="heading-2 w-1/2 flex-grow">Donations for the Rare species of tigers</h1>
+        <h1 className="heading-2 w-1/2 flex-grow">{campaignData?.campaign.title}</h1>
         <div className="flex gap-4">
           <Button
             variant="bordered"
@@ -83,20 +125,236 @@ const page = () => {
           </Button>
         </div>
       </div>
-      <div className="grid grid-cols-12 gap-8 my-12">
-        <div className="col-span-7">
+      <div className="grid grid-cols-12 gap-8 my-12 ">
+        <div className="col-span-7 ">
           <img
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/404118f2e1fc523f2713f14a85287a293ce21ffa4cfa985fc7d8ffb9ac4f0306"
+            src={campaignData?.file?`${SERVER_LOCAL_IP}/api/file/download/${campaignData?.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
             alt="Campaign"
-            className="w-full object-cover"
+            className="w-full object-cover h-[484px]"
           />
         </div>
-        <div className="col-span-5">
+        <div className="col-span-5 h-[484px]">
           <DonationListComponent compFor="campaign" />
         </div>
       </div>
+      <div className='w-full flex flex-col gap-2 bg-brand-weak-green px-8 py-11  mb-8'>
+        <div className='flex justify-between w-full mb-10'>
+          <h1 className="text-[32px] font-bold w-1/2 flex-grow">UPDATES</h1>
+          <Button
+            variant="bordered"
+            radius="full"
+            size="lg"
+            onClick={() => setIsUpdate(true)}
+            className="font-medium text-brand-olive-green border-brand-olive-green xl:y-10 xl:px-6"
+          >
+            Add an Update
+          </Button>
+        </div>
+        {campaignData?.formattedContent?.map((d) => (
+          <UpdateItem params={params} item={d} isDelete={isDelete} isUpdate={isUpdate} setIsUpdate={setIsUpdate} setUpdates={setCampaignData} setIsDelete={setIsDelete} />
+        ))}
+      </div>
+
     </div>
   );
 };
+const UpdateItem = ({ item, isDelete, setIsDelete, isUpdate, setIsUpdate, params, setUpdates }) => {
+  return (<div className='border-b border-brand-dark w-full pb-1'>
+    <div className='flex w-full justify-between '>
+      <p className="text-2xl font-bold w-1/2 flex-grow text-brand-dark">{item?.formattedDate}</p>
+      <div className='flex gap-2'>
+        <Button
+          variant="bordered"
+          radius="full"
+          size="sm"
+          onClick={() => setIsUpdate(true)}
+          startContent={
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clipPath="url(#clip0_371_2517)">
+                <path
+                  d="M8.22731 0.588099C8.45234 0.363134 8.75751 0.236755 9.07571 0.236755C9.39391 0.236755 9.69908 0.363134 9.92411 0.588099L11.4091 2.0731C11.5206 2.18454 11.609 2.31684 11.6694 2.46247C11.7297 2.60809 11.7608 2.76417 11.7608 2.9218C11.7608 3.07943 11.7297 3.23551 11.6694 3.38113C11.609 3.52675 11.5206 3.65906 11.4091 3.7705L4.27331 10.9063L0.445312 11.5519L1.09151 7.7239L8.22731 0.588099ZM8.08991 2.4223L9.57491 3.9073L10.5607 2.9215L9.07571 1.4371L8.08991 2.4223ZM8.72591 4.7563L7.24151 3.2713L2.21111 8.3017L1.90931 10.0879L3.69551 9.7867L8.72591 4.7563Z"
+                  fill="#3D4630"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_371_2517">
+                  <rect width="12" height="12" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+          }
+          className="font-medium text-brand-olive-green border-brand-olive-green xl:h-8 xl:px-5"
+        >
+          Edit
+        </Button>
+        <Button
+          variant="bordered"
+          radius="full"
+          size="sm"
+          onClick={() => setIsDelete(true)}
+          startContent={
+            <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.75 0.5H7.25V2H10V3H8.9855L8.7355 11.5H1.2645L1.0145 3H0V2H2.75V0.5ZM3.75 2H6.25V1.5H3.75V2ZM2.015 3L2.2355 10.5H7.7645L7.985 3H2.015ZM5.5 4V9.5H4.5V4H5.5Z" fill="#3D4630" />
+            </svg>
+          }
+          className="font-medium text-brand-olive-green border-brand-olive-green xl:h-8 xl:px-5"
+        >
+          Delete
+        </Button>
+      </div>
 
+    </div>
+    <p className='mt-2 text-6 font-semibold text-brand-olive-green' dangerouslySetInnerHTML={{ __html: item.text }}>
+    </p>
+    <DeleteUpdate params={params} setUpdates={setUpdates} isDelete={isDelete} setIsDelete={setIsDelete} item={item} />
+    <AddNewUpdate params={params} setUpdates={setUpdates} isUpdate={isUpdate} setIsUpdate={setIsUpdate} />
+
+  </div>)
+}
+const DeleteUpdate = ({ isDelete, setIsDelete, item, setUpdates, params }) => {
+  const deleteAUpdate = async () => {
+    await axios.delete(`${SERVER_LOCAL_IP}/api/campaign/update/${params.slug}/${item._id}`);
+    notifySuccess(`Update was deleted successfully.`);
+    setIsDelete(false);
+    setUpdates((d)=>({...d, formattedContent:[...d.formattedContent.filter((e)=>(e._id!==item._id))]}))
+  }
+  return (
+    <Modal
+      isOpen={isDelete}
+      onOpenChange={() => setIsDelete(false)}
+      size="4xl"
+      classNames={{
+        base: 'rounded-none bg-brand-lemon-yellow py-4 px-2',
+        closeButton: 'top-2.5 right-2.5 hover:bg-brand-transparent'
+      }}
+    >
+      <ModalContent>
+        {() => (
+          <>
+            <ModalHeader className="flex flex-col gap-1 heading-2 text-brand-olive-green">
+              Are you sure you want to delete this Fundraiser?
+            </ModalHeader>
+            <ModalBody>
+            <p className='mt-2 text-6' dangerouslySetInnerHTML={{ __html: item.text }}>
+            </p>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                variant="bordered"
+                radius="full"
+                size="sm"
+                startContent={<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6.55316 1.14895L3.70211 4M3.70211 4L0.851055 6.85105M3.70211 4L0.851055 1.14895M3.70211 4L6.55316 6.85105" stroke="#3D4630" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                }
+                onClick={() => setIsDelete(false)}
+                className="font-medium text-brand-olive-green border-brand-olive-green xl:y-8 xl:px-75basis-[10%]"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="bordered"
+                radius="full"
+                size="sm"
+                onClick={() => deleteAUpdate()}
+                startContent={
+                  <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.75 0.5H7.25V2H10V3H8.9855L8.7355 11.5H1.2645L1.0145 3H0V2H2.75V0.5ZM3.75 2H6.25V1.5H3.75V2ZM2.015 3L2.2355 10.5H7.7645L7.985 3H2.015ZM5.5 4V9.5H4.5V4H5.5Z" fill="#3D4630" />
+                  </svg>
+                }
+                className="font-medium text-brand-olive-green border-brand-olive-green xl:y-8 xl:px-75basis-[10%]"
+              >
+                Delete
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
+  );
+};
+const AddNewUpdate = ({ isUpdate, setIsUpdate, setUpdates, params }) => {
+  const [content, setContent] = useState('');
+
+  const addUpdate = async () => {
+    const result = await axios.post(`${SERVER_LOCAL_IP}/api/campaign/update`, {
+      text:content,
+      campaignId:params.slug
+    });
+    notifySuccess(`New update was created successfully.`);
+    setUpdates((e)=>({...e,formattedContent:[...e.formattedContent,result.data.newContent]}))
+    setIsUpdate(false);
+  }
+  return (
+    <Modal
+      isOpen={isUpdate}
+      onOpenChange={() => setIsUpdate(false)}
+      size="4xl"
+      classNames={{
+        base: 'rounded-none bg-brand-lemon-yellow py-4 px-2',
+        closeButton: 'top-2.5 right-2.5 hover:bg-brand-transparent'
+      }}
+    >
+      <ModalContent>
+        {() => (
+          <>
+            <ModalHeader className="flex flex-col gap-1 heading-2 text-brand-olive-green">
+              Add an update
+            </ModalHeader>
+            <ModalBody>
+              {/* <RichTextEditor
+                value="{description}"
+                placeholder="Hello Everyone, We are raising funds for..........."
+              /> */}
+              <div className="quill-container rounded-lg border border-brand-olive-green mt-3">
+                <ReactQuill
+                  theme="snow"
+                  value={content}
+                  onChange={(e) => setContent(e)}
+                  modules={modules}
+                />
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                variant="bordered"
+                radius="full"
+                size="sm"
+                startContent={<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6.55316 1.14895L3.70211 4M3.70211 4L0.851055 6.85105M3.70211 4L0.851055 1.14895M3.70211 4L6.55316 6.85105" stroke="#3D4630" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                }
+                onClick={() => setIsUpdate(false)}
+                className="font-medium text-brand-olive-green border-brand-olive-green xl:y-8 xl:px-75basis-[10%]"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="bordered"
+                radius="full"
+                size="sm"
+                onClick={() => addUpdate()}
+                startContent={
+                  <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.1543 4.75L4.6543 8.25L11.6543 0.75" stroke="#3D4630" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+
+                }
+                className="font-medium text-brand-olive-green border-brand-olive-green xl:y-8 xl:px-75basis-[10%]"
+              >
+                Post
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
+  );
+};
 export default page;

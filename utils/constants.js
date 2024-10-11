@@ -6,4 +6,4 @@ export const LOCALNET = 'http://localhost:8899';
 export const DEVNET = 'https://api.devnet.solana.com';
 export const TESTNET = 'https://api.testnet.solana.com';
 export const MAINNET = 'https://api.mainnet-beta.solana.com';
-export const SERVER_LOCAL_IP = 'http://localhost:5005';
+export const SERVER_LOCAL_IP = 'http://62.3.6.179:5005';

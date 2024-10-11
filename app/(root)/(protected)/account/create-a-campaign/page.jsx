@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Ensure axios is imported
 import RichTextEditor from '@/components/ui/richTextEditor';
 import DragDropUpload from '@/components/ui/dragDropUpload';
+import dynamic from 'next/dynamic';
 import { Input } from '@nextui-org/input';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
+import 'react-quill/dist/quill.snow.css';
 import { Button } from '@nextui-org/button';
 import { SERVER_IP } from '../../../../../utils/constants';
-import { FSERVER_IP } from '../../../../../utils/constants';
+import { FSERVER_IP, SERVER_LOCAL_IP } from '../../../../../utils/constants';
 require('@coral-xyz/anchor');
 
 import { TESTNET } from '../../../../../utils/constants';
@@ -23,7 +25,19 @@ function GetClientSideStorage(key) {
   }, [key]);
   return value;
 }
-
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+const modules = {
+  toolbar: {
+    container: [
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      ['image'],
+      ['blockquote'],
+      ['calendar']
+    ],
+  }
+};
 const Page = () => {
   const [categories, setCategories] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -33,7 +47,7 @@ const Page = () => {
   const [category, setCategory] = useState();
   const [location, setLocation] = useState();
   const [amount, setAmount] = useState();
-  const [campaignImage, setCampaignImage] = useState();
+  const [campaignImage, setCampaignImage] = useState(null);
   const [proofDocuments, setProofDocuments] = useState([]);
   const [campaignTitle, setCampaignTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -117,20 +131,16 @@ const Page = () => {
     console.log(e.target.value);
   };
 
-  const uploadFile = async (files) => {
+  const uploadFile = async () => {
     const formData = new FormData();
-
-    // If multiple files, append them
-    if (Array.isArray(files)) {
-      files.forEach((file, index) => formData.append('file_' + index, file));
-    } else {
-      formData.append('files', files); // Single file
-    }
+    Array.from(campaignImage).forEach(f => {
+      formData.append('files', f);
+    });
 
     try {
-      const response = await axios.post(`${FSERVER_IP}/api/file/upload`, formData, {
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/file/upload`, formData, {
         headers: {
-          // 'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data'
         }
       });
 
@@ -140,8 +150,8 @@ const Page = () => {
 
       if (uploadedFiles != undefined) {
         // Map the file IDs
-        const fileIds = uploadedFiles.map((file) => file._id);
-        return fileIds;
+        const avatar = uploadedFiles[0]?._id;
+        return avatar;
       }
     } catch (error) {
       console.error('Error uploading files:', error);
@@ -149,16 +159,8 @@ const Page = () => {
     }
   };
   // Function to handle the campaign image upload
-  const handleCamImg = (img) => {
-    setCampaignImage(img);
-    if (typeof window !== 'undefined' && img != undefined) {
-      const campaignImgReader = new FileReader();
-      campaignImgReader.onloadend = function () {
-        setCamImgFile(campaignImgReader.result);
-      };
-      campaignImgReader.readAsDataURL(img); // Trigger onloadend
-    }
-  };
+
+
 
   const handleSubmit = async () => {
     console.log('>>> clicked Send For KYC ');
@@ -196,24 +198,26 @@ const Page = () => {
       // proofDocumentReader.readAsDataURL(proofDocuments)
 
       console.log('ddesr', description);
-
+      const file = await uploadFile();
       const formData = {
         title: campaignTitle,
         categoryId: category,
         countryId: location,
         amount: amount,
         // file: fileCampaign,
-        file: camImgFile,
+        file,
         kyc: proofDocumentIds,
-        text: getInnerText(description),
-        createrId: userID,
-        totalAmount: '0'
+        text: description,
+        createrId: localStorage.getItem('userID'),
+        totalAmount: 0
       };
 
       console.log(formData);
 
       // Send form data to the server
-      const response = await axios.post(`${SERVER_IP}/api/campaign/create`, formData);
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/campaign/create`, formData,{ headers: {
+        Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+      },});
       console.log('Campaign created successfully:', response.data);
 
       // if (!wallet || !amount) await handleConnectWallet();
@@ -349,16 +353,19 @@ const Page = () => {
             acceptedFormats={{
               'image/*': ['.jpeg', '.png', '.jpg', '.gif']
             }}
-            isMultiple={false}
             label="Campaign Image"
-            onChange={(files) => handleCamImg(files[0])}
+            onChange={(e) => setCampaignImage(e)}
+            isMultiple={true}
           />
         </div>
-        <RichTextEditor
-          value="{description}"
-          onClick={onHandleContent}
-          placeholder="Hello Everyone, We are raising funds for..........."
-        />
+        <div className="quill-container rounded-lg border border-brand-olive-green mt-3">
+          <ReactQuill
+            theme="snow"
+            value={description}
+            onChange={(e) => setDescription(e)}
+            modules={modules}
+          />
+        </div>
         <div className="col-span-2">
           <DragDropUpload
             acceptedFormats={{

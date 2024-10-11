@@ -250,6 +250,7 @@ const DonationForm = ({ wallet, balance, amount, setAmount, onConnectWallet, onD
         variant="bordered"
         label="Donation Amount"
         radius="sm"
+        type='number'
         className="mb-5"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}

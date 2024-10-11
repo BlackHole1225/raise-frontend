@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import FeedAdvertising from '../feedAdvertising';
-import FeedGetStart from '../feedGetStart';
+import FeedAdvertising from '../../feedAdvertising';
+import FeedGetStart from '../../feedGetStart';
 import { Input } from '@nextui-org/input';
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import dynamic from 'next/dynamic';
@@ -9,7 +9,9 @@ import { notifySuccess } from '@/components/notification';
 import 'react-quill/dist/quill.snow.css';
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
-import { SERVER_LOCAL_IP, SERVER_IP } from '../../../../utils/constants';
+import { useParams } from 'next/navigation'
+
+import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
 
 import axios from "axios";
@@ -18,10 +20,11 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const Page = () => {
   const [title, setTitle] = useState('');
+  const params = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [file, setFile] = useState(null);
-
+  const [post, setPost] = useState({});
   const [categories, setCategories] = useState([]);
   const [campaigns, setCampains] = useState([
     { _id: 0, name: 'Popular Donations' },
@@ -60,6 +63,7 @@ const Page = () => {
     }
   };
   useEffect(() => {
+    getPost();
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -84,26 +88,15 @@ const Page = () => {
     };
     fetchData();
   }, []);
-  const createPost = async () => {
-    console.log(title, category, campaign, content);
+  const updatePost = async () => {
     const file = await imageUpload();
-    if (title && category && campaign && content) {
+    if (post?.title && post?.categoryId && post?.campaignId && post?.content) {
       try {
-        const response = await axios.post(`${SERVER_LOCAL_IP}/api/post/create`, {
-          title,
-          categoryId: category,
-          campaignId: campaign,
-          content,
+        const response = await axios.put(`${SERVER_LOCAL_IP}/api/post/update/${params.id}`, {
+          ...post,
           file
-        },{ headers: {
-          Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
-        },});
+        });
         notifySuccess(response.data.message);
-        setTitle('');
-        setDonation('');
-        setCampagin('');
-        setContent('');
-
       } catch (error) {
         console.log(error);
       }
@@ -112,7 +105,10 @@ const Page = () => {
       return;
     }
   }
-
+  const getPost = async () => {
+    const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/get/${params.id}`);
+    setPost(response.data.post)
+  }
   const modules = {
     toolbar: {
       container: [
@@ -130,7 +126,7 @@ const Page = () => {
       <div className="grid grid-cols-12 gap-8 my-12">
         <div className="col-span-7">
           <div className='px-8 py-11 bg-brand-lemon-yellow text-brand-olive-green'>
-            <h3 className='text-3xl font-bold'>CREATE A POST</h3>
+            <h3 className='text-3xl font-bold'>EDIT A POST</h3>
             <p className='mt-4 font-bold text-lg'>
               Share your thoughts, ideas, or project updates with the Raise community. Engage with others and contribute to meaningful discussions that drive the future of crowdfunding on Web3.
             </p>
@@ -141,9 +137,9 @@ const Page = () => {
                     size="lg"
                     variant="bordered"
                     label="Title"
-                    value={title}
+                    value={post?.title}
                     radius="sm"
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={(e) => setPost((d) => ({ ...d, title: e.target.value }))}
                     classNames={{
                       inputWrapper:
                         'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark h-full',
@@ -155,8 +151,9 @@ const Page = () => {
                     label="Select a Category"
                     radius="sm"
                     className='mt-4 border-black  border rounded-md '
+                    value={post?.categoryId}
                     onSelectionChange={(key) => {
-                      setCategory(key);
+                      setPost((d) => ({ ...d, categoryId: key }))
                     }}>
                     {categories?.map((item) => (
                       <AutocompleteItem key={item._id} value={item.name}>
@@ -166,9 +163,9 @@ const Page = () => {
                   </Autocomplete>
                   <Autocomplete
                     label="Associated a Campaign"
-                    value={campaign}
+                    value={post?.campaignId}
                     onSelectionChange={(key) => {
-                      setCampagin(key);
+                      setPost((d) => ({ ...d, campaignId: key }))
                     }}
                     radius="sm"
                     className='mt-4 border-black  border rounded-md '
@@ -194,8 +191,8 @@ const Page = () => {
               <div className="quill-container rounded-lg border border-brand-olive-green mt-3">
                 <ReactQuill
                   theme="snow"
-                  value={content}
-                  onChange={(e) => setContent(e)}
+                  value={post?.content}
+                  onChange={(e) => setPost((d) => ({ ...d, content: e }))}
                   modules={modules}
                 />
               </div>
@@ -206,7 +203,7 @@ const Page = () => {
                   <IoMdClose size={16} />
                   Close
                 </button>
-                <button onClick={() => createPost()} className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
+                <button onClick={() => updatePost()} className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
                 >
                   <FaCheck size={16} />
                   Save

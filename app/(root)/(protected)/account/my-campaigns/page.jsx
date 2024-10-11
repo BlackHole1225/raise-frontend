@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/table';
 
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/dropdown';
@@ -10,7 +10,10 @@ import { Input } from '@nextui-org/input';
 import { User } from '@nextui-org/user';
 import { Chip } from '@nextui-org/chip';
 import { SearchIcon } from 'lucide-react';
-
+import { SERVER_IP } from '@/utils/constants';
+import {useRouter} from 'next/navigation'
+import axios from 'axios';
+import { SERVER_LOCAL_IP } from '../../../../../utils/constants';
 // Mock data - replace with your actual data fetching logic
 const mockData = [
   {
@@ -35,10 +38,10 @@ const mockData = [
 ];
 
 const columns = [
-  { name: 'CAMPAIGN NAME', uid: 'name' },
-  { name: 'CATEGORY', uid: 'category' },
+  { name: 'CAMPAIGN NAME', uid: 'title' },
+  { name: 'CATEGORY', uid: 'categoryId' },
   { name: 'CREATED AT', uid: 'createdAt' },
-  { name: 'GOAL', uid: 'goal' },
+  { name: 'GOAL', uid: 'amount' },
   { name: 'KYC STATUS', uid: 'kycStatus' },
   { name: 'ACTIONS', uid: 'actions' }
 ];
@@ -49,27 +52,37 @@ const CampaignDataTable = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategories, setSelectedCategories] = useState(new Set(['All']));
   const [selectedKycStatus, setSelectedKycStatus] = useState(new Set(['All']));
-
+  const [campaigns, setCampaigns] = useState([]);
+  const router = useRouter();
   const filteredData = useMemo(() => {
-    let filtered = [...mockData];
-
+    // Start with the initial campaigns data
+    let filteredCampaigns = campaigns;
+  
+    // Filter by search term if provided
     if (searchTerm) {
-      filtered = filtered.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      filteredCampaigns = filteredCampaigns.filter((item) =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-
+  
+    // Filter by selected categories if "All" is not selected
     if (!selectedCategories.has('All')) {
-      filtered = filtered.filter((item) => selectedCategories.has(item.category));
+      filteredCampaigns = filteredCampaigns.filter((item) =>
+        selectedCategories.has(item.categoryId)
+      );
     }
-
+  
+    // Filter by selected KYC status if "All" is not selected
     if (!selectedKycStatus.has('All')) {
-      filtered = filtered.filter((item) => selectedKycStatus.has(item.kycStatus));
+      filteredCampaigns = filteredCampaigns.filter((item) =>
+        selectedKycStatus.has(item.kycStatus)
+      );
     }
-
-    return filtered;
-  }, [searchTerm, selectedCategories, selectedKycStatus]);
-
+  
+    // Return the final filtered result
+    return filteredCampaigns;
+  }, [searchTerm, selectedCategories, selectedKycStatus, campaigns]);
+  console.log(filteredData);
   const pages = Math.ceil(filteredData.length / rowsPerPage);
 
   const items = useMemo(() => {
@@ -114,7 +127,7 @@ const CampaignDataTable = () => {
       case 'actions':
         return (
           <div className="relative flex items-center justify-center gap-2">
-            <Button size="sm" radius="full">
+            <Button size="sm" radius="full" onClick={()=>router.push(`/account/my-campaigns/${item._id}`)}>
               View
             </Button>
             <Button size="sm" radius="full">
@@ -126,6 +139,14 @@ const CampaignDataTable = () => {
         return cellValue;
     }
   };
+  const getCampaigns = async () => {
+    const response = await axios.get(`${SERVER_LOCAL_IP}/api/campaign`);
+    setCampaigns(response.data.data.map((d)=>({...d, kycStatus:d.kyc[0]?.verify||"not yet"})))
+  }
+  useEffect(() => {
+    getCampaigns();
+  }, [])
+
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -209,7 +230,7 @@ const CampaignDataTable = () => {
         </TableHeader>
         <TableBody items={items}>
           {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item._id}>
               {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
             </TableRow>
           )}

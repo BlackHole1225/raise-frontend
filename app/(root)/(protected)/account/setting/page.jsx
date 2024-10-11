@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import { Avatar } from '@nextui-org/avatar';
@@ -12,6 +12,8 @@ import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
+import {useRouter} from "next/navigation"
+import { notifySuccess, notifyError } from '@/components/notification';
 
 function UseClientSideStorage(key, defaultValue) {
   useEffect(() => {
@@ -23,63 +25,155 @@ function UseClientSideStorage(key, defaultValue) {
 
 const Setting = () => {
   const [openModal, setOpenModal] = useState(null);
-  // const [fullName, setFullName] = useState(localStorage.getItem('userName'));
-  // const [address, setAddress] = useState(localStorage.getItem('address'));
-  // const editProfile = async() =>{
-  //   await axios.post('https:/',{
-  //     email:'',
-  //     fullName,
-  //     address
-  //   })
-  // }
+  const [file, setFile] = useState(null);
+  const [fullName, setFullName] = useState('');
+  const [address, setAddress] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [newConfirmPassword, setNewConfirmPassword] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [error, setError] = useState(null);
+  const [info, setInfo] = useState(null);
+  const router = useRouter()
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+  const getUserInfo = async () => {
+    try {
+      console.log('here');
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/user/`, {
+        email: localStorage?.getItem('userEmail'),  // Old password for verification
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage?.getItem("authToken")}`,  // JWT token for authentication
+        },
+      });
+      setInfo(response.data.user);
+    } catch (error) {
+      setError("Error changing email:");
+    }
+  }
+  const updateAvatar = async () => {
+    const formData = new FormData();
+    Array.from(file).forEach(f => {
+      formData.append('files', f);
+    });
+ 
+    try {
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/file/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
 
-  // const updateProfile = async (event) => {
-  //   event.preventDefault();
-  //   setError(null); // Clear previous errors
+      // Ensure the response contains the uploaded file information
+      const uploadedFiles = response.data.uploaded;
+      console.log('Uploaded Files:', uploadedFiles);
 
-  //   try {
-  //     const response = await axios.post(`${SERVER_LOCAL_IP}/api/updateUserProfile`, {
-  //       // const response = await fetch(`${SERVER_IP}/api/login`, {
-  //       email,
-  //       password
-  //     });
-  //     const contentType = response.headers.get('content-type');
-  //     if (contentType && contentType.includes('application/json')) {
-  //       console.log(response.data);
-  //       const data = response.data;
-  //       //  login(response.data);
-  //       // If response is not OK, throw error
-  //       // if (!response.ok) {
-  //       //   throw new Error(data.message || 'Something went wrong');
-  //       // }
+      if (uploadedFiles != undefined) {
+        // Map the file IDs
+        const avatar = uploadedFiles[0]?._id;
+        return avatar;
+      }
+    } catch (error) {
+      console.error('Error uploading files:', error);
+      throw error;
+    }
+  };
+  const logout = () =>{
+    window.localStorage.setItem('userID', '');
+    window.localStorage.setItem('userName', '');
+    window.localStorage.setItem('userEmail','');
+    window.localStorage.setItem('authToken', '');
+    router.push('/login')
+  }
+  const updateProfile = async () => {
+    setError(null); // Clear previous errors
+    const formData = new FormData();
+    // formData.append('avatar', file);
+    formData.append('fullName', info?.fullName);
+    formData.append('address', info?.address);
+    formData.append('email', localStorage?.getItem('userEmail'));
+    const avatar = await updateAvatar();
+    formData.append('avatar', avatar);
+    try {
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/updateUserProfile`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+          },
+        }
+      );
+      notifySuccess('Updated successfully!');
+      setOpenModal(null)
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        console.log(response.data);
+        const user = response.data.user;
+        //  login(response.data);
+        // If response is not OK, throw error
+        // if (!response.ok) {
+          //   throw new Error(data.message || 'Something went wrong');
+        // }
 
-  //       // Handle successful login
+        // Handle successful login
+        
+        if (typeof window !== 'undefined') {
+          // Save user info and token in window.localStorage
+          // window.localStorage.setItem('userID', user.id);
+          // window.localStorage.setItem('userName', user.fullName);
+          window.localStorage.setItem('userEmail', user.email);
+          getUserInfo();
+          // window.localStorage.setItem('authToken', data.token);
+          // Redirect to campaigns page after successful login
+          // window.location.href = '/campaigns';
+        }
 
-  //       if (typeof window !== 'undefined') {
-  //         // Save user info and token in window.localStorage
-  //         window.localStorage.setItem('userID', data.id);
-  //         window.localStorage.setItem('userName', data.fullName);
-  //         window.localStorage.setItem('userEmail', data.email);
-  //         window.localStorage.setItem('authToken', data.token);
-  //         // Redirect to campaigns page after successful login
-  //         window.location.href = '/campaigns';
-  //       }
+        // UseClientSideStorage('userID', data.id);
+        // UseClientSideStorage('userName', data.fullName);
+        // UseClientSideStorage('userEmail', data.email);
+        // UseClientSideStorage('authToken', data.token);
 
-  //       UseClientSideStorage('userID', data.id);
-  //       UseClientSideStorage('userName', data.fullName);
-  //       UseClientSideStorage('userEmail', data.email);
-  //       UseClientSideStorage('authToken', data.token);
+      } else {
+        // Handle unexpected content-type
+        throw new Error('Unexpected response format');
+      }
+    
+    } catch (err) {
+      console.error('Login error:', err);
+      setError(err.message || 'Login failed');
+    }
+  };
+  const changePassword = async () => {
+    if (newPassword && newConfirmPassword && currentPassword) {
+      if (newPassword !== newConfirmPassword) {
+        setError('The passwords for verification do not match.');
+        return;
+      }
+      try {
+        await axios.post(`${SERVER_LOCAL_IP}/api/changePassword`, {
+          email: localStorage?.getItem('userEmail'),         // User's email
+          currentPassword, // Current password
+          newPassword,     // New password
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+          },
+        });
 
-  //     } else {
-  //       // Handle unexpected content-type
-  //       throw new Error('Unexpected response format');
-  //     }
+        notifySuccess('Password was updated successfully');
+        setOpenModal(null)
+      } catch (error) {
+        console.error("Error changing password:", error);
+      }
+    } else {
+      setError('The input value is incorrect.')
+    }
 
-  //   } catch (err) {
-  //     console.error('Login error:', err);
-  //     setError(err.message || 'Login failed');
-  //   }
-  // };
+  };
   const handleOpenModal = (modalNumber) => {
     setOpenModal(modalNumber);
   };
@@ -91,7 +185,9 @@ const Setting = () => {
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
-
+  useEffect(()=>{
+    getUserInfo();
+  },[])
   return (
     <div className="pt-20 pb-[232px]">
       <h1 className="uppercase text-5xl font-bold text-brand-dark font-heading">
@@ -99,23 +195,26 @@ const Setting = () => {
       </h1>
       <div className="grid grid-cols-12 gap-5 mt-5">
         <div className="bg-brand-eucalyptus pt-[46px] px-10 pb-[90px] col-span-6 text-brand-olive-green text-2xl font-bold">
-          <Avatar
-            src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+          {info?.avatar?<Avatar
+            src={`${SERVER_LOCAL_IP}/api/file/download/${info?.avatar}`}
             className="w-[180px] h-[180px]"
-          />
-          <h3 className="mt-[22px]">SHUDDEESHA PATNAYAK</h3>
+          />:<Avatar
+          src={``}
+          className="w-[180px] h-[180px]"
+        />}
+          <h3 className="mt-[22px]">{info?.fullName}</h3>
           <div className="flex flex-col gap-6 mt-[60px]">
             <h3 className="pb-[14px] border-b border-b-brand-olive-green/20">
-              <span className="opacity-70">Name:</span> Sudeesha Patnayak
+              <span className="opacity-70">Name:</span> {info?.fullName}
             </h3>
             <h3 className="pb-[14px] border-b border-b-brand-olive-green/20">
-              <span className="opacity-70">Email:</span> mesudeesha@outlook.com
+              <span className="opacity-70">Email:</span> {info?.email}
             </h3>
             <h3 className="pb-[14px] border-b border-b-brand-olive-green/20">
-              <span className="opacity-70">Phone:</span> +91-9837398489
+              <span className="opacity-70">Phone:</span> {info?.phoneNumber}
             </h3>
             <h3 className="pb-[14px] border-b border-b-brand-olive-green/20">
-              <span className="opacity-70">Address:</span> 1A, 115 C-Scheme, Jaipur, Rajasthan (302016)
+              <span className="opacity-70">Address:</span> {info?.address}
             </h3>
           </div>
         </div>
@@ -146,7 +245,7 @@ const Setting = () => {
                 <Image src="/images/phone.svg" width={24} height={24} alt="Phone Icon" />
               </button>
             </div>
-            <div className="flex justify-between pb-[14px] border-b border-b-brand-olive-green/20">
+            <div onClick={()=>logout()} className="flex justify-between pb-[14px] border-b border-b-brand-olive-green/20">
               <h3>Log Out</h3>
               <button>
                 <Image src="/images/logout.svg" width={24} height={24} alt="Logout Icon" />
@@ -170,7 +269,8 @@ const Setting = () => {
               acceptedFormats={{
                 'image/*': ['.jpeg', '.png', '.jpg', '.gif']
               }}
-              isMultiple={false}
+              onChange={(e) => setFile(e)}
+              isMultiple={true}
               label=""
             />
             <Input
@@ -178,6 +278,8 @@ const Setting = () => {
               variant="bordered"
               label="Name"
               radius="sm"
+              value={info?.fullName}
+              onChange={(e) => setInfo({...info, fullName:e.target.value})}
               placeholder=""
               classNames={{
                 inputWrapper:
@@ -191,6 +293,8 @@ const Setting = () => {
               variant="bordered"
               label="Address"
               radius="sm"
+              value={info?.address}
+              onChange={(e) => setInfo({...info, address:e.target.value})}
               placeholder=""
               classNames={{
                 inputWrapper:
@@ -207,7 +311,7 @@ const Setting = () => {
                 <IoMdClose size={16} />
                 Close
               </button>
-              <button className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
+              <button onClick={updateProfile} className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
               >
                 <FaCheck size={16} />
                 Save
@@ -233,6 +337,7 @@ const Setting = () => {
                 variant="bordered"
                 label="Previous Password"
                 radius="sm"
+                onChange={(e) => setCurrentPassword(e.target.value)}
                 classNames={{
                   inputWrapper:
                     'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark mt-4 h-full',
@@ -255,6 +360,7 @@ const Setting = () => {
                 variant="bordered"
                 label="New Password"
                 radius="sm"
+                onChange={(e) => setNewPassword(e.target.value)}
                 classNames={{
                   inputWrapper:
                     'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark mt-4 h-full',
@@ -277,6 +383,7 @@ const Setting = () => {
                 variant="bordered"
                 label="New Password(Again)"
                 radius="sm"
+                onChange={(e) => setNewConfirmPassword(e.target.value)}
                 classNames={{
                   inputWrapper:
                     'border border-brand-dark hover:border-brand-dark data-[hover=true]:border-brand-dark mt-4 h-full',
@@ -303,7 +410,9 @@ const Setting = () => {
                 <IoMdClose size={16} />
                 Close
               </button>
-              <button className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
+              <button
+                onClick={() => changePassword()}
+                className="w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green flex items-center gap-1 hover:text-red-500 hover:border-red-500"
               >
                 <FaCheck size={16} />
                 Save

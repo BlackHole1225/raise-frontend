@@ -7,26 +7,18 @@ import axios from 'axios'
 import React, { useState } from 'react';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { notifySuccess } from '@/components/notification';
-
+import {useRouter} from 'next/navigation';
 const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-
-  // function UseClientSideStorage(key, defaultValue) {
-  //   useEffect(() => {
-  //     const value = localStorage.getItem(key) || defaultValue;
-  //     console.log(value);
-  //     localStorage.setItem(key, value);
-  //   }, [key, defaultValue]);
-  // }
+  const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null); // Clear previous errors
 
     try {
       const response = await axios.post(`${SERVER_LOCAL_IP}/api/login`, {
-        // const response = await fetch(`${SERVER_IP}/api/login`, {
         email,
         password
       });
@@ -34,33 +26,17 @@ const Page = () => {
       if (contentType && contentType.includes('application/json')) {
         console.log(response.data);
         const data = response.data;
-        //  login(response.data);
-        // If response is not OK, throw error
-        // if (!response.ok) {
-        //   throw new Error(data.message || 'Something went wrong');
-        // }
-
-        // Handle successful login
-
 
         notifySuccess('Login successful!');
         if (typeof window !== 'undefined') {
-          // Save user info and token in window.localStorage
           window.localStorage.setItem('userID', data.id);
-          window.localStorage.setItem('userName', data.fullName);
           window.localStorage.setItem('userEmail', data.email);
           window.localStorage.setItem('authToken', data.token);
-          // Redirect to campaigns page after successful login
-          window.location.href = '/campaigns';
+          router.push('/account')
         }
 
-        // UseClientSideStorage('userID', data.id);
-        // UseClientSideStorage('userName', data.fullName);
-        // UseClientSideStorage('userEmail', data.email);
-        // UseClientSideStorage('authToken', data.token);
 
       } else {
-        // Handle unexpected content-type
         throw new Error('Unexpected response format');
       }
 

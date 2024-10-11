@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useMemo } from 'react';
 import axios from 'axios';
-import { SERVER_IP } from '../../../utils/constants';
+import { SERVER_IP,SERVER_LOCAL_IP } from '../../../utils/constants';
 
 const Campaigns = () => {
   const [categories, setCategories] = useState([]);
@@ -31,7 +31,7 @@ const Campaigns = () => {
         const [categoriesRes, locationsRes, campaignsRes] = await Promise.all([
           axios.get(`${SERVER_IP}/api/category`),
           axios.get(`${SERVER_IP}/api/location`),
-          axios.get(`${SERVER_IP}/api/campaign`)
+          axios.get(`${SERVER_LOCAL_IP}/api/campaign`)
         ]);
 
         setCategories(categoriesRes.data.category);
@@ -230,7 +230,9 @@ const Campaigns = () => {
           <Link href={`/campaigns/${campaign._id}`} key={campaign._id}>
             <CampaignCard
               // imgUrl={campaign.file}
-              imgUrl="./images/tiger.png"
+              
+              imgUrl={campaign?.file?`${SERVER_LOCAL_IP}/api/file/download/${campaign?.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
+
               title={campaign.title}
               amount={campaign.totalAmount}
               type={getValueBasedOnIndex(i)}
