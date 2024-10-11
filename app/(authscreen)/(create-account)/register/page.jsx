@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Input } from '@nextui-org/input';
 import { Button } from '@nextui-org/button';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
-
+import { createUserWithEmailAndPassword,onAuthStateChanged, sendEmailVerification } from 'firebase/auth';
 const SignUpPage = () => {
   const [formData, setFormData] = useState({ fullName: '', email: '', password: '' });
   const router = useRouter();

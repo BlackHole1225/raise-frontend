@@ -4,9 +4,11 @@ import axios from 'axios'; // Ensure axios is imported
 import RichTextEditor from '@/components/ui/richTextEditor';
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import { Input } from '@nextui-org/input';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
 import 'react-quill/dist/quill.snow.css';
+import { notifySuccess } from '@/components/notification';
 import { Button } from '@nextui-org/button';
 import { SERVER_IP } from '../../../../../../utils/constants';
 import { FSERVER_IP, SERVER_LOCAL_IP } from '../../../../../../utils/constants';
@@ -39,6 +41,7 @@ const modules = {
   }
 };
 const Page = ({params}) => {
+  const router = useRouter();
   const [categories, setCategories] = useState([]);
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,6 +52,7 @@ const Page = ({params}) => {
   const [amount, setAmount] = useState();
   const [campaignImage, setCampaignImage] = useState(null);
   const [proofDocuments, setProofDocuments] = useState([]);
+
   const [campaignTitle, setCampaignTitle] = useState('');
   const [description, setDescription] = useState('');
   const [campaignData, setCampaignData] = useState(null);
@@ -220,8 +224,8 @@ const Page = ({params}) => {
       const response = await axios.put(`${SERVER_LOCAL_IP}/api/campaign/edit`, {...campaignData,file, kyc: proofDocumentIds},{ headers: {
         Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
       },});
-      console.log('Campaign created successfully:', response.data);
-
+      notifySuccess("Campaign updated successfully");
+      router.push('/campaigns');
       // if (!wallet || !amount) await handleConnectWallet();
       // console.log(">>> wallet publickey : ", wallet);
       // try {

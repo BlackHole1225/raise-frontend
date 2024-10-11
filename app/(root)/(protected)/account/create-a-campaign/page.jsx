@@ -5,6 +5,7 @@ import RichTextEditor from '@/components/ui/richTextEditor';
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import dynamic from 'next/dynamic';
 import { Input } from '@nextui-org/input';
+import { useRouter } from 'next/navigation';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
 import 'react-quill/dist/quill.snow.css';
 import { Button } from '@nextui-org/button';
@@ -39,6 +40,7 @@ const modules = {
   }
 };
 const Page = () => {
+  const router = useRouter();
   const [categories, setCategories] = useState([]);
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -218,6 +220,7 @@ const Page = () => {
       const response = await axios.post(`${SERVER_LOCAL_IP}/api/campaign/create`, formData,{ headers: {
         Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
       },});
+      router.push('/campaigns');
       console.log('Campaign created successfully:', response.data);
 
       // if (!wallet || !amount) await handleConnectWallet();

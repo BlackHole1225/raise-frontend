@@ -11,7 +11,7 @@ import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
-import {useRouter} from "next/navigation"
+import { useRouter } from "next/navigation"
 import { notifySuccess, notifyError } from '@/components/notification';
 import apiClient from '@/utils/api';
 
@@ -44,7 +44,7 @@ const Setting = () => {
     Array.from(file).forEach(f => {
       formData.append('files', f);
     });
- 
+
     try {
       const response = await apiClient.post(`/api/file/upload`, formData, {
         headers: {
@@ -66,10 +66,10 @@ const Setting = () => {
       throw error;
     }
   };
-  const logout = () =>{
+  const logout = () => {
     window.localStorage.setItem('userID', '');
     window.localStorage.setItem('userName', '');
-    window.localStorage.setItem('userEmail','');
+    window.localStorage.setItem('userEmail', '');
     window.localStorage.setItem('authToken', '');
     router.push('/login')
   }
@@ -107,7 +107,7 @@ const Setting = () => {
         // Handle unexpected content-type
         throw new Error('Unexpected response format');
       }
-    
+
     } catch (err) {
       console.error('Login error:', err);
       setError(err.message || 'Login failed');
@@ -121,9 +121,12 @@ const Setting = () => {
       }
       try {
         await apiClient.post(`/api/changePassword`, {
-          email: localStorage?.getItem('userEmail'),         // User's email
           currentPassword, // Current password
           newPassword,     // New password
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+          },
         });
 
         notifySuccess('Password was updated successfully');
@@ -147,9 +150,9 @@ const Setting = () => {
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
-  useEffect(()=>{
+  useEffect(() => {
     getUserInfo();
-  },[])
+  }, [])
   return (
     <div className="pt-20 pb-[232px]">
       <h1 className="uppercase text-5xl font-bold text-brand-dark font-heading">
@@ -157,13 +160,13 @@ const Setting = () => {
       </h1>
       <div className="grid grid-cols-12 gap-5 mt-5">
         <div className="bg-brand-eucalyptus pt-[46px] px-10 pb-[90px] col-span-6 text-brand-olive-green text-2xl font-bold">
-          {info?.avatar?<Avatar
+          {info?.avatar ? <Avatar
             src={`${SERVER_LOCAL_IP}/api/file/download/${info?.avatar}`}
             className="w-[180px] h-[180px]"
-          />:<Avatar
-          src={``}
-          className="w-[180px] h-[180px]"
-        />}
+          /> : <Avatar
+            src={``}
+            className="w-[180px] h-[180px]"
+          />}
           <h3 className="mt-[22px]">{info?.fullName}</h3>
           <div className="flex flex-col gap-6 mt-[60px]">
             <h3 className="pb-[14px] border-b border-b-brand-olive-green/20">
@@ -207,7 +210,7 @@ const Setting = () => {
                 <Image src="/images/phone.svg" width={24} height={24} alt="Phone Icon" />
               </button>
             </div>
-            <div onClick={()=>logout()} className="flex justify-between pb-[14px] border-b border-b-brand-olive-green/20">
+            <div onClick={() => logout()} className="flex justify-between pb-[14px] border-b border-b-brand-olive-green/20">
               <h3>Log Out</h3>
               <button>
                 <Image src="/images/logout.svg" width={24} height={24} alt="Logout Icon" />
@@ -241,7 +244,7 @@ const Setting = () => {
               label="Name"
               radius="sm"
               value={info?.fullName}
-              onChange={(e) => setInfo({...info, fullName:e.target.value})}
+              onChange={(e) => setInfo({ ...info, fullName: e.target.value })}
               placeholder=""
               classNames={{
                 inputWrapper:
@@ -256,7 +259,7 @@ const Setting = () => {
               label="Address"
               radius="sm"
               value={info?.address}
-              onChange={(e) => setInfo({...info, address:e.target.value})}
+              onChange={(e) => setInfo({ ...info, address: e.target.value })}
               placeholder=""
               classNames={{
                 inputWrapper:

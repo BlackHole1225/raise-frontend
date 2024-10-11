@@ -128,7 +128,7 @@ const Page = () => {
                 /> */}
                 <div className="relative flex items-center justify-center h-full">
                   <video
-                    src="https://videos.pexels.com/video-files/6646687/6646687-hd_1920_1080_24fps.mp4"
+                    src="/1.mp4"
                     autoPlay
                     controls={false}
                     muted
