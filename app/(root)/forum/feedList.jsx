@@ -215,7 +215,7 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
 const FeedItem = ({ feed, setIsDelete, setFeed, imageUrl, fontSize, reporterPhoto, reporterName, height }) => (
     <article className="flex">
         <img src={imageUrl || 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'} alt={imageUrl} className="w-[100px] md:w-[260px] min-w-[100px] md:min-w-[260px] object-cover" style={{ height }} />
-        <div className="flex flex-col bg-[#FAFF7D] pt-[30px] px-[22px] w-full pb-6 justify-between">
+        <div className="flex flex-col bg-[#FAFF7D] py-4 md:pt-[30px] px-3 md:px-[22px] w-full md:pb-6 justify-between">
             <Link href={`/forum/${feed._id}`}>
                 <h2 className=" font-bold tracking-wider uppercase text-brand-olive-green font-heading" style={{ fontSize: fontSize }}>
                     {feed.title}
@@ -247,7 +247,7 @@ const FeedItem = ({ feed, setIsDelete, setFeed, imageUrl, fontSize, reporterPhot
                                 setFeed(feed)
                                 setIsDelete(true)
                             }}
-                            className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[10%]"
+                            className="px-0 min-w-16 md:min-w-24 font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[10%]"
                         >
                             Delete
                         </Button>
@@ -256,7 +256,7 @@ const FeedItem = ({ feed, setIsDelete, setFeed, imageUrl, fontSize, reporterPhot
                                 variant="bordered"
                                 radius="full"
                                 size="lg"
-                                className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[10%]"
+                                className="px-0 min-w-16 md:min-w-24 font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7 basis-[10%]"
                             >
                                 Edit
                             </Button>

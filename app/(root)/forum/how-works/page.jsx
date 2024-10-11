@@ -31,9 +31,9 @@ export default function Page() {
             },
         ]
     };
-    return (<div className="grid grid-cols-12 gap-8 my-12">
-        <div className='col-span-7'>
-            <h1 className="uppercase text-5xl font-bold text-brand-dark mb-8 font-heading">
+    return (<div className="xl:grid xl:grid-cols-12 gap-8 xl:my-12">
+        <div className='xl:col-span-7'>
+            <h1 className="uppercase text-4xl md:text-5xl font-bold text-brand-dark mb-8 font-heading">
                 {data.title}
             </h1>
             <p className="text-2xl font-bold text-brand-dark mb-8 text-opacity-70 font-heading">
@@ -51,7 +51,7 @@ export default function Page() {
             ))}
 
         </div>
-        <div className="col-span-5 flex flex-col  gap-6">
+        <div className="xl:col-span-5 flex flex-col gap-6 mt-8 xl:mt-0">
             <FeedGetStart />
             <FeedList2 />
         </div>

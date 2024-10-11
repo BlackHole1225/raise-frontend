@@ -90,15 +90,15 @@ export default function Page() {
 
     return (
         <PostContext.Provider value={{ setSentComment, setVotedComment }}>
-            <div className="grid grid-cols-12 gap-8 my-12">
-                <div className="col-span-7 overflow-auto h-screen scrollbar-thin scrollbar-thumb-rounded-lg scrollbar-thumb-gray-600 pr-1">
+            <div className="2xl:grid 2xl:grid-cols-12 gap-8 my-12">
+                <div className="2xl:col-span-7 overflow-auto h-screen scrollbar-thin scrollbar-thumb-rounded-lg scrollbar-thumb-gray-600 pr-1">
                     <h1 className="uppercase text-5xl font-bold text-brand-dark mb-8 font-heading">
                         {post?.title}
                     </h1>
                     <img src={`${SERVER_LOCAL_IP}/api/file/download/${post?.file}`} alt={`${SERVER_LOCAL_IP}/api/file/download/${post?.file}`} className="w-full object-cover" />
                     <p dangerouslySetInnerHTML={{ __html: post?.content }} className="text-[24px] font-bold tracking-wider  text-brand-olive-green font-heading mt-8 mb-10">
                     </p>
-                    <div className='flex justify-between items-center my-12'>
+                    <div className='flex flex-wrap 2xl:flex-nowrap justify-between items-center my-12'>
                         <div className='flex gap-2'>
                             <img
                                 src={post?.poster?.avatar ? ` ${SERVER_LOCAL_IP}/api/file/download/${post?.poster?.avatar}` : `https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__`}
@@ -115,7 +115,7 @@ export default function Page() {
                                     {feed.reporterCountry}</p>
                             </div>
                         </div>
-                        <div className='flex gap-3'>
+                        <div className='flex flex-wrap md:flex-nowrap gap-3 mt-4 2xl:mt-0'>
                             <Button
                                 variant="bordered"
                                 radius="full"
@@ -187,7 +187,7 @@ export default function Page() {
                     {isReply && <CreateComments setIsOpen={(e) => { }} setIsReply={setIsReply} />}
                     {post?.comments && <FeedComments comments={post?.comments} />}
                 </div>
-                <div className="col-span-5 flex flex-col  gap-6">
+                <div className="2xl:col-span-5 flex flex-col gap-6 mt-8 2xl:mt-0">
                     <FeedGetStart />
                     <FeedList feedfontSize={24} height={168} isPagination={true} feeds={posts} />
                 </div>
