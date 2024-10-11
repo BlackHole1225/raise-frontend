@@ -130,7 +130,7 @@ const CampaignDataTable = () => {
             <Button size="sm" radius="full" onClick={()=>router.push(`/account/my-campaigns/${item._id}`)}>
               View
             </Button>
-            <Button size="sm" radius="full">
+            <Button size="sm" radius="full"  onClick={()=>router.push(`/account/edit-a-campaign/${item._id}`)}>
               Edit
             </Button>
           </div>

@@ -8,30 +8,32 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
+  Cell
 } from 'recharts';
 
 const data = [
-  { month: 'Jan', donateAmount: 2, receivedAmount: 2 },
-  { month: 'Feb', donateAmount: 2, receivedAmount: 2 },
-  { month: 'Mar', donateAmount: 2.4, receivedAmount: 2.4 },
-  { month: 'Apr', donateAmount: 2.4, receivedAmount: 2.4 },
-  { month: 'May', donateAmount: 1.9, receivedAmount: 1.9 },
-  { month: 'Jun', donateAmount: 1.9, receivedAmount: 1.9 },
-  { month: 'Jul', donateAmount: 1.5, receivedAmount: 1.5 },
-  { month: 'Aug', donateAmount: 1.5, receivedAmount: 1.5 },
-  { month: 'Sep', donateAmount: 1.1, receivedAmount: 1.1 },
-  { month: 'Oct', donateAmount: 1.1, receivedAmount: 1.1 },
-  { month: 'Nov', donateAmount: 1.5, receivedAmount: 2.1 },
-  { month: 'Dec', donateAmount: 1.5, receivedAmount: 2.1 }
+  { month: 'Jan', receivedAmount: 2 },
+  { month: 'Feb', receivedAmount: 2 },
+  { month: 'Mar', receivedAmount: 2.4 },
+  { month: 'Apr', receivedAmount: 2.4 },
+  { month: 'May', receivedAmount: 1.9 },
+  { month: 'Jun', receivedAmount: 1.9 },
+  { month: 'Jul', receivedAmount: 1.5 },
+  { month: 'Aug', receivedAmount: 1.5 },
+  { month: 'Sep', receivedAmount: 1.1 },
+  { month: 'Oct', receivedAmount: 1.1 },
+  { month: 'Nov', receivedAmount: 2.1 },
+  { month: 'Dec', receivedAmount: 2.1 }
 ];
 
 const DonationChart = () => {
   const hasData = true;
+
   return (
     <div>
       <h1 className="uppercase text-5xl font-bold text-brand-dark mb-8 font-heading">
-        Donation Analytics
+        DONATIONS RECEIVED
       </h1>
       {hasData ? (
         <ResponsiveContainer width="100%" height={400}>
@@ -52,8 +54,14 @@ const DonationChart = () => {
             />
             <Tooltip />
             <Legend />
-            <Bar dataKey="donateAmount" fill="#D1E2C0" />
-            <Bar dataKey="receivedAmount" fill="#3D4630" />
+            <Bar dataKey="receivedAmount">
+              {data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={index % 2 === 0 ? '#D1E2C0' : '#FAFF7D'}
+                />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       ) : (

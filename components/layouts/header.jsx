@@ -21,7 +21,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const pathname = usePathname();
   const [token, setToken] = useState('');
-  
+
 
   // const menuItems = [
   //   'Profile',
@@ -65,7 +65,7 @@ const Header = () => {
       setIsNavTransparent(false);
     }
   }, [pathname]);
-  useEffect(()=>{
+  useEffect(() => {
     setToken(localStorage?.getItem('authToken'))
   }, [])
   return (
@@ -76,7 +76,7 @@ const Header = () => {
       }}
       onMenuOpenChange={setIsMenuOpen}
       maxWidth="full"
-      className={`h-[100px] duration-500 fixed ${isNavTransparent ? 'bg-transparent backdrop-filter-none' : 'bg-brand-olive-green'}`}
+      className={`h-[100px] z-50 duration-500 fixed ${isNavTransparent ? 'bg-transparent backdrop-filter-none' : 'bg-brand-olive-green'}`}
     >
       <NavbarContent>
         <NavbarMenuToggle
@@ -124,7 +124,7 @@ const Header = () => {
           )}
         </NavbarItem>
       </NavbarContent>
-      <NavbarMenu className='bg-brand-lemon-yellow'>
+      <NavbarMenu className='bg-brand-lemon-yellow z-50'>
         {menus.map((item, index) => (
           <NavbarMenuItem key={`${item.href}-${index}`}>
             <Link className="w-full text-brand-olive-green font-bold border-b border-b-brand-olive-green py-1" href={item.href} size="lg">
@@ -132,6 +132,25 @@ const Header = () => {
             </Link>
           </NavbarMenuItem>
         ))}
+        <NavbarItem>
+          {!token ? (
+            <Link
+              color="foreground"
+              href="/login"
+              className="w-full \text-brand-olive-green font-bold border-b border-b-brand-olive-green py-1"
+            >
+              Login
+            </Link>
+          ) : (
+            <Link
+              color="foreground"
+              href="/account"
+              className="w-full text-brand-olive-green font-bold border-b border-b-brand-olive-green py-1"
+            >
+              Account
+            </Link>
+          )}
+        </NavbarItem>
       </NavbarMenu>
     </Navbar>
   );

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Image from 'next/image';
 import { Avatar } from '@nextui-org/avatar';
 import { Input } from '@nextui-org/input';
@@ -14,24 +13,16 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput'
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 import {useRouter} from "next/navigation"
 import { notifySuccess, notifyError } from '@/components/notification';
+import apiClient from '@/utils/api';
 
-function UseClientSideStorage(key, defaultValue) {
-  useEffect(() => {
-    const value = localStorage.getItem(key) || defaultValue;
-    console.log(value);
-    localStorage.setItem(key, value);
-  }, [key, defaultValue]);
-}
+
 
 const Setting = () => {
   const [openModal, setOpenModal] = useState(null);
   const [file, setFile] = useState(null);
-  const [fullName, setFullName] = useState('');
-  const [address, setAddress] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newConfirmPassword, setNewConfirmPassword] = useState('');
-  const [newEmail, setNewEmail] = useState('');
   const [error, setError] = useState(null);
   const [info, setInfo] = useState(null);
   const router = useRouter()
@@ -42,13 +33,7 @@ const Setting = () => {
   const getUserInfo = async () => {
     try {
       console.log('here');
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/user/`, {
-        email: localStorage?.getItem('userEmail'),  // Old password for verification
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage?.getItem("authToken")}`,  // JWT token for authentication
-        },
-      });
+      const response = await apiClient.get(`/api/user/`);
       setInfo(response.data.user);
     } catch (error) {
       setError("Error changing email:");
@@ -61,7 +46,7 @@ const Setting = () => {
     });
  
     try {
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/file/upload`, formData, {
+      const response = await apiClient.post(`/api/file/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -98,7 +83,7 @@ const Setting = () => {
     const avatar = await updateAvatar();
     formData.append('avatar', avatar);
     try {
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/updateUserProfile`,
+      const response = await apiClient.post(`${SERVER_LOCAL_IP}/api/updateUserProfile`,
         formData,
         {
           headers: {
@@ -113,29 +98,10 @@ const Setting = () => {
       if (contentType && contentType.includes('application/json')) {
         console.log(response.data);
         const user = response.data.user;
-        //  login(response.data);
-        // If response is not OK, throw error
-        // if (!response.ok) {
-          //   throw new Error(data.message || 'Something went wrong');
-        // }
-
-        // Handle successful login
-        
         if (typeof window !== 'undefined') {
-          // Save user info and token in window.localStorage
-          // window.localStorage.setItem('userID', user.id);
-          // window.localStorage.setItem('userName', user.fullName);
           window.localStorage.setItem('userEmail', user.email);
           getUserInfo();
-          // window.localStorage.setItem('authToken', data.token);
-          // Redirect to campaigns page after successful login
-          // window.location.href = '/campaigns';
         }
-
-        // UseClientSideStorage('userID', data.id);
-        // UseClientSideStorage('userName', data.fullName);
-        // UseClientSideStorage('userEmail', data.email);
-        // UseClientSideStorage('authToken', data.token);
 
       } else {
         // Handle unexpected content-type
@@ -154,14 +120,10 @@ const Setting = () => {
         return;
       }
       try {
-        await axios.post(`${SERVER_LOCAL_IP}/api/changePassword`, {
+        await apiClient.post(`/api/changePassword`, {
           email: localStorage?.getItem('userEmail'),         // User's email
           currentPassword, // Current password
           newPassword,     // New password
-        }, {
-          headers: {
-            Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
-          },
         });
 
         notifySuccess('Password was updated successfully');

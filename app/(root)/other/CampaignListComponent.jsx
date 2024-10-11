@@ -3,10 +3,11 @@ import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import BrandDropdown from '@/components/ui/brandDropdown';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
-const CampaignListComponent = ({params}) => {
+const CampaignListComponent = ({ params }) => {
   const [categories, setCategories] = useState([]);
   const [locations, setLocations] = useState([]);
   const [campaigns, setCampaigns] = useState([]);
@@ -99,9 +100,62 @@ const CampaignListComponent = ({params}) => {
           Create a Campaign
         </Link>
       </header>
+      <section className="flex flex-wrap gap-2 mt-7 text-base font-bold text-stone-700">
 
-      <FilterSection />
-
+        <div className="basis-[20%]">
+          <BrandDropdown
+            label="Category"
+            data={categories.map((cat) => ({ key: cat._id, label: cat.name }))}
+            icon={
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6.89584 9.16667C6.57639 9.16667 6.33667 9.02417 6.17667 8.73917C6.01667 8.45417 6.02028 8.17306 6.1875 7.89583L9.29167 2.83333C9.45834 2.56944 9.69445 2.4375 10 2.4375C10.3056 2.4375 10.5417 2.56944 10.7083 2.83333L13.8125 7.89583C13.9792 8.17361 13.9828 8.455 13.8233 8.74C13.6639 9.025 13.4242 9.16722 13.1042 9.16667H6.89584ZM14.5833 18.3333C13.5417 18.3333 12.6561 17.9686 11.9267 17.2392C11.1972 16.5097 10.8328 15.6244 10.8333 14.5833C10.8333 13.5417 11.1981 12.6561 11.9275 11.9267C12.6569 11.1972 13.5422 10.8328 14.5833 10.8333C15.625 10.8333 16.5106 11.1981 17.24 11.9275C17.9694 12.6569 18.3339 13.5422 18.3333 14.5833C18.3333 15.625 17.9686 16.5106 17.2392 17.24C16.5097 17.9694 15.6244 18.3339 14.5833 18.3333ZM3.33334 17.9167C3.09723 17.9167 2.89917 17.8367 2.73917 17.6767C2.57917 17.5167 2.49945 17.3189 2.5 17.0833V12.0833C2.5 11.8472 2.58 11.6492 2.74 11.4892C2.9 11.3292 3.09778 11.2494 3.33334 11.25H8.33334C8.56945 11.25 8.7675 11.33 8.9275 11.49C9.0875 11.65 9.16723 11.8478 9.16667 12.0833V17.0833C9.16667 17.3194 9.08667 17.5175 8.92667 17.6775C8.76667 17.8375 8.56889 17.9172 8.33334 17.9167H3.33334Z"
+                  fill="#3D4630"
+                />
+              </svg>
+            }
+            onSelectionChange={(keys) => handleFilterChange('category', keys)}
+          />
+        </div>
+        <FilterButton
+          label="Close to goal"
+          icon="https://cdn.builder.io/api/v1/image/assets/TEMP/f0661d16d72b07aff81cbdbe915cc912656774658fe96b306711ce4b3959add4"
+        />
+        <Input
+          startContent={
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11 18C14.866 18 18 14.866 18 11C18 7.13401 14.866 4 11 4C7.13401 4 4 7.13401 4 11C4 14.866 7.13401 18 11 18Z"
+                stroke="#3D4630"
+                strokeWidth="2"
+              />
+              <path d="M20 20L17 17" stroke="#3D4630" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          }
+          size="lg"
+          variant="bordered"
+          placeholder="Search"
+          radius="full"
+          className='w-fit'
+          classNames={{
+            inputWrapper: 'border-brand-olive-green'
+          }}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </section>
       <section className="mt-10">
         {filteredCampaigns?.map((d) => (
           <>
@@ -155,7 +209,7 @@ const SearchButton = () => (
   </button>
 );
 
-const CampaignItem = ({ title, amountRaised, progressPercentage, imageUrl,params, id }) => (
+const CampaignItem = ({ title, amountRaised, progressPercentage, imageUrl, params, id }) => (
   <article className="flex gap-5">
     <img src={imageUrl} alt={imageUrl} className="w-[121px] h-[111px] object-cover" />
     <div className="flex-1">
@@ -163,10 +217,12 @@ const CampaignItem = ({ title, amountRaised, progressPercentage, imageUrl,params
       <p className="text-base font-bold tracking-wider text-stone-700">Raised {amountRaised}</p>
       <ProgressBar percentage={progressPercentage} />
       <div className="flex gap-1.5 mt-3.5 text-sm font-bold">
-        <ActionButton
-          label="Edit"
-          icon="https://cdn.builder.io/api/v1/image/assets/TEMP/8625ca56f29f59699991011c4fc201619ea99d62c7578481ae856563a9fde052"
-        />
+        <Link href={`/account/edit-a-campaign/${id}`}>
+          <ActionButton
+            label="Edit"
+            icon="https://cdn.builder.io/api/v1/image/assets/TEMP/8625ca56f29f59699991011c4fc201619ea99d62c7578481ae856563a9fde052"
+          />
+        </Link>
         <Link href={`/account/my-campaigns/${id}`}>
           <ActionButton
             label="View"

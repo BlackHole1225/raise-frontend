@@ -158,8 +158,8 @@ const page = ({ params }) => {
             Add an Update
           </Button>
         </div>
-        {campaignData?.formattedContent?.map((d) => (
-          <UpdateItem isUpdate={isUpdate} setIsUpdate={setIsUpdate} params={params} item={d} setItem={setItem} isDelete={isDelete} isCUModal={isCUModal} setIsCUModal={setIsCUModal} setUpdates={setCampaignData} setIsDelete={setIsDelete} />
+        {campaignData?.formattedContent?.map((d, index) => (
+          index>0&&<UpdateItem isUpdate={isUpdate} setIsUpdate={setIsUpdate} params={params} item={d} setItem={setItem} isDelete={isDelete} isCUModal={isCUModal} setIsCUModal={setIsCUModal} setUpdates={setCampaignData} setIsDelete={setIsDelete} />
         ))}
       </div>
       <DeleteUpdate params={params} setUpdates={setCampaignData} isDelete={isDelete} setIsDelete={setIsDelete} item={item} />

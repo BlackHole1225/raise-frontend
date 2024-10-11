@@ -2,10 +2,26 @@
 import React from 'react';
 import DonationChart from './donationChart';
 import DonationListComponent from './donationList';
-import CampaignListComponent from '../../other/CampaignListComponent';
-
+import CampaignListComponent from '../../other/CampaignListComponent';  
+import apiClient from '@/utils/api';
+import {useRouter} from "next/navigation"
+import { useEffect } from 'react';
 const page = ({params}) => {
-  
+  const router = useRouter();
+  const getUserInfo = async () => {
+    try {
+      console.log('here');
+      const response = await apiClient.get(`/api/tokenlogin/`);
+      
+    } catch (error) { 
+      // notifyError('Token expired, please login again');
+      // localStorage.removeItem('authToken');
+      // router.push('/login');
+    }
+  }
+  useEffect(() => {
+    getUserInfo();
+  }, []);
   return (
     <div>
       <DonationChart />
