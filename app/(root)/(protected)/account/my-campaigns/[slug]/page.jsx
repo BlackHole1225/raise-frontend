@@ -52,9 +52,9 @@ const page = ({ params }) => {
   }, [item])
   return (
     <div>
-      <div className="flex justify-between mb-6">
+      <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
         <h1 className="heading-2 w-1/2 flex-grow">{campaignData?.campaign.title}</h1>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap md:flex-nowrap gap-4">
           <Button
             variant="bordered"
             radius="full"
@@ -130,7 +130,7 @@ const page = ({ params }) => {
           </Button>
         </div>
       </div>
-      <div className="grid grid-cols-12 gap-8 my-12 ">
+      <div className="xl:grid xl:grid-cols-12 gap-8 my-12 ">
         <div className="col-span-7 ">
           <img
             src={campaignData?.campaign ? `${SERVER_LOCAL_IP}/api/file/download/${campaignData?.campaign.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
@@ -138,13 +138,13 @@ const page = ({ params }) => {
             className="w-full object-cover h-[484px]"
           />
         </div>
-        <div className="col-span-5 h-[484px]">
+        <div className="col-span-5 h-full xl:h-[484px] mt-8 xl:mt-0">
           <DonationListComponent compFor="campaign" />
         </div>
       </div>
       <div className='w-full flex flex-col gap-2 bg-brand-weak-green px-8 py-11  mb-8'>
-        <div className='flex justify-between w-full mb-10'>
-          <h1 className="text-[32px] font-bold w-1/2 flex-grow">UPDATES</h1>
+        <div className='flex flex-col md:flex-row gap-2 justify-between w-full mb-10'>
+          <h1 className="text-2xl md:text-[32px] font-bold w-1/2 flex-grow">UPDATES</h1>
           <Button
             variant="bordered"
             radius="full"
@@ -159,7 +159,7 @@ const page = ({ params }) => {
           </Button>
         </div>
         {campaignData?.formattedContent?.map((d, index) => (
-          index>0&&<UpdateItem isUpdate={isUpdate} setIsUpdate={setIsUpdate} params={params} item={d} setItem={setItem} isDelete={isDelete} isCUModal={isCUModal} setIsCUModal={setIsCUModal} setUpdates={setCampaignData} setIsDelete={setIsDelete} />
+          index > 0 && <UpdateItem isUpdate={isUpdate} setIsUpdate={setIsUpdate} params={params} item={d} setItem={setItem} isDelete={isDelete} isCUModal={isCUModal} setIsCUModal={setIsCUModal} setUpdates={setCampaignData} setIsDelete={setIsDelete} />
         ))}
       </div>
       <DeleteUpdate params={params} setUpdates={setCampaignData} isDelete={isDelete} setIsDelete={setIsDelete} item={item} />
@@ -170,8 +170,8 @@ const page = ({ params }) => {
 };
 const UpdateItem = ({ item, setIsDelete, setIsUpdate, setIsCUModal, setItem }) => {
   return (<div className='border-b border-brand-dark w-full pb-1'>
-    <div className='flex w-full justify-between '>
-      <p className="text-2xl font-bold w-1/2 flex-grow text-brand-dark">{item?.formattedDate}</p>
+    <div className='flex flex-col md:flex-row gap-2 w-full justify-between '>
+      <p className="text-2xl font-bold w-full md:w-1/2 flex-grow text-brand-dark">{item?.formattedDate}</p>
       <div className='flex gap-2'>
         <Button
           variant="bordered"

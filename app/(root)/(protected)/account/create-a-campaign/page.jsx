@@ -217,9 +217,11 @@ const Page = () => {
       console.log(formData);
 
       // Send form data to the server
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/campaign/create`, formData,{ headers: {
-        Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
-      },});
+      const response = await axios.post(`${SERVER_LOCAL_IP}/api/campaign/create`, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+        },
+      });
       router.push('/campaigns');
       console.log('Campaign created successfully:', response.data);
 
@@ -310,7 +312,7 @@ const Page = () => {
       <h1 className="uppercase text-5xl font-bold text-brand-dark mb-8 font-heading">
         Create a Campaign
       </h1>
-      <div className="grid grid-cols-2 gap-8 mb-4">
+      <div className="md:grid md:grid-cols-2 gap-8 mb-4">
         <div className="flex flex-col gap-5">
           <Input
             variant="bordered"
@@ -350,7 +352,7 @@ const Page = () => {
             label="How much fund do you want to raise? (Goal)"
             radius="sm"
             onChange={(e) => setAmount(e.target.value)}
-            endContent={<p className="font-heading text-xl text-brand-dark">SOL</p>}
+            endContent={<p className="font-heading text-sm xl:text-xl text-brand-dark">SOL</p>}
           />
           <DragDropUpload
             acceptedFormats={{
@@ -369,7 +371,7 @@ const Page = () => {
             modules={modules}
           />
         </div>
-        <div className="col-span-2">
+        <div className="col-span-2 mt-8 md:mt-0">
           <DragDropUpload
             acceptedFormats={{
               'image/*': ['.jpeg', '.png', '.jpg', '.gif'],

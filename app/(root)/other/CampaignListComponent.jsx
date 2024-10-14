@@ -91,10 +91,10 @@ const CampaignListComponent = ({ params }) => {
   console.log('>>> campaigns : ', campaigns);
   return (
     <main className="bg-stone-300 max-w-[771px] p-8 pb-28">
-      <header className="flex justify-between items-center font-bold">
-        <h1 className="text-3xl tracking-widest uppercase text-zinc-800">Your Campaigns</h1>
+      <header className="flex flex-col md:flex-row gap-2 justify-between items-center font-bold">
+        <h1 className="text-2xl md:text-3xl tracking-widest uppercase text-zinc-800">Your Campaigns</h1>
         <Link
-          className="px-6 py-3.5 text-base text-amber-50 bg-stone-700 rounded-full"
+          className="p-2 md:px-6 md:py-3.5 text-center text-sm md:text-base text-amber-50 bg-stone-700 rounded-full ml-auto"
           href="/account/create-a-campaign"
         >
           Create a Campaign
@@ -211,12 +211,14 @@ const SearchButton = () => (
 
 const CampaignItem = ({ title, amountRaised, progressPercentage, imageUrl, params, id }) => (
   <article className="flex gap-5">
-    <img src={imageUrl} alt={imageUrl} className="w-[121px] h-[111px] object-cover" />
+    <div>
+      <img src={imageUrl} alt={imageUrl} className="w-[121px] h-full md:h-[111px] object-cover" />
+    </div>
     <div className="flex-1">
       <h2 className="text-2xl font-bold tracking-wider uppercase text-stone-700">{title}</h2>
       <p className="text-base font-bold tracking-wider text-stone-700">Raised {amountRaised}</p>
       <ProgressBar percentage={progressPercentage} />
-      <div className="flex gap-1.5 mt-3.5 text-sm font-bold">
+      <div className="flex flex-wrap md:flex-nowrap gap-1.5 mt-3.5 text-sm font-bold">
         <Link href={`/account/edit-a-campaign/${id}`}>
           <ActionButton
             label="Edit"

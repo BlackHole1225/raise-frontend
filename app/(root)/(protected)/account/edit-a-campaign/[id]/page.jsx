@@ -40,7 +40,7 @@ const modules = {
     ],
   }
 };
-const Page = ({params}) => {
+const Page = ({ params }) => {
   const router = useRouter();
   const [categories, setCategories] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -68,7 +68,7 @@ const Page = ({params}) => {
     const fetchData = async () => {
       try {
         const campaignsRes = await axios.get(`${SERVER_LOCAL_IP}/api/campaign/${params.id}`);
-        setCampaignData({...campaignsRes.data.data.campaign}); // Assuming the response has "data"
+        setCampaignData({ ...campaignsRes.data.data.campaign }); // Assuming the response has "data"
         console.log('Fetched Campaign:', campaignsRes.data.data.campaign);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -224,9 +224,11 @@ const Page = ({params}) => {
 
 
       // Send form data to the server
-      const response = await axios.put(`${SERVER_LOCAL_IP}/api/campaign/edit`, {...campaignData,file, kyc: proofDocumentIds},{ headers: {
-        Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
-      },});
+      const response = await axios.put(`${SERVER_LOCAL_IP}/api/campaign/edit`, { ...campaignData, file, kyc: proofDocumentIds }, {
+        headers: {
+          Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+        },
+      });
       notifySuccess("Campaign updated successfully");
       router.push('/campaigns');
       // if (!wallet || !amount) await handleConnectWallet();
@@ -316,14 +318,14 @@ const Page = ({params}) => {
       <h1 className="uppercase text-5xl font-bold text-brand-dark mb-8 font-heading">
         Edit a Campaign
       </h1>
-      <div className="grid grid-cols-2 gap-8 mb-4">
+      <div className="md:grid md:grid-cols-2 gap-8 mb-4">
         <div className="flex flex-col gap-5">
           <Input
             variant="bordered"
             label="Campaign Title"
             radius="sm"
             value={campaignData?.title}
-            onChange={(e) => setCampaignData({...campaignData, title: e.target.value})}
+            onChange={(e) => setCampaignData({ ...campaignData, title: e.target.value })}
           />
           <Autocomplete
             label="Where will your funds go? (Country)"
@@ -355,8 +357,8 @@ const Page = ({params}) => {
             variant="bordered"
             label="How much fund do you want to raise? (Goal)"
             radius="sm"
-            onChange={(e) => setCampaignData({...campaignData, amount: e.target.value})}
-            endContent={<p className="font-heading text-xl text-brand-dark">SOL</p>}
+            onChange={(e) => setCampaignData({ ...campaignData, amount: e.target.value })}
+            endContent={<p className="font-heading text-sm xl:text-xl text-brand-dark">SOL</p>}
           />
           <DragDropUpload
             acceptedFormats={{
@@ -371,11 +373,11 @@ const Page = ({params}) => {
           <ReactQuill
             theme="snow"
             value={campaignData?.content[0]?.text}
-            onChange={(e) => setCampaignData({...campaignData,content: [{...campaignData?.content[0], text: e}]})}
+            onChange={(e) => setCampaignData({ ...campaignData, content: [{ ...campaignData?.content[0], text: e }] })}
             modules={modules}
           />
         </div>
-        <div className="col-span-2">
+        <div className="col-span-2 mt-8 md:mt-0">
           <DragDropUpload
             acceptedFormats={{
               'image/*': ['.jpeg', '.png', '.jpg', '.gif'],

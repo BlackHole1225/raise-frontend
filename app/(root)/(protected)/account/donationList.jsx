@@ -62,7 +62,7 @@ const DonationListComponent = ({ compFor = 'home' }) => {
 };
 
 const FilterSection = ({ compFor }) => (
-  <div className="flex gap-4 items-center mt-4 mb-8">
+  <div className="flex flex-col md:flex-row gap-4 items-start md:items-center mt-4 mb-8">
     <div className="basis-[40%]">
       {compFor === 'campaign' ? (
         <BrandDropdown
@@ -160,8 +160,8 @@ const DonationItem = ({ name, amount, time, transactionHash, imageUrl, expanded 
       <div className="flex items-start gap-3">
         <img src={imageUrl} alt={imageUrl} className="w-[50px] h-[50px] rounded-full" />
         <div>
-          <h2 className="text-3xl tracking-wider uppercase font-heading">{name}</h2>
-          <div className="flex gap-3.5 text-base">
+          <h2 className="text-2xl md:text-3xl tracking-wider uppercase font-heading">{name}</h2>
+          <div className="flex flex-col md:flex-row gap-1 md:gap-3.5 text-base">
             <span>{amount}</span>
             <span className="opacity-60">{time}</span>
             <span className="opacity-60">{transactionHash}</span>
