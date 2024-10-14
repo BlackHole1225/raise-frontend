@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import { notifySuccess } from '@/components/notification';
 import axios from 'axios';
 
 const SectionDivider = () => <hr className="border-t border-stone-700 my-8 w-full" />;
@@ -100,6 +101,8 @@ function CampaignDetailsContent({ campaignData }) {
       }
     } catch (error) {
       console.error('Error adding reaction', error);
+      notifySuccess(error);
+
     }
   };
   return (

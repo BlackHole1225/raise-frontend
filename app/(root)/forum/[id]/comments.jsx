@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, } from 'react';
 import BrandDropdown from '@/components/ui/brandDropdown';
 // data/blogTree.js
 import styles from './blogTree.module.css';
@@ -11,7 +11,8 @@ import CreateComments from './createComments';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 import { useParams } from 'next/navigation'
 import axios from 'axios';
-import {PostContext} from './page';
+import { usePostContext } from './page';
+import { formatTimeAgo } from '@/utils/formartTime';
 
 // Flat list of blog data
 const blogData = [
@@ -103,12 +104,12 @@ const FeedComments = ({ feedfontSize, comments }) => {
     return (
         <>
             <div className='items-center my-12'>
-                <div className="flex gap-8 ">
+                <div className="flex flex-wrap md:flex-nowrap gap-2 md:gap-8 ">
                     <Button
                         variant="bordered"
                         radius="full"
                         size="lg"
-                        className="font-medium text-brand-olive-green border-brand-olive-green basis-[30%]"
+                        className="min-w-36 font-medium text-brand-olive-green border-brand-olive-green basis-[30%]"
                         startContent={
                             <svg
                                 width="20"
@@ -186,136 +187,140 @@ const FeedComments = ({ feedfontSize, comments }) => {
         </>
     );
 };
-const CommentItem = ({ description, votes, accessTime, reporterPhoto, reporterName, hasChildren, parentId, isOpen, isReply, setIsOpen, setIsReply,_id }) =>{ 
+const CommentItem = ({ description, votes, date, reporterPhoto, reporterName, hasChildren, parentId, isOpen, isReply, setIsOpen, setIsReply, _id }) => {
     const params = useParams();
-    const {setVotedComment} = useContext(PostContext);
+    const { setVotedComment } = usePostContext();
 
     const voteOnComment = async (isVote) => {
         console.log(isVote);
         try {
-          const response = await axios.put(`${SERVER_LOCAL_IP}/api/post/comment/${_id}/vote`,{isVote, postId:params.id },{
-            headers: {
-                Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
-              },
-          });
-          setVotedComment(response.data.comment)
-        //   setPost((d)=>({
-        //     ...d,
-        //     votes:response.data.votes
-        //   }));
-          console.log(response.data.votes);
-          const data = await response.json();
-      
-          if (response.ok) {
-            console.log(data.message); // "Vote successful"
-            console.log(`Total Votes: ${data.votes}`);
-          } else {
-            console.error(data.message); // Handle error messages (e.g., "You have already voted")
-          }
+            const response = await axios.put(`${SERVER_LOCAL_IP}/api/post/comment/${_id}/vote`, { isVote, postId: params.id }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+                },
+            });
+            setVotedComment(response.data.comment)
+            //   setPost((d)=>({
+            //     ...d,
+            //     votes:response.data.votes
+            //   }));
+            console.log(response.data.votes);
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log(data.message); // "Vote successful"
+                console.log(`Total Votes: ${data.votes}`);
+            } else {
+                console.error(data.message); // Handle error messages (e.g., "You have already voted")
+            }
         } catch (error) {
-          console.error('Error voting on blog:', error);
+            console.error('Error voting on blog:', error);
         }
-      };
-    return(<>
-    <article className='pb-9' onClick={() => { setIsOpen(!isOpen); setIsReply(false) }}>
-        <div className='flex gap-2 items-center'>
-            <img src={reporterPhoto} alt={reporterPhoto} className="w-[30px] h-[30px] object-cover rounded-full" />
-            <div className='flex items-center gap-2'>
-                <h2 className=" font-bold text-2xl tracking-wider uppercase text-brand-olive-green font-heading" >
-                    {reporterName}
-                </h2>
-                <svg width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle opacity="0.7" cx="2.5" cy="2.5" r="2.5" fill="#25282B" />
-                </svg>
-                <p className="text-base font-bold tracking-wider text-brand-olive-green flex items-center gap-1">
-                    {accessTime} min ago</p>
+    };
+    return (<>
+        <article className='pb-9' onClick={() => { setIsOpen(!isOpen); setIsReply(false) }}>
+            <div className='flex gap-2 items-center'>
+                <img
+                    src={reporterPhoto ? ` ${SERVER_LOCAL_IP}/api/file/download/${reporterPhoto}` : `https://s3-alpha-sig.figma.com/img/8356/7f57/7a03ba13dd8974f6b817895895bc8831?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KP2pgcg4S~3p2-wjbg46I~Abxyy4kq9t3G5uMpMjEcS~kUuiYmJEi5TnOgD7TO4DiD80YFV1B9xI1eRDOytA368yRxoNOGWgzn9gkdRXsGKj4JxdEoFkplVRvKRoHwmbWruAl1r6vzGkHgwjqQ5JGXJuY-19UVPg8q10GL9OkAjYia6KMtS8-I2r-z4iRfrKl2BORJ7aOe7HsziHoZxYOCZiDxKlpSlZrFcOoFaC2jxWzy8WHMEnKrM0j48ArHguEof5vGW~bPfBFw~kvrqhvhzFfovFIGk-7Kxttzm9erMX38AwtDA7j98rXT3Jd7mt0APGwRS-HuOu6U8DrOP0sg__`}
+
+                    alt={reporterPhoto} className="w-[30px] h-[30px] object-cover rounded-full" />
+                <div className='flex items-center gap-2'>
+                    <h2 className=" font-bold text-2xl tracking-wider uppercase text-brand-olive-green font-heading" >
+                        {reporterName}
+                    </h2>
+                    <svg width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle opacity="0.7" cx="2.5" cy="2.5" r="2.5" fill="#25282B" />
+                    </svg>
+                    <p className="text-base font-bold tracking-wider text-brand-olive-green flex items-center gap-1">
+                        {formatTimeAgo(date)}</p>
+                </div>
             </div>
-        </div>
-        <p className="text-base font-bold tracking-wider text-brand-olive-green flex items-center gap-1 pl-8 mt-1 pt-3 pb-6 mb-[-2px] border-brand-dark border-opacity-50 ml-[15px] border-l">
-            {description}</p>
-        <div className='flex gap-3 '>
-            <div className='w-[30px] flex items-center justify-center'>
-                {hasChildren ? (isOpen ? <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="0.35" y="0.749902" width="16.02" height="15.3" rx="7.65" stroke="#25282B" stroke-width="0.7" />
-                    <path d="M11.72 8.3999H8.36M8.36 8.3999H5M8.36 8.3999H8.40039" stroke="black" stroke-width="0.63" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                    : <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="0.35" y="0.35" width="17.22" height="17.22" rx="8.61" stroke="#25282B" stroke-width="0.7" />
-                        <path d="M12.3196 8.9601H8.95961M8.95961 8.9601H5.59961M8.95961 8.9601V5.6001M8.95961 8.9601V12.3201" stroke="black" stroke-width="0.63" stroke-linecap="round" stroke-linejoin="round" />
+            <p className="text-base font-bold tracking-wider text-brand-olive-green flex items-center gap-1 pl-8 mt-1 pt-3 pb-6 mb-[-2px] border-brand-dark border-opacity-50 ml-[15px] border-l">
+                {description}</p>
+            <div className='flex gap-3 '>
+                <div className='w-[30px] flex items-center justify-center'>
+                    {hasChildren ? (isOpen ? <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0.35" y="0.749902" width="16.02" height="15.3" rx="7.65" stroke="#25282B" stroke-width="0.7" />
+                        <path d="M11.72 8.3999H8.36M8.36 8.3999H5M8.36 8.3999H8.40039" stroke="black" stroke-width="0.63" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                ) : ' '}
+                        : <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0.35" y="0.35" width="17.22" height="17.22" rx="8.61" stroke="#25282B" stroke-width="0.7" />
+                            <path d="M12.3196 8.9601H8.95961M8.95961 8.9601H5.59961M8.95961 8.9601V5.6001M8.95961 8.9601V12.3201" stroke="black" stroke-width="0.63" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    ) : ' '}
+                </div>
+
+                <Button
+                    variant="bordered"
+                    radius="full"
+                    size="sm"
+                    onClick={() => voteOnComment(true)}
+                    className="font-bold text-brand-olive-green border-brand-olive-green h-[30px] "
+                    startContent={
+                        <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg" className='pb-[1px] border-b-1 border-[black]'>
+                            <path d="M4.75 11.615V11.865H5H6H6.25V11.615V3.48573L8.94239 6.17295L9.11904 6.34926L9.29565 6.1729L9.98465 5.4849L10.1617 5.30813L9.98478 5.13122L5.67678 0.823223L5.5 0.646447L5.32322 0.823223L1.01522 5.13122L0.838447 5.308L1.01522 5.48478L1.70322 6.17278L1.8798 6.34935L2.05658 6.17298L4.75 3.4856V11.615Z" fill="black" stroke="black" stroke-width="0.5" />
+                        </svg>
+
+                    }
+                >
+                    Upvote ({votes})
+                </Button>
+                <Button
+                    variant="bordered"
+                    radius="full"
+                    size="sm"
+                    onClick={() => voteOnComment(false)}
+                    className="font-bold text-brand-olive-green border-brand-olive-green h-[30px] "
+                    startContent={
+                        <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg" className='pt-[1px] border-t-1 border-[black]'>
+                            <path d="M6.25 3.385V3.135H6L5 3.135H4.75V3.385L4.75 11.5143L2.05761 8.82705L1.88096 8.65074L1.70435 8.8271L1.01535 9.5151L0.838318 9.69187L1.01522 9.86878L5.32322 14.1768L5.5 14.3536L5.67678 14.1768L9.98478 9.86878L10.1616 9.692L9.98478 9.51522L9.29678 8.82722L9.1202 8.65065L8.94342 8.82702L6.25 11.5144L6.25 3.385Z" fill="black" stroke="black" stroke-width="0.5" />
+                        </svg>
+
+                    }
+                >
+                    Downvote
+                </Button>
+                <Button
+                    onClick={() => { setIsReply(true), setIsOpen(false) }}
+                    variant="bordered"
+                    radius="full"
+                    size="sm"
+                    className="font-bold text-brand-olive-green border-brand-olive-green h-[30px] "
+                    startContent={
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M2.90078 1.63722C2.6223 1.63722 2.35523 1.74784 2.15832 1.94476C1.96141 2.14167 1.85078 2.40874 1.85078 2.68722V6.88722C1.85078 7.1657 1.96141 7.43277 2.15832 7.62968C2.35523 7.82659 2.6223 7.93722 2.90078 7.93722H3.95078V9.05722L5.39768 8.03382L5.53348 7.93722H9.90078C10.1793 7.93722 10.4463 7.82659 10.6432 7.62968C10.8402 7.43277 10.9508 7.1657 10.9508 6.88722V2.68722C10.9508 2.40874 10.8402 2.14167 10.6432 1.94476C10.4463 1.74784 10.1793 1.63722 9.90078 1.63722H2.90078ZM0.800781 2.68722C0.800781 2.13026 1.02203 1.59612 1.41586 1.20229C1.80968 0.808469 2.34383 0.587219 2.90078 0.587219H9.90078C10.4577 0.587219 10.9919 0.808469 11.3857 1.20229C11.7795 1.59612 12.0008 2.13026 12.0008 2.68722V6.88722C12.0008 7.44417 11.7795 7.97832 11.3857 8.37214C10.9919 8.76597 10.4577 8.98722 9.90078 8.98722H5.86808L3.72888 10.5006L2.90078 11.0872V8.98722C2.34383 8.98722 1.80968 8.76597 1.41586 8.37214C1.02203 7.97832 0.800781 7.44417 0.800781 6.88722L0.800781 2.68722Z" fill="black" />
+                        </svg>
+                    }
+                >
+                    Reply
+                </Button>
+                <Button
+                    variant="bordered"
+                    radius="full"
+                    size="sm"
+                    className="font-bold text-brand-olive-green border-brand-olive-green h-[30px] "
+                    startContent={
+                        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_1_2588)">
+                                <path d="M8 0.0998535V3.29985C1.6 3.29985 0 6.57985 0 11.2999C0.832 8.13185 3.2 6.49985 6.4 6.49985H8V9.69985L12.8 4.64385L8 0.0998535Z" fill="#25282B" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_1_2588">
+                                    <rect width="12.8" height="12.8" fill="white" transform="translate(0 0.0999756)" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+
+                    }
+                >
+                    Share
+                </Button>
             </div>
 
-            <Button
-                variant="bordered"
-                radius="full"
-                size="sm"
-                onClick={()=>voteOnComment(true)}
-                className="font-bold text-brand-olive-green border-brand-olive-green h-[30px] "
-                startContent={
-                    <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg" className='pb-[1px] border-b-1 border-[black]'>
-                        <path d="M4.75 11.615V11.865H5H6H6.25V11.615V3.48573L8.94239 6.17295L9.11904 6.34926L9.29565 6.1729L9.98465 5.4849L10.1617 5.30813L9.98478 5.13122L5.67678 0.823223L5.5 0.646447L5.32322 0.823223L1.01522 5.13122L0.838447 5.308L1.01522 5.48478L1.70322 6.17278L1.8798 6.34935L2.05658 6.17298L4.75 3.4856V11.615Z" fill="black" stroke="black" stroke-width="0.5" />
-                    </svg>
+        </article>
+        {isReply && <CreateComments setIsReply={setIsReply} setIsOpen={setIsOpen} parentId={_id} />}
 
-                }
-            >
-                Upvote ({votes})
-            </Button>
-            <Button
-                variant="bordered"
-                radius="full"
-                size="sm"
-                onClick={()=>voteOnComment(false)}
-                className="font-bold text-brand-olive-green border-brand-olive-green h-[30px] "
-                startContent={
-                    <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg" className='pt-[1px] border-t-1 border-[black]'>
-                        <path d="M6.25 3.385V3.135H6L5 3.135H4.75V3.385L4.75 11.5143L2.05761 8.82705L1.88096 8.65074L1.70435 8.8271L1.01535 9.5151L0.838318 9.69187L1.01522 9.86878L5.32322 14.1768L5.5 14.3536L5.67678 14.1768L9.98478 9.86878L10.1616 9.692L9.98478 9.51522L9.29678 8.82722L9.1202 8.65065L8.94342 8.82702L6.25 11.5144L6.25 3.385Z" fill="black" stroke="black" stroke-width="0.5" />
-                    </svg>
-
-                }
-            >
-                Downvote
-            </Button>
-            <Button
-                onClick={() => { setIsReply(true), setIsOpen(false) }}
-                variant="bordered"
-                radius="full"
-                size="sm"
-                className="font-bold text-brand-olive-green border-brand-olive-green h-[30px] "
-                startContent={
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M2.90078 1.63722C2.6223 1.63722 2.35523 1.74784 2.15832 1.94476C1.96141 2.14167 1.85078 2.40874 1.85078 2.68722V6.88722C1.85078 7.1657 1.96141 7.43277 2.15832 7.62968C2.35523 7.82659 2.6223 7.93722 2.90078 7.93722H3.95078V9.05722L5.39768 8.03382L5.53348 7.93722H9.90078C10.1793 7.93722 10.4463 7.82659 10.6432 7.62968C10.8402 7.43277 10.9508 7.1657 10.9508 6.88722V2.68722C10.9508 2.40874 10.8402 2.14167 10.6432 1.94476C10.4463 1.74784 10.1793 1.63722 9.90078 1.63722H2.90078ZM0.800781 2.68722C0.800781 2.13026 1.02203 1.59612 1.41586 1.20229C1.80968 0.808469 2.34383 0.587219 2.90078 0.587219H9.90078C10.4577 0.587219 10.9919 0.808469 11.3857 1.20229C11.7795 1.59612 12.0008 2.13026 12.0008 2.68722V6.88722C12.0008 7.44417 11.7795 7.97832 11.3857 8.37214C10.9919 8.76597 10.4577 8.98722 9.90078 8.98722H5.86808L3.72888 10.5006L2.90078 11.0872V8.98722C2.34383 8.98722 1.80968 8.76597 1.41586 8.37214C1.02203 7.97832 0.800781 7.44417 0.800781 6.88722L0.800781 2.68722Z" fill="black" />
-                    </svg>
-                }
-            >
-                Reply
-            </Button>
-            <Button
-                variant="bordered"
-                radius="full"
-                size="sm"
-                className="font-bold text-brand-olive-green border-brand-olive-green h-[30px] "
-                startContent={
-                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_1_2588)">
-                            <path d="M8 0.0998535V3.29985C1.6 3.29985 0 6.57985 0 11.2999C0.832 8.13185 3.2 6.49985 6.4 6.49985H8V9.69985L12.8 4.64385L8 0.0998535Z" fill="#25282B" />
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_1_2588">
-                                <rect width="12.8" height="12.8" fill="white" transform="translate(0 0.0999756)" />
-                            </clipPath>
-                        </defs>
-                    </svg>
-
-                }
-            >
-                Share
-            </Button>
-        </div>
-
-    </article>
-    {isReply && <CreateComments setIsReply={setIsReply} setIsOpen={setIsOpen} parentId={_id}/>}
-
-</>
-)};
+    </>
+    )
+};
 export default FeedComments;

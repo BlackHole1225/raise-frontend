@@ -10,7 +10,8 @@ import 'react-quill/dist/quill.snow.css';
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { useParams } from 'next/navigation'
-
+import apiClient from '@/utils/api';
+import { useRouter } from 'next/navigation';
 import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
 
@@ -21,6 +22,7 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 const Page = () => {
   const [title, setTitle] = useState('');
   const params = useParams();
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [file, setFile] = useState(null);
@@ -42,7 +44,7 @@ const Page = () => {
     });
 
     try {
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/file/upload`, formData, {
+      const response = await apiClient.post(`/api/file/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -92,10 +94,11 @@ const Page = () => {
     const file = await imageUpload();
     if (post?.title && post?.categoryId && post?.campaignId && post?.content) {
       try {
-        const response = await axios.put(`${SERVER_LOCAL_IP}/api/post/update/${params.id}`, {
+        const response = await apiClient.put(`/api/post/update/${params.id}`, {
           ...post,
           file
         });
+        router.push(`/forum`);
         notifySuccess(response.data.message);
       } catch (error) {
         console.log(error);
@@ -106,7 +109,7 @@ const Page = () => {
     }
   }
   const getPost = async () => {
-    const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/get/${params.id}`);
+    const response = await apiClient.get(`/api/post/get/${params.id}`);
     setPost(response.data.post)
   }
   const modules = {

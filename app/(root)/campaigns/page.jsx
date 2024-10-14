@@ -96,7 +96,7 @@ const Campaigns = () => {
   return (
     <section className="bg-brand-pale-lemon p-6 md:p-14 pt-10 md:pt-52 md:pb-20">
       <div className="w-full flex justify-between items-end">
-        <h1 className="text-brand-olive-green main-heading">
+        <h1 className="uppercase text-5xl text-brand-olive-green main-heading">
           Discover fundraisers
           <br /> inspired by what you care
         </h1>

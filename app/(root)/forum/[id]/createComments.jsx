@@ -1,17 +1,15 @@
 'use client';
 import React from 'react';
 import { Button } from '@nextui-org/button';
-import { Input } from '@nextui-org/input';
-import { useState, useEffect, useContext } from 'react';
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
+import apiClient from '@/utils/api';
 import { useParams } from 'next/navigation'
-import {PostContext} from './page';
+import { usePostContext } from './page';
 
 const CreateComments = ({ setIsReply, setIsOpen, parentId }) => {
 
     const params = useParams();
-    const {setSentComment} = useContext(PostContext);
+    const { setSentComment } = usePostContext();
     const [commentData, setCommentData] = useState({
         accessTime: 0,
         votes: 0,
@@ -23,7 +21,7 @@ const CreateComments = ({ setIsReply, setIsOpen, parentId }) => {
     const newComment = async () => {
         try {
             console.log(parentId);
-            const response = await axios.post(`${SERVER_LOCAL_IP}/api/post/${params.id}/comment`, commentData);
+            const response = await apiClient.post(`/api/post/${params.id}/comment`, commentData, { headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` } });
             // setBlog(response.data.blog);
             setSentComment(response.data.comment);
             setCommentData({
@@ -39,9 +37,9 @@ const CreateComments = ({ setIsReply, setIsOpen, parentId }) => {
             console.error("Error adding comment:", error);
         }
     };
-    
+
     useEffect(() => {
-        setCommentData((prev)=>({
+        setCommentData((prev) => ({
             ...prev,
             parentId
         }))

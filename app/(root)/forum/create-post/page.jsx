@@ -7,6 +7,7 @@ import DragDropUpload from '@/components/ui/dragDropUpload';
 import dynamic from 'next/dynamic';
 import { notifySuccess } from '@/components/notification';
 import 'react-quill/dist/quill.snow.css';
+import { useRouter } from 'next/navigation';
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { SERVER_LOCAL_IP, SERVER_IP } from '../../../../utils/constants';
@@ -17,6 +18,7 @@ import axios from "axios";
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const Page = () => {
+  const router = useRouter();
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -65,7 +67,7 @@ const Page = () => {
         setLoading(true);
         const [categoriesRes, campaignRes] = await Promise.all([
           axios.get(`${SERVER_IP}/api/category`),
-          axios.get(`${SERVER_IP}/api/campaign/`),
+          axios.get(`${SERVER_LOCAL_IP}/api/campaign/`),
           // axios.get(`${SERVER_IP}/api/campaign/category`),
         ]);
         // axios.get(`${SERVER_IP}/api/campaign`)
@@ -98,11 +100,13 @@ const Page = () => {
         },{ headers: {
           Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
         },});
-        notifySuccess(response.data.message);
-        setTitle('');
-        setDonation('');
-        setCampagin('');
-        setContent('');
+
+        notifySuccess("Post created successfully");
+        // setTitle('');
+        // setDonation('');
+        // setCampagin('');
+        // setContent('');
+        router.push('/forum');
 
       } catch (error) {
         console.log(error);

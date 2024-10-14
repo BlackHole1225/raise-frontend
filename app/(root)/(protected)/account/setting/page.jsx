@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Image from 'next/image';
 import { Avatar } from '@nextui-org/avatar';
 import { Input } from '@nextui-org/input';
@@ -12,26 +11,18 @@ import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
-import {useRouter} from "next/navigation"
+import { useRouter } from "next/navigation"
 import { notifySuccess, notifyError } from '@/components/notification';
+import apiClient from '@/utils/api';
 
-function UseClientSideStorage(key, defaultValue) {
-  useEffect(() => {
-    const value = localStorage.getItem(key) || defaultValue;
-    console.log(value);
-    localStorage.setItem(key, value);
-  }, [key, defaultValue]);
-}
+
 
 const Setting = () => {
   const [openModal, setOpenModal] = useState(null);
   const [file, setFile] = useState(null);
-  const [fullName, setFullName] = useState('');
-  const [address, setAddress] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newConfirmPassword, setNewConfirmPassword] = useState('');
-  const [newEmail, setNewEmail] = useState('');
   const [error, setError] = useState(null);
   const [info, setInfo] = useState(null);
   const router = useRouter()
@@ -42,13 +33,7 @@ const Setting = () => {
   const getUserInfo = async () => {
     try {
       console.log('here');
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/user/`, {
-        email: localStorage?.getItem('userEmail'),  // Old password for verification
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage?.getItem("authToken")}`,  // JWT token for authentication
-        },
-      });
+      const response = await apiClient.get(`/api/user/`);
       setInfo(response.data.user);
     } catch (error) {
       setError("Error changing email:");
@@ -59,9 +44,9 @@ const Setting = () => {
     Array.from(file).forEach(f => {
       formData.append('files', f);
     });
- 
+
     try {
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/file/upload`, formData, {
+      const response = await apiClient.post(`/api/file/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -81,10 +66,10 @@ const Setting = () => {
       throw error;
     }
   };
-  const logout = () =>{
+  const logout = () => {
     window.localStorage.setItem('userID', '');
     window.localStorage.setItem('userName', '');
-    window.localStorage.setItem('userEmail','');
+    window.localStorage.setItem('userEmail', '');
     window.localStorage.setItem('authToken', '');
     router.push('/login')
   }
@@ -98,7 +83,7 @@ const Setting = () => {
     const avatar = await updateAvatar();
     formData.append('avatar', avatar);
     try {
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/updateUserProfile`,
+      const response = await apiClient.post(`${SERVER_LOCAL_IP}/api/updateUserProfile`,
         formData,
         {
           headers: {
@@ -113,35 +98,16 @@ const Setting = () => {
       if (contentType && contentType.includes('application/json')) {
         console.log(response.data);
         const user = response.data.user;
-        //  login(response.data);
-        // If response is not OK, throw error
-        // if (!response.ok) {
-          //   throw new Error(data.message || 'Something went wrong');
-        // }
-
-        // Handle successful login
-        
         if (typeof window !== 'undefined') {
-          // Save user info and token in window.localStorage
-          // window.localStorage.setItem('userID', user.id);
-          // window.localStorage.setItem('userName', user.fullName);
           window.localStorage.setItem('userEmail', user.email);
           getUserInfo();
-          // window.localStorage.setItem('authToken', data.token);
-          // Redirect to campaigns page after successful login
-          // window.location.href = '/campaigns';
         }
-
-        // UseClientSideStorage('userID', data.id);
-        // UseClientSideStorage('userName', data.fullName);
-        // UseClientSideStorage('userEmail', data.email);
-        // UseClientSideStorage('authToken', data.token);
 
       } else {
         // Handle unexpected content-type
         throw new Error('Unexpected response format');
       }
-    
+
     } catch (err) {
       console.error('Login error:', err);
       setError(err.message || 'Login failed');
@@ -154,8 +120,7 @@ const Setting = () => {
         return;
       }
       try {
-        await axios.post(`${SERVER_LOCAL_IP}/api/changePassword`, {
-          email: localStorage?.getItem('userEmail'),         // User's email
+        await apiClient.post(`/api/changePassword`, {
           currentPassword, // Current password
           newPassword,     // New password
         }, {
@@ -185,25 +150,25 @@ const Setting = () => {
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
-  useEffect(()=>{
+  useEffect(() => {
     getUserInfo();
-  },[])
+  }, [])
   return (
-    <div className="pt-20 pb-[232px]">
+    <div className="pt-0 md:pt-20 pb-[232px]">
       <h1 className="uppercase text-5xl font-bold text-brand-dark font-heading">
         ACCOUNT SETTINGS
       </h1>
-      <div className="grid grid-cols-12 gap-5 mt-5">
-        <div className="bg-brand-eucalyptus pt-[46px] px-10 pb-[90px] col-span-6 text-brand-olive-green text-2xl font-bold">
-          {info?.avatar?<Avatar
+      <div className="xl:grid xl:grid-cols-12 gap-5 mt-5 text-xl md:text-2xl">
+        <div className="bg-brand-eucalyptus pt-[46px] px-10 pb-[90px] col-span-6 text-brand-olive-green font-bold">
+          {info?.avatar ? <Avatar
             src={`${SERVER_LOCAL_IP}/api/file/download/${info?.avatar}`}
             className="w-[180px] h-[180px]"
-          />:<Avatar
-          src={``}
-          className="w-[180px] h-[180px]"
-        />}
+          /> : <Avatar
+            src={``}
+            className="w-[180px] h-[180px]"
+          />}
           <h3 className="mt-[22px]">{info?.fullName}</h3>
-          <div className="flex flex-col gap-6 mt-[60px]">
+          <div className="flex flex-col gap-6 mt-8 md:mt-[60px]">
             <h3 className="pb-[14px] border-b border-b-brand-olive-green/20">
               <span className="opacity-70">Name:</span> {info?.fullName}
             </h3>
@@ -218,8 +183,8 @@ const Setting = () => {
             </h3>
           </div>
         </div>
-        <div className="bg-brand-lemon-yellow pt-[46px] px-10 pb-[90px] col-span-6 text-brand-olive-green/70 text-2xl font-bold">
-          <h2 className="text-4xl">ACTIONS</h2>
+        <div className="bg-brand-lemon-yellow pt-[46px] px-10 pb-[90px] col-span-6 text-brand-olive-green/70 font-bold mt-8 xl:mt-0">
+          <h2 className="text-3xl md:text-4xl">ACTIONS</h2>
           <div className="flex flex-col gap-6 mt-[38px]">
             <div className="flex justify-between pb-[14px] border-b border-b-brand-olive-green/20">
               <h3>Edit Profile</h3>
@@ -245,7 +210,7 @@ const Setting = () => {
                 <Image src="/images/phone.svg" width={24} height={24} alt="Phone Icon" />
               </button>
             </div>
-            <div onClick={()=>logout()} className="flex justify-between pb-[14px] border-b border-b-brand-olive-green/20">
+            <div onClick={() => logout()} className="flex justify-between pb-[14px] border-b border-b-brand-olive-green/20">
               <h3>Log Out</h3>
               <button>
                 <Image src="/images/logout.svg" width={24} height={24} alt="Logout Icon" />
@@ -279,7 +244,7 @@ const Setting = () => {
               label="Name"
               radius="sm"
               value={info?.fullName}
-              onChange={(e) => setInfo({...info, fullName:e.target.value})}
+              onChange={(e) => setInfo({ ...info, fullName: e.target.value })}
               placeholder=""
               classNames={{
                 inputWrapper:
@@ -294,7 +259,7 @@ const Setting = () => {
               label="Address"
               radius="sm"
               value={info?.address}
-              onChange={(e) => setInfo({...info, address:e.target.value})}
+              onChange={(e) => setInfo({ ...info, address: e.target.value })}
               placeholder=""
               classNames={{
                 inputWrapper:

@@ -1,18 +1,36 @@
+"use client"
 import React from 'react';
 import DonationChart from './donationChart';
 import DonationListComponent from './donationList';
 import CampaignListComponent from '../../other/CampaignListComponent';
+import apiClient from '@/utils/api';
+import { useRouter } from "next/navigation"
+import { useEffect } from 'react';
+const page = ({ params }) => {
+  const router = useRouter();
+  const getUserInfo = async () => {
+    try {
+      console.log('here');
+      const response = await apiClient.get(`/api/tokenlogin/`);
 
-const page = () => {
+    } catch (error) {
+      // notifyError('Token expired, please login again');
+      // localStorage.removeItem('authToken');
+      // router.push('/login');
+    }
+  }
+  useEffect(() => {
+    getUserInfo();
+  }, []);
   return (
     <div>
       <DonationChart />
-      <div className="grid grid-cols-12 gap-8 my-12">
-        <div className="col-span-5">
+      <div className="xl:grid xl:grid-cols-12 gap-8 my-12">
+        <div className="xl:col-span-5">
           <DonationListComponent />
         </div>
-        <div className="col-span-7">
-          <CampaignListComponent />
+        <div className="xl:col-span-7 mt-8 xl:mt-0">
+          <CampaignListComponent params={params} />
         </div>
       </div>
     </div>
