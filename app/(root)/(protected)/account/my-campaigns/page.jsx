@@ -141,7 +141,7 @@ const CampaignDataTable = () => {
   };
   const getCampaigns = async () => {
     const response = await axios.get(`${SERVER_LOCAL_IP}/api/campaign`);
-    setCampaigns(response.data.data.map((d)=>({...d, kycStatus:d.kyc[0]?.verify||"not yet"})))
+    setCampaigns(response.data.data.map((d)=>({...d, kycStatus:d.kyc?.verify||"not yet"})))
   }
   useEffect(() => {
     getCampaigns();
