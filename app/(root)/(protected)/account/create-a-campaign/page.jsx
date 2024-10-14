@@ -71,8 +71,8 @@ const Page = () => {
       try {
         setLoading(true);
         const [categoriesRes, locationsRes] = await Promise.all([
-          axios.get(`${SERVER_IP}/api/category`),
-          axios.get(`${SERVER_IP}/api/location`)
+          axios.get(`${SERVER_LOCAL_IP}/api/category`),
+          axios.get(`${SERVER_LOCAL_IP}/api/location`)
         ]);
 
         setCategories(categoriesRes.data.category || []);
