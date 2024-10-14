@@ -14,10 +14,6 @@ textarea {
   @apply font-bold font-heading leading-[100%] uppercase tracking-[2px];
 }
 
-.main-heading.main-heading-md {
-  @apply text-[92px] font-bold font-heading leading-[100%] uppercase tracking-[2px];
-}
-
 .heading-2 {
   @apply font-heading tracking-wide font-bold text-4xl;
 }
@@ -40,13 +36,13 @@ textarea {
 .bg-default-100 {
   background-color: transparent !important;
 }
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* Firefox */
-input[type="number"] {
-    -moz-appearance: textfield;
+input[type='number'] {
+  -moz-appearance: textfield;
 }

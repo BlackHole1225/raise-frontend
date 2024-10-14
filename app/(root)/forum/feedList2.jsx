@@ -15,7 +15,7 @@ import { formatTimeAgo } from '@/utils/formartTime';
 const FeedList2 = () => {
     const [posts, setPosts] = useState([]);
     const feedfontSize = 24;
-    const height = 168;
+    const height = 205;
     const getPost = async () => {
         const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/all`);
         setPosts(response.data.Posts)
@@ -27,7 +27,7 @@ const FeedList2 = () => {
     return (
         <>
             {posts?.length ? (<>
-                <section className="flex flex-col gap-6">
+                <section className="flex flex-col gap-6 pb-10   ">
                     {posts.slice(0, 3).map((feed, index) => (
                         <Link href={`/forum/${feed._id}`}>
                             <FeedItem
@@ -75,7 +75,7 @@ const FeedItem = ({ title, comments, votes, imageUrl, fontSize, createdAt, repor
                 {title}
             </h2>
             <div className=' '>
-                <div className='flex gap-2 pb-2 items-center'>
+                <div className='flex  flex-wrap md:flex-nowrap gap-1 md:gap-2 pb-2 items-center'>
                     <p className="text-base font-bold  tracking-wider text-brand-olive-green">{comments || 0}Comments</p>
                     <svg width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle opacity="0.7" cx="2.5" cy="2.5" r="2.5" fill="#25282B" />

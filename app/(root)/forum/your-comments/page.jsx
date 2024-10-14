@@ -20,13 +20,13 @@ export default function Page() {
     useEffect(() => {
         getPosts();
     }, [])
-    return (<div className="grid grid-cols-12 gap-8 my-12">
+    return (<div className="xl:col-span-5 flex flex-col gap-6 mt-8 xl:mt-0">
         <div className="col-span-7">
             <FeedList isPagination={true} feeds={posts} feedfontSize={32} height={205} isPagination={true} />
         </div>
         <div className="col-span-5 flex flex-col  gap-6">
             <div className='flex justify-between   flex-row-reverse'>
-                    <Link href='/forum/create-post' passHref>
+                <Link href='/forum/create-post' passHref>
                     <Button
                         variant="bordered"
                         radius="full"
