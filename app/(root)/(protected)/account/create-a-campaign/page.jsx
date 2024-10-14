@@ -50,11 +50,11 @@ const Page = () => {
   const [location, setLocation] = useState();
   const [amount, setAmount] = useState();
   const [campaignImage, setCampaignImage] = useState(null);
-  const [proofDocuments, setProofDocuments] = useState([]);
+  const [proofDocuments, setProofDocuments] = useState(null);
   const [campaignTitle, setCampaignTitle] = useState('');
   const [description, setDescription] = useState('');
   // const [campaignImageIds, setCampaignImageId] = useState();
-  const [proofDocumentIds, setProofDocumentIds] = useState([]);
+  const [proofDocumentIds, setProofDocumentIds] = useState('');
 
   const [wallet, setWallet] = useState(null);
   // const [balance, setBalance] = useState(null);
@@ -133,9 +133,9 @@ const Page = () => {
     console.log(e.target.value);
   };
 
-  const uploadFile = async () => {
+  const uploadFile = async (files) => {
     const formData = new FormData();
-    Array.from(campaignImage).forEach(f => {
+    Array.from(files).forEach(f => {
       formData.append('files', f);
     });
 
@@ -184,10 +184,9 @@ const Page = () => {
         // console.log("Proof Documents:", proofDocuments);
 
         // Upload proof documents and get their IDs
-        const proofDocumentIds = await uploadFile(proofDocuments);
-        setProofDocumentIds(proofDocumentIds);
-
-        console.log('Proof Document IDs:', proofDocumentIds);
+      }else{
+        notifyError("Please upload proof document");
+        return;
       }
       // if (!validateInputs()) {
       //   alert("All fields must be filled!");
@@ -199,8 +198,8 @@ const Page = () => {
       // }
       // proofDocumentReader.readAsDataURL(proofDocuments)
 
-      console.log('ddesr', description);
-      const file = await uploadFile();
+      const file = await uploadFile(campaignImage);
+      const fileId = await uploadFile(proofDocuments);
       const formData = {
         title: campaignTitle,
         categoryId: category,
@@ -208,7 +207,7 @@ const Page = () => {
         amount: amount,
         // file: fileCampaign,
         file,
-        kyc: proofDocumentIds,
+        kyc: fileId,
         text: description,
         createrId: localStorage.getItem('userID'),
         totalAmount: 0
