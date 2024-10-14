@@ -41,7 +41,7 @@ const Header = () => {
     { label: 'Campaigns', href: '/campaigns' },
     { label: 'Forum', href: '/forum' },
     { label: 'Contact', href: '/contact' },
-    { label: 'Pricing', href: '/pricing' }
+    { label: 'Pricing', href: '/pricing' },
   ];
 
   const isGreenDefault = pathname !== '/';

@@ -11,7 +11,7 @@ import { User } from '@nextui-org/user';
 import { Chip } from '@nextui-org/chip';
 import { SearchIcon } from 'lucide-react';
 import { SERVER_IP } from '@/utils/constants';
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import axios from 'axios';
 import { SERVER_LOCAL_IP } from '../../../../../utils/constants';
 // Mock data - replace with your actual data fetching logic
@@ -57,28 +57,28 @@ const CampaignDataTable = () => {
   const filteredData = useMemo(() => {
     // Start with the initial campaigns data
     let filteredCampaigns = campaigns;
-  
+
     // Filter by search term if provided
     if (searchTerm) {
       filteredCampaigns = filteredCampaigns.filter((item) =>
         item.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-  
+
     // Filter by selected categories if "All" is not selected
     if (!selectedCategories.has('All')) {
       filteredCampaigns = filteredCampaigns.filter((item) =>
         selectedCategories.has(item.categoryId)
       );
     }
-  
+
     // Filter by selected KYC status if "All" is not selected
     if (!selectedKycStatus.has('All')) {
       filteredCampaigns = filteredCampaigns.filter((item) =>
         selectedKycStatus.has(item.kycStatus)
       );
     }
-  
+
     // Return the final filtered result
     return filteredCampaigns;
   }, [searchTerm, selectedCategories, selectedKycStatus, campaigns]);
@@ -127,10 +127,10 @@ const CampaignDataTable = () => {
       case 'actions':
         return (
           <div className="relative flex items-center justify-center gap-2">
-            <Button size="sm" radius="full" onClick={()=>router.push(`/account/my-campaigns/${item._id}`)}>
+            <Button size="sm" radius="full" onClick={() => router.push(`/account/my-campaigns/${item._id}`)}>
               View
             </Button>
-            <Button size="sm" radius="full"  onClick={()=>router.push(`/account/edit-a-campaign/${item._id}`)}>
+            <Button size="sm" radius="full" onClick={() => router.push(`/account/edit-a-campaign/${item._id}`)}>
               Edit
             </Button>
           </div>
@@ -141,7 +141,7 @@ const CampaignDataTable = () => {
   };
   const getCampaigns = async () => {
     const response = await axios.get(`${SERVER_LOCAL_IP}/api/campaign`);
-    setCampaigns(response.data.data.map((d)=>({...d, kycStatus:d.kyc[0]?.verify||"not yet"})))
+    setCampaigns(response.data.data.map((d) => ({ ...d, kycStatus: d.kyc[0]?.verify || "not yet" })))
   }
   useEffect(() => {
     getCampaigns();
@@ -149,8 +149,8 @@ const CampaignDataTable = () => {
 
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      <div className="flex justify-between items-center">
+    <div className="w-full flex flex-col gap-4 mb-10">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
         <Input
           isClearable
           className="w-full sm:max-w-[44%]"

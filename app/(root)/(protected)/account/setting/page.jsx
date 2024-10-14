@@ -154,12 +154,12 @@ const Setting = () => {
     getUserInfo();
   }, [])
   return (
-    <div className="pt-20 pb-[232px]">
+    <div className="pt-0 md:pt-20 pb-[232px]">
       <h1 className="uppercase text-5xl font-bold text-brand-dark font-heading">
         ACCOUNT SETTINGS
       </h1>
-      <div className="grid grid-cols-12 gap-5 mt-5">
-        <div className="bg-brand-eucalyptus pt-[46px] px-10 pb-[90px] col-span-6 text-brand-olive-green text-2xl font-bold">
+      <div className="xl:grid xl:grid-cols-12 gap-5 mt-5 text-xl md:text-2xl">
+        <div className="bg-brand-eucalyptus pt-[46px] px-10 pb-[90px] col-span-6 text-brand-olive-green font-bold">
           {info?.avatar ? <Avatar
             src={`${SERVER_LOCAL_IP}/api/file/download/${info?.avatar}`}
             className="w-[180px] h-[180px]"
@@ -168,7 +168,7 @@ const Setting = () => {
             className="w-[180px] h-[180px]"
           />}
           <h3 className="mt-[22px]">{info?.fullName}</h3>
-          <div className="flex flex-col gap-6 mt-[60px]">
+          <div className="flex flex-col gap-6 mt-8 md:mt-[60px]">
             <h3 className="pb-[14px] border-b border-b-brand-olive-green/20">
               <span className="opacity-70">Name:</span> {info?.fullName}
             </h3>
@@ -183,8 +183,8 @@ const Setting = () => {
             </h3>
           </div>
         </div>
-        <div className="bg-brand-lemon-yellow pt-[46px] px-10 pb-[90px] col-span-6 text-brand-olive-green/70 text-2xl font-bold">
-          <h2 className="text-4xl">ACTIONS</h2>
+        <div className="bg-brand-lemon-yellow pt-[46px] px-10 pb-[90px] col-span-6 text-brand-olive-green/70 font-bold mt-8 xl:mt-0">
+          <h2 className="text-3xl md:text-4xl">ACTIONS</h2>
           <div className="flex flex-col gap-6 mt-[38px]">
             <div className="flex justify-between pb-[14px] border-b border-b-brand-olive-green/20">
               <h3>Edit Profile</h3>
