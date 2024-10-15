@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
-import FeedAdvertising from "../feedAdvertising";
-import FeedGetStart from "../feedGetStart";
-import FeedComments from '../[id]/comments';
-import FeedList from '../feedList';
+import FeedAdvertising from "@/app/(root)/forum/feedAdvertising";
+import FeedGetStart from "@/app/(root)/forum/feedGetStart";
+import FeedComments from '@/app/(root)/forum/[id]/comments';
+import FeedList from '@/app/(root)/forum/feedList';
 import { useState, useEffect } from 'react';
 import apiClient from '@/utils/api';
 import Link from 'next/link';
@@ -22,7 +22,7 @@ export default function Page() {
     }, [])
     return (<div className="xl:col-span-5 flex flex-col gap-6 mt-8 xl:mt-0">
         <div className="col-span-7">
-            <FeedList isPagination={true} feeds={posts} feedfontSize={32} height={205} isPagination={true} />
+            <FeedList isPagination={true} feeds={posts} feedfontSize={32} height={205} />
         </div>
         <div className="col-span-5 flex flex-col  gap-6">
             <div className='flex justify-between   flex-row-reverse'>

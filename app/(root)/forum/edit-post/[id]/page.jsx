@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import FeedAdvertising from '../../feedAdvertising';
-import FeedGetStart from '../../feedGetStart';
+import FeedAdvertising from '@/app/(root)/forum/feedAdvertising';
+import FeedGetStart from '@/app/(root)/forum/feedGetStart';
 import { Input } from '@nextui-org/input';
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import dynamic from 'next/dynamic';

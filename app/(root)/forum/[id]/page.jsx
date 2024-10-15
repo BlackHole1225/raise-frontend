@@ -1,15 +1,13 @@
 'use client';
-import React from 'react';
-import FeedGetStart from "../feedGetStart";
-// import FeedList from '../feedList';
-import { Button } from '@nextui-org/button';
+import React, { useState, createContext, useEffect, useContext } from 'react';
 import axios from 'axios'
+import { Button } from '@nextui-org/button';
+import FeedGetStart from "@/app/(root)/forum/feedGetStart";
 import FeedComments from './comments';
-import { useState, createContext, useEffect, useContext } from 'react';
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { useParams } from 'next/navigation'
 import CreateComments from './createComments';
-import FeedList from '../feedList';
+import FeedList from '@/app/(root)/forum/feedList';
 const PostContext = createContext();
 export const usePostContext = () => useContext(PostContext);
 
@@ -81,7 +79,7 @@ export default function Page() {
         setSentComment();
         setVotedComment();
     }, [sentComment, votedComment])
-    
+
 
     return (
         <PostContext.Provider value={{ setSentComment, setVotedComment }}>
@@ -107,7 +105,7 @@ export default function Page() {
                                     <svg width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <circle opacity="0.7" cx="2.5" cy="2.5" r="2.5" fill="#25282B" />
                                     </svg>
-                                    {post?.poster?.reporterCountry||'England'}</p>
+                                    {post?.poster?.reporterCountry || 'England'}</p>
                             </div>
                         </div>
                         <div className='flex flex-wrap md:flex-nowrap gap-3 mt-4 2xl:mt-0'>

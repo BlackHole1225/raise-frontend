@@ -13,7 +13,7 @@ import { SearchIcon } from 'lucide-react';
 import { SERVER_IP } from '@/utils/constants';
 import { useRouter } from 'next/navigation'
 import axios from 'axios';
-import { SERVER_LOCAL_IP } from '../../../../../utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 // Mock data - replace with your actual data fetching logic
 const mockData = [
   {
@@ -141,7 +141,7 @@ const CampaignDataTable = () => {
   };
   const getCampaigns = async () => {
     const response = await axios.get(`${SERVER_LOCAL_IP}/api/campaign`);
-    setCampaigns(response.data.data.map((d)=>({...d, kycStatus:d.kyc?.verify||"not yet"})))
+    setCampaigns(response.data.data.map((d) => ({ ...d, kycStatus: d.kyc?.verify || "not yet" })))
   }
   useEffect(() => {
     getCampaigns();
