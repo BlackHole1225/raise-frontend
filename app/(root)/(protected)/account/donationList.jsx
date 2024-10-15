@@ -3,7 +3,7 @@ import { Input } from '@nextui-org/input';
 import React from 'react';
 import BrandDropdown from '@/components/ui/brandDropdown';
 const DonationListComponent = ({ compFor = 'home' }) => {
-  const hasData = true;
+  const hasData = false;
   return (
     <main className="font-bold bg-brand-pale-lemon w-full text-brand-dark p-8 h-full">
       <h1 className="text-3xl tracking-widest uppercase font-heading">
