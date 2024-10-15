@@ -145,10 +145,14 @@ const Setting = () => {
   const changeEmail = async () => {
     try {
       const user = auth.currentUser;  
+      console.log(user);
       if (!user) {
         throw new Error("No user is currently authenticated.");
       }
-  
+      if(!user.emailVerified){
+        await sendEmailVerification(user);
+        notifySuccess("Verification email sent! Please check your inbox.");
+      }
   
       await updateEmail(user,info?.email);
       
