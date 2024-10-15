@@ -13,18 +13,18 @@ import {
 } from 'recharts';
 
 const data = [
-  { month: 'Jan', receivedAmount: 2 },
-  { month: 'Feb', receivedAmount: 2 },
-  { month: 'Mar', receivedAmount: 2.4 },
-  { month: 'Apr', receivedAmount: 2.4 },
-  { month: 'May', receivedAmount: 1.9 },
-  { month: 'Jun', receivedAmount: 1.9 },
-  { month: 'Jul', receivedAmount: 1.5 },
-  { month: 'Aug', receivedAmount: 1.5 },
-  { month: 'Sep', receivedAmount: 1.1 },
-  { month: 'Oct', receivedAmount: 1.1 },
-  { month: 'Nov', receivedAmount: 2.1 },
-  { month: 'Dec', receivedAmount: 2.1 }
+  { month: 'Jan', receivedAmount: 0 },
+  { month: 'Feb', receivedAmount: 0 },
+  { month: 'Mar', receivedAmount: 0 },
+  { month: 'Apr', receivedAmount: 0 },
+  { month: 'May', receivedAmount: 0 },
+  { month: 'Jun', receivedAmount: 0 },
+  { month: 'Jul', receivedAmount: 0 },
+  { month: 'Aug', receivedAmount: 0 },
+  { month: 'Sep', receivedAmount: 0 },
+  { month: 'Oct', receivedAmount: 0 },
+  { month: 'Nov', receivedAmount: 0 },
+  { month: 'Dec', receivedAmount: 0 }
 ];
 
 const DonationChart = () => {

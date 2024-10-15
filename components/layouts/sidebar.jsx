@@ -4,6 +4,8 @@ import { usePathname } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import { MdOutlineKeyboardDoubleArrowRight, MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
 import { SERVER_IP } from '../../utils/constants';
+import { FaFacebook, FaInstagramSquare } from "react-icons/fa";
+import { AiFillTwitterCircle } from "react-icons/ai";
 
 function GetClientSideStorage(key) {
   let value = '';
@@ -86,24 +88,16 @@ const Sidebar = ({ navItems }) => {
             </Link>
           ))}
         </div>
-        <div className="flex items-center gap-2.5 text-red-700 cursor-pointer">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6 mb-2"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m0-3-3-3m0 0-3 3m3-3v11.25m6-2.25h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75"
-            />
-          </svg>
-          <a className="font-heading font-bold uppercase text-3xl" onClick={handleLogout}>
-            Logout
-          </a>
+        <div className="flex justify-center items-center gap-2.5 pr-6 pb-16 text-brand-olive-green cursor-pointer">
+          <Link href="#">
+            <FaFacebook size={40} />
+          </Link>
+          <Link href="#">
+            <AiFillTwitterCircle size={40} />
+          </Link>
+          <Link href="#">
+            <FaInstagramSquare size={40} />
+          </Link>
         </div>
       </div>
 

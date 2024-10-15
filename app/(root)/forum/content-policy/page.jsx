@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import FeedGetStart from "../feedGetStart";
-import FeedList2 from '../feedList2';
+import FeedGetStart from "@/app/(root)/forum/feedGetStart";
+import FeedList2 from '@/app/(root)/forum/feedList2';
 
 export default function Page() {
     const data = {

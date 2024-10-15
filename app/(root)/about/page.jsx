@@ -1,5 +1,5 @@
 import React from 'react';
-import HeroSection from '../hero';
+import HeroSection from '@/app/(root)/hero';
 import ValuesMissionAndVision from './valueMissionAndVision';
 import WhyChooseUs from './whyChooseUs';
 import PartnersComponent from './ourParthner';

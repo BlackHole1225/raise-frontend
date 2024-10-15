@@ -3,7 +3,7 @@ import { Input } from '@nextui-org/input';
 import React from 'react';
 import BrandDropdown from '@/components/ui/brandDropdown';
 const DonationListComponent = ({ compFor = 'home' }) => {
-  const hasData = true;
+  const hasData = false;
   return (
     <main className="font-bold bg-brand-pale-lemon w-full text-brand-dark p-8 h-full">
       <h1 className="text-3xl tracking-widest uppercase font-heading">
@@ -50,7 +50,7 @@ const DonationListComponent = ({ compFor = 'home' }) => {
           />
         </section>
       ) : (
-        <div className="border border-dashed border-brand-dark border-opacity-50 rounded-xl h-[350px] flex flex-col gap-0 items-center justify-center">
+        <div className="border border-dashed border-brand-dark border-opacity-50 rounded-xl h-[350px] flex flex-col gap-0 items-center justify-center text-center p-2">
           <h4 className="uppercase text-3xl font-bold text-brand-dark font-heading">
             Nothing to show here{' '}
           </h4>
