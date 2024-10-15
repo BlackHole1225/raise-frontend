@@ -1,14 +1,14 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import FeedList from '../feedList';
+import FeedList from '@/app/(root)/forum/feedList';
 import { Button } from '@nextui-org/button';
 import { useState, useEffect } from 'react';
 // import { SERVER_LOCAL_IP } from '@/utils/constants';
 // import axios from "axios";
 import apiClient from '@/utils/api';
-import FeedAdvertising from '../feedAdvertising';
-import FeedGetStart from '../feedGetStart';
+import FeedAdvertising from '@/app/(root)/forum/feedAdvertising';
+import FeedGetStart from '@/app/(root)/forum/feedGetStart';
 const page = () => {
     const [posts, setPosts] = useState([]);
     const getPosts = async () => {

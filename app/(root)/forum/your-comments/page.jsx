@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
-import FeedAdvertising from "../feedAdvertising";
-import FeedGetStart from "../feedGetStart";
-import FeedComments from '../[id]/comments';
-import FeedList from '../feedList';
+import FeedAdvertising from "@/app/(root)/forum/feedAdvertising";
+import FeedGetStart from "@/app/(root)/forum/feedGetStart";
+import FeedComments from '@/app/(root)/forum/[id]/comments';
+import FeedList from '@/app/(root)/forum/feedList';
 import { useState, useEffect } from 'react';
 import apiClient from '@/utils/api';
 import Link from 'next/link';

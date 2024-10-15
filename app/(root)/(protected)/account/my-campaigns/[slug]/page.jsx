@@ -3,7 +3,7 @@
 import { Button } from '@nextui-org/button';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation'
-import DonationListComponent from '../../donationList';
+import DonationListComponent from '@/app/(root)/(protected)/account/donationList';
 import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, ModalFooter } from '@nextui-org/modal';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
@@ -11,7 +11,7 @@ import { SERVER_IP } from '@/utils/constants';
 import axios from 'axios';
 import { notifySuccess } from '@/components/notification';
 import RichTextEditor from '@/components/ui/richTextEditor2';
-import { SERVER_LOCAL_IP } from '../../../../../../utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 const modules = {
   toolbar: {

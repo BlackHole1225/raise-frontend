@@ -10,7 +10,7 @@ import {
   LAMPORTS_PER_SOL
 } from '@solana/web3.js';
 import { Button } from '@nextui-org/button';
-import { TESTNET } from '../../../../utils/constants';
+import { TESTNET } from '@/utils/constants';
 
 const DonateNowComp = ({ isSubmitted, setSubmitted }) => {
   const [wallet, setWallet] = useState(null);

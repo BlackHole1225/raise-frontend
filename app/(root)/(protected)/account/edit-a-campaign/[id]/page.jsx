@@ -10,11 +10,11 @@ import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
 import 'react-quill/dist/quill.snow.css';
 import { notifySuccess } from '@/components/notification';
 import { Button } from '@nextui-org/button';
-import { SERVER_IP } from '../../../../../../utils/constants';
-import { FSERVER_IP, SERVER_LOCAL_IP } from '../../../../../../utils/constants';
+import { SERVER_IP } from '@/utils/constants';
+import { FSERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 require('@coral-xyz/anchor');
 
-import { TESTNET } from '../../../../../../utils/constants';
+import { TESTNET } from '@/utils/constants';
 require('@coral-xyz/anchor');
 
 console.log('>>> connected to ', TESTNET);
@@ -205,7 +205,7 @@ const Page = ({ params }) => {
         setProofDocumentIds(fileId);
 
         console.log('Proof Document IDs:', fileId);
-      }else{
+      } else {
         notifyError("Please upload proof document");
         return;
       }
