@@ -66,10 +66,10 @@ function CampaignDetailsComponent({ campaignData }) {
 
   return (
     <div className="flex flex-col lg:flex-row bg-brand-ivory">
-      <main className="w-1/2 flex-grow pt-[140px]">
+      <main className="w-full lg:w-1/2 flex-grow pt-[140px]">
         <div className="">
-          <div className="flex justify-between items-end mb-8 px-8">
-            <h1 className="main-heading main-heading-md max-w-3xl uppercase ">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-3 mb-8 px-8">
+            <h1 className="main-heading text-5xl xl:text-[92px] max-w-3xl uppercase ">
               {campaignData.title}
             </h1>
             <div className="mb-4">
@@ -88,9 +88,9 @@ function CampaignDetailsComponent({ campaignData }) {
         <CampaignDetailsContent campaignData={campaignData} />
       </main>
 
-      <aside className="w-[350px] bg-brand-lemon-yellow p-8 pt-[150px] h-screen sticky top-0 overflow-auto">
+      <aside className="w-full lg:w-[350px] bg-brand-lemon-yellow p-8 md:pt-[150px] h-fit md:h-screen sticky top-0 overflow-auto">
         <div className="">
-          <h2 className="text-6xl font-heading font-bold text-stone-700 mb-4">
+          <h2 className="text-4xl md:text-6xl font-heading font-bold text-stone-700 mb-4">
             {campaignData.totalAmount} <span className="text-2xl font-body">SOL</span>
           </h2>
           <p className="text-xl font-bold text-stone-700 mb-2">

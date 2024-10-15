@@ -57,7 +57,7 @@ const Page = ({ params }) => {
   const [description, setDescription] = useState('');
   const [campaignData, setCampaignData] = useState(null);
   // const [campaignImageIds, setCampaignImageId] = useState();
-  const [proofDocumentIds, setProofDocumentIds] = useState([]);
+  const [proofDocumentIds, setProofDocumentIds] = useState('');
 
   const [wallet, setWallet] = useState(null);
   // const [balance, setBalance] = useState(null);
@@ -201,10 +201,13 @@ const Page = ({ params }) => {
         // console.log("Proof Documents:", proofDocuments);
 
         // Upload proof documents and get their IDs
-        const proofDocumentIds = await uploadFile(proofDocuments);
-        setProofDocumentIds(proofDocumentIds);
+        const fileId = await uploadFile(proofDocuments);
+        setProofDocumentIds(fileId);
 
-        console.log('Proof Document IDs:', proofDocumentIds);
+        console.log('Proof Document IDs:', fileId);
+      }else{
+        notifyError("Please upload proof document");
+        return;
       }
       // if (!validateInputs()) {
       //   alert("All fields must be filled!");
