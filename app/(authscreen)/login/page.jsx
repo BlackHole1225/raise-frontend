@@ -10,7 +10,7 @@ import { notifySuccess } from '@/components/notification';
 import { useRouter } from 'next/navigation';
 import jwtDecode from 'jwt-decode';
 // import GoogleLogin from 'react-google-login';
-import {  useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -50,7 +50,7 @@ const Page = () => {
       setError(err.message || 'Login failed');
     }
   };
-  
+
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
     onError: (error) => console.log('Login Failed:', error)
@@ -60,15 +60,15 @@ const Page = () => {
       axios.post(`${SERVER_LOCAL_IP}/api/google-login`, {
         token: user.access_token
       })
-      .then((res) => {
-        if (typeof window !== 'undefined') {
-          window.localStorage.setItem('userID', res.data.user.id);
-          window.localStorage.setItem('userEmail', res.data.user.email);
-          window.localStorage.setItem('authToken', res.data.jwtToken);
-          router.push('/account')
-        }
-      })
-      .catch((err) => console.log(err));
+        .then((res) => {
+          if (typeof window !== 'undefined') {
+            window.localStorage.setItem('userID', res.data.user.id);
+            window.localStorage.setItem('userEmail', res.data.user.email);
+            window.localStorage.setItem('authToken', res.data.jwtToken);
+            router.push('/account')
+          }
+        })
+        .catch((err) => console.log(err));
     }
   }, [user]);
 
@@ -136,7 +136,20 @@ const Page = () => {
               <p className="self-stretch">Or</p>
               <div className="shrink-0 self-stretch my-auto w-2 grow h-px border border-solid border-zinc-800" />
             </div>
-            <Button onClick={login}>Login with Google</Button>
+            <Button
+              size="lg"
+              className="bg-white py-7 border border-brand-dark w-full font-bold"
+              variant="solid"
+              onClick={login}
+            >
+              <img
+                loading="lazy"
+                src="https://cdn.builder.io/api/v1/image/assets/TEMP/4afcf1048ae3f4852061b80f8ea5990ac5796d08b00ed5201f740025245bf9e8?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded"
+                className="object-contain w-5 aspect-square"
+                alt="lazy"
+              />
+              Continue with Google
+            </Button>
             <div className="flex gap-1 self-center mt-12 max-w-full justify-center text-dark">
               <div className="opacity-70">Don't have an account? </div>
               <Link href="/register">Sign Up</Link>
