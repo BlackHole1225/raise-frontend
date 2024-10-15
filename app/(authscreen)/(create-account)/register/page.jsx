@@ -7,12 +7,13 @@ import { Button } from '@nextui-org/button';
 import { 
   createUserWithEmailAndPassword, 
   sendEmailVerification, 
-  applyActionCode, 
-  onAuthStateChanged 
+  checkActionCode,
 } from 'firebase/auth';
 import { notifySuccess, errorNotify } from '@/components/notification';
 import { auth } from '@/utils/firebaseConfig'; 
 import { apiClient } from '@/utils/api';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
+import axios from 'axios';
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({ fullName: '', email: '', password: '' });
@@ -25,6 +26,14 @@ const SignUpPage = () => {
   // Handle user sign-up
   const handleSubmit = async (e) => {
     e.preventDefault();
+    await axios.post(`${SERVER_LOCAL_IP}/api/register`, {
+      email: formData.email,
+      password: formData.password,
+      fullName: formData.fullName,
+      address: "",
+      phoneNumber: 12222,
+      avatar: ""
+    });
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
@@ -39,34 +48,22 @@ const SignUpPage = () => {
   };
 
   // Function to register user details in the backend (called after email verification)
-  const register = async () => {
-    try {
-      await apiClient.post(`${SERVER_LOCAL_IP}/api/register`, {
-        email: formData.email,
-        password: formData.password,
-        fullName: formData.fullName,
-        address: "",
-        phoneNumber: 12222,
-        avatar: ""
-      });
-      notifySuccess('Registration successful!');
-    } catch (error) {
-      errorNotify('Failed to register user in the backend.');
-    }
-  };
-
+  
+  const checkVerify = async (email) => {
+    const res = await axios.get(`${SERVER_LOCAL_IP}/api/user/set-verify/${email}`);
+    console.log(res);
+  }
   // Handle email verification when clicking the link
   useEffect(() => {
     const mode = params.get('mode');
     const oobCode = params.get('oobCode');
 
     if (mode === 'verifyEmail' && oobCode) {
-      applyActionCode(auth, oobCode)
+      checkActionCode(auth, oobCode)
         .then((e) => {
-          console.log(e);
+          checkVerify(e.data.email);
           notifySuccess("Email verified successfully!");
-          // register(); // Call register function after successful email verification
-          // router.push('/login'); // Redirect to the login page
+          router.push('/login'); // Redirect to the login page
         })
         .catch((error) => {
           console.error('Error verifying email:', error);
@@ -75,33 +72,6 @@ const SignUpPage = () => {
         });
     }
   }, [params, router]);
-
-  // Check if user is logged in and their email is verified
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log(user);
-        setUser(user);
-        setEmailVerified(user.emailVerified);
-      } else {
-        setUser(null);
-      }
-    });
-  }, []);
-
-  // Function to resend verification email
-  const resendVerificationEmail = async () => {
-    if (user && !emailVerified) {
-      try {
-        await sendEmailVerification(user);
-        notifySuccess('Verification email resent. Please check your inbox.');
-      } catch (error) {
-        errorNotify('Failed to resend verification email.');
-      }
-    } else {
-      errorNotify('User is not available or already verified.');
-    }
-  };
 
   return (
     <form onSubmit={handleSubmit}>
