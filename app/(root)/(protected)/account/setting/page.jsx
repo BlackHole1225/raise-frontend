@@ -11,9 +11,11 @@ import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { notifySuccess, notifyError } from '@/components/notification';
 import apiClient from '@/utils/api';
+import { auth } from '@/utils/firebaseConfig'; 
+import { checkActionCode, createUserWithEmailAndPassword, sendEmailVerification, updateEmail } from 'firebase/auth';
 
 
 
@@ -26,6 +28,7 @@ const Setting = () => {
   const [error, setError] = useState(null);
   const [info, setInfo] = useState(null);
   const router = useRouter()
+  const params = useSearchParams();
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
@@ -139,6 +142,25 @@ const Setting = () => {
     }
 
   };
+  const changeEmail = async () => {
+    try {
+      const user = auth.currentUser;  
+      if (!user) {
+        throw new Error("No user is currently authenticated.");
+      }
+  
+  
+      await updateEmail(user,info?.email);
+      
+      console.log(user);
+      // Send email verification
+      await sendEmailVerification(user);
+      notifySuccess("Verification email sent! Please check your inbox.");
+
+    } catch (error) {
+      console.log(error.message); // Use errorNotify for handling errors
+    }
+  }
   const handleOpenModal = (modalNumber) => {
     setOpenModal(modalNumber);
   };
@@ -153,6 +175,24 @@ const Setting = () => {
   useEffect(() => {
     getUserInfo();
   }, [])
+  useEffect(() => {
+    const mode = params.get('mode');
+    const oobCode = params.get('oobCode');
+
+    if (mode === 'verifyEmail' && oobCode) {
+      checkActionCode(auth, oobCode)
+        .then((e) => {
+          checkVerify(e.data.email);
+          notifySuccess("Email verified successfully!");
+          router.push('/profile-info'); // Redirect to the login page
+        })
+        .catch((error) => {
+          console.error('Error verifying email:', error);
+          setError('Email verification failed.');
+          errorNotify('Email verification failed.');
+        });
+    }
+  }, [params, router]);
   return (
     <div className="pt-0 md:pt-20 pb-[232px]">
       <h1 className="uppercase text-5xl font-bold text-brand-dark font-heading">
@@ -403,6 +443,8 @@ const Setting = () => {
                 variant="bordered"
                 label="New Email Address"
                 radius="sm"
+                value={info?.email}
+                onChange={(e) => setInfo({ ...info, email: e.target.value })}
                 placeholder=""
                 classNames={{
                   inputWrapper:
@@ -421,8 +463,14 @@ const Setting = () => {
                 </SelectItem>
               </Select>
             </div>
-            <button
+            {/* <button
               onClick={() => handleOpenModal(5)}
+              className="mt-6 w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green hover:text-red-500 hover:border-red-500"
+            >
+              Send OTP
+            </button> */}
+            <button
+              onClick={() => changeEmail()}
               className="mt-6 w-fit px-[18px] py-[10px] text-sm font-bold border border-brand-olive-green rounded-full text-brand-olive-green hover:text-red-500 hover:border-red-500"
             >
               Send OTP

@@ -4,17 +4,20 @@ import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import Link from 'next/link';
 import axios from 'axios'
-import React, { useState } from 'react';
-import { SERVER_LOCAL_IP } from '@/utils/constants';
+import React, { useState, useEffect } from 'react';
+import { SERVER_LOCAL_IP, GOOGLE_CLIENT_ID } from '@/utils/constants';
 import { notifySuccess } from '@/components/notification';
 import { useRouter } from 'next/navigation';
-import GoogleLogin from 'react-google-login';
-
+import jwtDecode from 'jwt-decode';
+// import GoogleLogin from 'react-google-login';
+import {  useGoogleLogin } from '@react-oauth/google';
 const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [profile, setProfile] = useState(null);
   const router = useRouter();
+  const [user, setUser] = useState(null);
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null); // Clear previous errors
@@ -47,10 +50,28 @@ const Page = () => {
       setError(err.message || 'Login failed');
     }
   };
+  
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => setUser(codeResponse),
+    onError: (error) => console.log('Login Failed:', error)
+  });
+  useEffect(() => {
+    if (user) {
+      axios.post(`${SERVER_LOCAL_IP}/api/google-login`, {
+        token: user.access_token
+      })
+      .then((res) => {
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem('userID', res.data.user.id);
+          window.localStorage.setItem('userEmail', res.data.user.email);
+          window.localStorage.setItem('authToken', res.data.jwtToken);
+          router.push('/account')
+        }
+      })
+      .catch((err) => console.log(err));
+    }
+  }, [user]);
 
-  const responseGoogle = (response) => {
-    console.log(response);
-  }
   return (
     <div className="overflow-hidden p-8 lg:py-14 lg:pr-7 lg:pl-20 bg-brand-ivory max-md:px-5 lg:h-screen">
       <div className="flex gap-5 max-lg:flex-col-reverse h-full">
@@ -115,29 +136,7 @@ const Page = () => {
               <p className="self-stretch">Or</p>
               <div className="shrink-0 self-stretch my-auto w-2 grow h-px border border-solid border-zinc-800" />
             </div>
-            <GoogleLogin
-              clientId="492086602222-h6v1jpmouupof4r6td41fqjncpnmo47g.apps.googleusercontent.com"
-              render={renderProps => (
-                <Button
-                  size="lg"
-                  className="bg-white py-7 border border-brand-dark w-full font-bold"
-                  variant="solid"
-                  onClick={renderProps.onClick}
-                >
-                  <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/4afcf1048ae3f4852061b80f8ea5990ac5796d08b00ed5201f740025245bf9e8?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded"
-                    className="object-contain w-5 aspect-square"
-                    alt="lazy"
-                  />
-                  Continue with Google
-                </Button>
-              )}
-              buttonText="Login"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy={'single_host_origin'}
-            />
+            <Button onClick={login}>Login with Google</Button>
             <div className="flex gap-1 self-center mt-12 max-w-full justify-center text-dark">
               <div className="opacity-70">Don't have an account? </div>
               <Link href="/register">Sign Up</Link>
