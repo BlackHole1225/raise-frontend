@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import HeroSection from './hero';
 import FundraisersSection from './fundraisersSection';
 import FAQComponent from './faq';
 import { Button } from '@nextui-org/button';
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { SERVER_IP } from '../../utils/constants';
@@ -163,9 +163,9 @@ const Page = () => {
                   <h2 className="text-5xl xl:text-6xl font-bold uppercase tracking-wider mb-6 font-heading">
                     ENGAGE WITH <br /> RAISE COMMUNTITY
                   </h2>
-                  <button className="px-8 py-4 text-xl font-medium border border-amber-50 rounded-full hover:bg-amber-50 hover:text-stone-700 transition-colors">
+                  <Link href="/forum" className="px-8 py-4 text-xl font-medium border border-amber-50 rounded-full hover:bg-amber-50 hover:text-stone-700 transition-colors">
                     Go to Forum
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -2,6 +2,7 @@
 
 import { Button } from '@nextui-org/button';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation'
 import DonationListComponent from '../../donationList';
 import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, ModalFooter } from '@nextui-org/modal';
 import 'react-quill/dist/quill.snow.css';
@@ -32,6 +33,8 @@ const page = ({ params }) => {
   const [isCUModal, setIsCUModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(true);
   const [item, setItem] = useState({});
+  const router = useRouter();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,6 +53,7 @@ const page = ({ params }) => {
   useEffect(() => {
     console.log('item', item)
   }, [item])
+
   return (
     <div>
       <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
@@ -81,6 +85,7 @@ const page = ({ params }) => {
             variant="bordered"
             radius="full"
             size="lg"
+            onClick={() => router.push(`/account/edit-a-campaign/${campaignData.campaign._id}`)}
             className="font-medium text-brand-olive-green border-brand-olive-green xl:py-6 xl:px-7"
             startContent={
               <svg
