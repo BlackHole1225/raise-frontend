@@ -1,13 +1,10 @@
 'use client';
+import React from 'react';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
-import React from 'react';
-import { useState, useEffect } from 'react';
 import BrandDropdown from '@/components/ui/brandDropdown';
 
 const CampaignListComponent = () => {
-
-
   const hasData = true;
   return (
     <main className="bg-brand-eucalyptus p-8 h-full">

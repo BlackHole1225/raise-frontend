@@ -1,17 +1,11 @@
 'use client';
-import React from 'react';
-
-import { Button } from '@nextui-org/button';
-import { Input } from '@nextui-org/input';
-import { useState, useEffect } from 'react';
-import { useMemo } from 'react';
-import { Pagination } from '@nextui-org/pagination';
-import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
-import BrandDropdown from '@/components/ui/brandDropdown';
-
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import axios from 'axios';
+import { Button } from '@nextui-org/button';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { formatTimeAgo } from '@/utils/formartTime';
+
 const FeedList2 = () => {
     const [posts, setPosts] = useState([]);
     const feedfontSize = 24;

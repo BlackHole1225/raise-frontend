@@ -12,10 +12,10 @@ import DragDropUpload from '@/components/ui/dragDropUpload';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { useRouter, useSearchParams } from "next/navigation"
-import { notifySuccess, notifyError } from '@/components/notification';
+import { notifySuccess } from '@/components/notification';
 import apiClient from '@/utils/api';
-import { auth } from '@/utils/firebaseConfig'; 
-import { checkActionCode, createUserWithEmailAndPassword, sendEmailVerification, updateEmail } from 'firebase/auth';
+import { auth } from '@/utils/firebaseConfig';
+import { checkActionCode, sendEmailVerification, updateEmail } from 'firebase/auth';
 
 
 
@@ -144,18 +144,18 @@ const Setting = () => {
   };
   const changeEmail = async () => {
     try {
-      const user = auth.currentUser;  
+      const user = auth.currentUser;
       console.log(user);
       if (!user) {
         throw new Error("No user is currently authenticated.");
       }
-      if(!user.emailVerified){
+      if (!user.emailVerified) {
         await sendEmailVerification(user);
         notifySuccess("Verification email sent! Please check your inbox.");
       }
-  
-      await updateEmail(user,info?.email);
-      
+
+      await updateEmail(user, info?.email);
+
       console.log(user);
       // Send email verification
       await sendEmailVerification(user);

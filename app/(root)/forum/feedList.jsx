@@ -1,18 +1,15 @@
 'use client';
-import React from 'react';
-
+import React, { useState, useEffect, useMemo } from 'react';
+import axios from 'axios';
+import Link from 'next/link';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
-import { useState, useEffect } from 'react';
-import { useMemo } from 'react';
+import { Pagination } from '@nextui-org/pagination';
 import apiClient from '@/utils/api';
 import { formatTimeAgo } from '@/utils/formartTime';
-import { Pagination } from '@nextui-org/pagination';
 import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
 import BrandDropdown from '@/components/ui/brandDropdown';
 
-import axios from 'axios';
-import Link from 'next/link';
 import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, ModalFooter } from '@nextui-org/modal';
 
 const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {

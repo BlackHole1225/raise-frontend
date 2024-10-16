@@ -1,12 +1,12 @@
 'use client';
-import * as React from 'react';
-import CampaignDetailsContent from './campaignDetailsContent';
+import React, { useState } from 'react';
 import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure } from '@nextui-org/modal';
 import { Button } from '@nextui-org/button';
-import DonateNowComp from './donateNowComp';
 import { Avatar } from '@nextui-org/avatar';
-import { useState } from 'react';
+import DonateNowComp from './donateNowComp';
+import CampaignDetailsContent from './campaignDetailsContent';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
+
 const UserProfile = ({ creater }) => (
   <div className="flex items-center gap-3">
     <Avatar

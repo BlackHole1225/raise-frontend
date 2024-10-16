@@ -1,6 +1,6 @@
 'use client';
-import { Button } from '@nextui-org/button';
 import React from 'react';
+import { Button } from '@nextui-org/button';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
 
 const page = () => {

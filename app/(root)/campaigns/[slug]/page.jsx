@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import CampaignDetailsComponent from './campaignDetailsComponent';
-import axios from 'axios';
 import apiClient from '@/utils/api';
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import { SERVER_IP } from '@/utils/constants';
 
 const Page = ({ params }) => {
   // State to store a single campaign (not an array)
@@ -43,7 +42,7 @@ const Page = ({ params }) => {
     return <div>No campaign found</div>; // Handle case when no campaign data is found
   }
 
-  return <CampaignDetailsComponent campaignData={{...campaignData.campaign, content: campaignData.formattedContent}} />;
+  return <CampaignDetailsComponent campaignData={{ ...campaignData.campaign, content: campaignData.formattedContent }} />;
 };
 
 export default Page;

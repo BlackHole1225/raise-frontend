@@ -1,19 +1,17 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Ensure axios is imported
-import RichTextEditor from '@/components/ui/richTextEditor';
-import DragDropUpload from '@/components/ui/dragDropUpload';
 import dynamic from 'next/dynamic';
-import { Input } from '@nextui-org/input';
 import { useRouter } from 'next/navigation';
+import { Input } from '@nextui-org/input';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
-import 'react-quill/dist/quill.snow.css';
 import { Button } from '@nextui-org/button';
-import { SERVER_IP } from '../../../../../utils/constants';
-import { FSERVER_IP, SERVER_LOCAL_IP } from '../../../../../utils/constants';
+import DragDropUpload from '@/components/ui/dragDropUpload';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
+import 'react-quill/dist/quill.snow.css';
 require('@coral-xyz/anchor');
 
-import { TESTNET } from '../../../../../utils/constants';
+import { TESTNET } from '@/utils/constants';
 require('@coral-xyz/anchor');
 
 console.log('>>> connected to ', TESTNET);
@@ -54,7 +52,7 @@ const Page = () => {
   const [campaignTitle, setCampaignTitle] = useState('');
   const [description, setDescription] = useState('');
   // const [campaignImageIds, setCampaignImageId] = useState();
-  const [proofDocumentIds, setProofDocumentIds] = useState('');
+  // const [proofDocumentIds, setProofDocumentIds] = useState('');
 
   const [wallet, setWallet] = useState(null);
   // const [balance, setBalance] = useState(null);
@@ -184,7 +182,7 @@ const Page = () => {
         // console.log("Proof Documents:", proofDocuments);
 
         // Upload proof documents and get their IDs
-      }else{
+      } else {
         notifyError("Please upload proof document");
         return;
       }
