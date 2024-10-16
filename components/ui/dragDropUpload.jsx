@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Cloud, File } from 'lucide-react';
+import { File } from 'lucide-react';
 import { SlCloudUpload } from "react-icons/sl";
 
 const DragDropUpload = ({ acceptedFormats, isMultiple, label, onChange }) => {

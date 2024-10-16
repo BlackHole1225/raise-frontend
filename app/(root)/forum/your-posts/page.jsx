@@ -9,7 +9,7 @@ import FeedList from '@/app/(root)/forum/feedList';
 import FeedAdvertising from '@/app/(root)/forum/feedAdvertising';
 import FeedGetStart from '@/app/(root)/forum/feedGetStart';
 
-const page = () => {
+const Page = () => {
     const [posts, setPosts] = useState([]);
     const getPosts = async () => {
         const response = await apiClient.get(`/api/post/all/user`,
@@ -56,4 +56,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

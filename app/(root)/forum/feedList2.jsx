@@ -23,7 +23,7 @@ const FeedList2 = () => {
             {posts?.length ? (<>
                 <section className="flex flex-col gap-6 pb-10   ">
                     {posts.slice(0, 3).map((feed, index) => (
-                        <Link href={`/forum/${feed._id}`}>
+                        <Link key={index} href={`/forum/${feed._id}`}>
                             <FeedItem
                                 height={height}
                                 title={feed.title}

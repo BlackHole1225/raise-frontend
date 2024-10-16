@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { Input } from '@nextui-org/input';
 import BrandDropdown from '@/components/ui/brandDropdown';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
@@ -17,8 +17,8 @@ const CampaignListComponent = ({ params }) => {
     closeToGoal: new Set([])
   });
   const [searchTerm, setSearchTerm] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const router = useRouter();
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const router = useRouter();
   const itemsPerPage = 16;
 
   useEffect(() => {
@@ -40,18 +40,18 @@ const CampaignListComponent = ({ params }) => {
     };
     fetchData();
   }, []);
-  function getValueBasedOnIndex(i) {
-    switch (i % 4) {
-      case 0:
-        return 'v1';
-      case 1:
-        return 'v2';
-      case 2:
-        return 'v3';
-      case 3:
-        return 'v4';
-    }
-  }
+  // function getValueBasedOnIndex(i) {
+  //   switch (i % 4) {
+  //     case 0:
+  //       return 'v1';
+  //     case 1:
+  //       return 'v2';
+  //     case 2:
+  //       return 'v3';
+  //     case 3:
+  //       return 'v4';
+  //   }
+  // }
 
   // Filter and search campaigns
   const filteredCampaigns = useMemo(() => {
@@ -75,12 +75,12 @@ const CampaignListComponent = ({ params }) => {
   }, [filteredCampaigns]);
 
   // Paginate campaigns
-  const paginatedCampaigns = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    return sortedCampaigns.slice(startIndex, startIndex + itemsPerPage);
-  }, [sortedCampaigns, currentPage]);
+  // const paginatedCampaigns = useMemo(() => {
+  //   const startIndex = (currentPage - 1) * itemsPerPage;
+  //   return sortedCampaigns.slice(startIndex, startIndex + itemsPerPage);
+  // }, [sortedCampaigns, currentPage]);
 
-  const totalPages = Math.ceil(sortedCampaigns.length / itemsPerPage);
+  // const totalPages = Math.ceil(sortedCampaigns.length / itemsPerPage);
 
   const handleFilterChange = (filterType, selectedKeys) => {
     setFilters((prev) => ({ ...prev, [filterType]: new Set(selectedKeys) }));
@@ -177,19 +177,19 @@ const CampaignListComponent = ({ params }) => {
   );
 };
 
-const FilterSection = () => (
-  <section className="flex flex-wrap gap-2 mt-7 text-base font-bold text-stone-700">
-    <FilterButton
-      label="Category"
-      icon="https://cdn.builder.io/api/v1/image/assets/TEMP/31beb790828a3f42a470f2bd19e2ad707fb9b193c42723ef663f0efc324a0753"
-    />
-    <FilterButton
-      label="Close to goal"
-      icon="https://cdn.builder.io/api/v1/image/assets/TEMP/f0661d16d72b07aff81cbdbe915cc912656774658fe96b306711ce4b3959add4"
-    />
-    <SearchButton />
-  </section>
-);
+// const FilterSection = () => (
+//   <section className="flex flex-wrap gap-2 mt-7 text-base font-bold text-stone-700">
+//     <FilterButton
+//       label="Category"
+//       icon="https://cdn.builder.io/api/v1/image/assets/TEMP/31beb790828a3f42a470f2bd19e2ad707fb9b193c42723ef663f0efc324a0753"
+//     />
+//     <FilterButton
+//       label="Close to goal"
+//       icon="https://cdn.builder.io/api/v1/image/assets/TEMP/f0661d16d72b07aff81cbdbe915cc912656774658fe96b306711ce4b3959add4"
+//     />
+//     <SearchButton />
+//   </section>
+// );
 
 const FilterButton = ({ label, icon }) => (
   <button className="flex items-center py-2.5 px-6 border border-stone-700 rounded-full">
@@ -209,7 +209,7 @@ const SearchButton = () => (
   </button>
 );
 
-const CampaignItem = ({ title, amountRaised, progressPercentage, imageUrl, params, id }) => (
+const CampaignItem = ({ title, amountRaised, progressPercentage, imageUrl, id }) => (
   <article className="flex gap-5">
     <div>
       <img src={imageUrl} alt={imageUrl} className="w-[121px] h-full md:h-[111px] object-cover" />

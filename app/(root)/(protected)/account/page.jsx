@@ -6,7 +6,7 @@ import DonationListComponent from './donationList';
 import CampaignListComponent from '@/app/(root)/other/CampaignListComponent';
 import apiClient from '@/utils/api';
 
-const page = ({ params }) => {
+const Page = ({ params }) => {
   const router = useRouter();
   const getUserInfo = async () => {
     try {
@@ -37,4 +37,4 @@ const page = ({ params }) => {
   );
 };
 
-export default page;
+export default Page;

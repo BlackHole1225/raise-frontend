@@ -4,7 +4,7 @@ import ValuesMissionAndVision from './valueMissionAndVision';
 import WhyChooseUs from './whyChooseUs';
 import PartnersComponent from './ourParthner';
 
-const page = () => {
+const Page = () => {
   return (
     <>
       <HeroSection
@@ -105,4 +105,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

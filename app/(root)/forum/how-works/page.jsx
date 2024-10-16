@@ -40,7 +40,7 @@ export default function Page() {
                 {data.summary}
             </p>
             {data.contents?.map((content, index) => (
-                <div className='ml-1'>
+                <div key={index} className='ml-1'>
                     <p className="text-2xl font-bold text-black text-opacity-70 font-heading">
                         {index + 1 + ". " + content.subTitle}
                     </p>

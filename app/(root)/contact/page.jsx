@@ -1,7 +1,7 @@
 import React from 'react';
 import ContactComponent from './contactComponent';
-const page = () => {
+const Page = () => {
   return <ContactComponent />;
 };
 
-export default page;
+export default Page;
