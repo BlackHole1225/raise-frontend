@@ -150,7 +150,7 @@ const Page = () => {
               Continue with Google
             </Button>
             <div className="flex gap-1 self-center mt-12 max-w-full justify-center text-dark">
-              <div className="opacity-70">Don't have an account? </div>
+              <div className="opacity-70">Don&apos;t have an account? </div>
               <Link href="/register">Sign Up</Link>
             </div>
           </div>

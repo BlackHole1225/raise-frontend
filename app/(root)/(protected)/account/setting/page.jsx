@@ -12,7 +12,7 @@ import DragDropUpload from '@/components/ui/dragDropUpload';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { useRouter, useSearchParams } from "next/navigation"
-import { notifySuccess } from '@/components/notification';
+import { notifySuccess, notifyError } from '@/components/notification';
 import apiClient from '@/utils/api';
 import { auth } from '@/utils/firebaseConfig';
 import { checkActionCode, sendEmailVerification, updateEmail } from 'firebase/auth';
@@ -162,7 +162,7 @@ const Setting = () => {
       notifySuccess("Verification email sent! Please check your inbox.");
 
     } catch (error) {
-      console.log(error.message); // Use errorNotify for handling errors
+      console.log(error.message); // Use notifyError for handling errors
     }
   }
   const handleOpenModal = (modalNumber) => {
@@ -193,7 +193,7 @@ const Setting = () => {
         .catch((error) => {
           console.error('Error verifying email:', error);
           setError('Email verification failed.');
-          errorNotify('Email verification failed.');
+          notifyError('Email verification failed.');
         });
     }
   }, [params, router]);

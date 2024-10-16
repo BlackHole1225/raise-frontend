@@ -5,7 +5,7 @@ import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation'
 import { Button } from '@nextui-org/button';
-import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, ModalFooter } from '@nextui-org/modal';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/modal';
 import DonationListComponent from '@/app/(root)/(protected)/account/donationList';
 import { notifySuccess } from '@/components/notification';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
@@ -163,7 +163,7 @@ const page = ({ params }) => {
           </Button>
         </div>
         {campaignData?.formattedContent?.map((d, index) => (
-          index > 0 && <UpdateItem isUpdate={isUpdate} setIsUpdate={setIsUpdate} params={params} item={d} setItem={setItem} isDelete={isDelete} isCUModal={isCUModal} setIsCUModal={setIsCUModal} setUpdates={setCampaignData} setIsDelete={setIsDelete} />
+          index > 0 && <UpdateItem key={index} isUpdate={isUpdate} setIsUpdate={setIsUpdate} params={params} item={d} setItem={setItem} isDelete={isDelete} isCUModal={isCUModal} setIsCUModal={setIsCUModal} setUpdates={setCampaignData} setIsDelete={setIsDelete} />
         ))}
       </div>
       <DeleteUpdate params={params} setUpdates={setCampaignData} isDelete={isDelete} setIsDelete={setIsDelete} item={item} />
@@ -266,7 +266,7 @@ const DeleteUpdate = ({ isDelete, setIsDelete, item, setUpdates, params }) => {
                 radius="full"
                 size="sm"
                 startContent={<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6.55316 1.14895L3.70211 4M3.70211 4L0.851055 6.85105M3.70211 4L0.851055 1.14895M3.70211 4L6.55316 6.85105" stroke="#3D4630" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M6.55316 1.14895L3.70211 4M3.70211 4L0.851055 6.85105M3.70211 4L0.851055 1.14895M3.70211 4L6.55316 6.85105" stroke="#3D4630" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 }
                 onClick={() => setIsDelete(false)}

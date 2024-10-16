@@ -51,7 +51,7 @@ const DonationListComponent = ({ compFor = 'home' }) => {
           />
         </section>
       ) : (
-        <div className="border border-dashed border-brand-dark border-opacity-50 rounded-xl h-[350px] flex flex-col gap-0 items-center justify-center text-center p-2">
+        <div className="border border-dashed border-brand-dark border-opacity-50 rounded-xl h-[240px] flex flex-col gap-0 items-center justify-center text-center p-2">
           <h4 className="uppercase text-3xl font-bold text-brand-dark font-heading">
             Nothing to show here{' '}
           </h4>
