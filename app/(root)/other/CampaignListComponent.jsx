@@ -1,12 +1,12 @@
 'use client';
-import { Button } from '@nextui-org/button';
-import { Input } from '@nextui-org/input';
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
-import BrandDropdown from '@/components/ui/brandDropdown';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { Input } from '@nextui-org/input';
+import BrandDropdown from '@/components/ui/brandDropdown';
 import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+
 const CampaignListComponent = ({ params }) => {
   const [categories, setCategories] = useState([]);
   const [locations, setLocations] = useState([]);

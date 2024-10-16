@@ -1,4 +1,7 @@
 'use client';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { Link } from '@nextui-org/link';
 import {
   Navbar,
@@ -11,11 +14,6 @@ import {
 } from '@nextui-org/navbar';
 import { useMotionValueEvent } from 'framer-motion';
 import { useScroll } from 'framer-motion';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);

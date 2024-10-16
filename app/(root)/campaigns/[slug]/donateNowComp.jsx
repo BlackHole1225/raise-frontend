@@ -1,6 +1,4 @@
 'use client';
-import { Checkbox } from '@nextui-org/checkbox';
-import { Input, Textarea } from '@nextui-org/input';
 import React, { useState, useEffect } from 'react';
 import {
   Connection,
@@ -9,6 +7,8 @@ import {
   SystemProgram,
   LAMPORTS_PER_SOL
 } from '@solana/web3.js';
+import { Checkbox } from '@nextui-org/checkbox';
+import { Input, Textarea } from '@nextui-org/input';
 import { Button } from '@nextui-org/button';
 import { TESTNET } from '@/utils/constants';
 

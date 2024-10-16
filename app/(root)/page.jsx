@@ -1,14 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import HeroSection from './hero';
+import axios from 'axios';
+import { Button } from '@nextui-org/button';
 import FundraisersSection from './fundraisersSection';
 import FAQComponent from './faq';
-import { Button } from '@nextui-org/button';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { SERVER_IP } from '../../utils/constants';
+import HeroSection from './hero';
+import { SERVER_IP } from '@/utils/constants';
 import { TbWorld, TbCurrencyDollarOff } from "react-icons/tb";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { SlEarphonesAlt } from "react-icons/sl";

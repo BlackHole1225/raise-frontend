@@ -1,17 +1,16 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Ensure axios is imported
-import RichTextEditor from '@/components/ui/richTextEditor';
-import DragDropUpload from '@/components/ui/dragDropUpload';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Input } from '@nextui-org/input';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
-import 'react-quill/dist/quill.snow.css';
-import { notifySuccess } from '@/components/notification';
 import { Button } from '@nextui-org/button';
+import DragDropUpload from '@/components/ui/dragDropUpload';
+import { notifySuccess } from '@/components/notification';
 import { SERVER_IP } from '@/utils/constants';
-import { FSERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
+import 'react-quill/dist/quill.snow.css';
 require('@coral-xyz/anchor');
 
 import { TESTNET } from '@/utils/constants';

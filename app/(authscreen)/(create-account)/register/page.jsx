@@ -1,19 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@nextui-org/input';
 import { Button } from '@nextui-org/button';
-import { 
-  createUserWithEmailAndPassword, 
-  sendEmailVerification, 
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
   checkActionCode,
 } from 'firebase/auth';
 import { notifySuccess, errorNotify } from '@/components/notification';
-import { auth } from '@/utils/firebaseConfig'; 
-import { apiClient } from '@/utils/api';
+import { auth } from '@/utils/firebaseConfig';
+// import { apiClient } from '@/utils/api';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
-import axios from 'axios';
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({ fullName: '', email: '', password: '' });
@@ -48,7 +48,7 @@ const SignUpPage = () => {
   };
 
   // Function to register user details in the backend (called after email verification)
-  
+
   const checkVerify = async (email) => {
     const res = await axios.get(`${SERVER_LOCAL_IP}/api/user/set-verify/${email}`);
     console.log(res);
@@ -98,7 +98,7 @@ const SignUpPage = () => {
         className="mb-10"
       />
       {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
-      
+
       <Button type="submit" size="lg" className="bg-brand-lemon-yellow py-7 w-full font-bold">
         Submit
       </Button>

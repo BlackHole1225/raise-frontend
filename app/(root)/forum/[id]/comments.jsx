@@ -1,17 +1,15 @@
 'use client';
-import React from 'react';
-
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'next/navigation'
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
-import { useState, useEffect, } from 'react';
 import BrandDropdown from '@/components/ui/brandDropdown';
 // data/blogTree.js
 import styles from './blogTree.module.css';
 import CreateComments from './createComments';
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
-import { useParams } from 'next/navigation'
-import axios from 'axios';
 import { usePostContext } from './page';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { formatTimeAgo } from '@/utils/formartTime';
 
 // Flat list of blog data
