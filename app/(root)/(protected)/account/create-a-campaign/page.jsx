@@ -43,7 +43,7 @@ const Page = () => {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [camImgFile, setCamImgFile] = useState(null);
+  // const [camImgFile, setCamImgFile] = useState(null);
   const [category, setCategory] = useState();
   const [location, setLocation] = useState();
   const [amount, setAmount] = useState();
@@ -58,7 +58,7 @@ const Page = () => {
   // const [balance, setBalance] = useState(null);
 
   // const userID = window.localStorage.getItem('userID');
-  const userID = GetClientSideStorage('userID');
+  // const userID = GetClientSideStorage('userID');
 
   useEffect(() => {
     setDescription('');
@@ -86,11 +86,11 @@ const Page = () => {
   }, []);
 
   // Helper function to extract plain text from HTML
-  const getInnerText = (html) => {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
-    return tempDiv.textContent || tempDiv.innerText || '';
-  };
+  // const getInnerText = (html) => {
+  //   const tempDiv = document.createElement('div');
+  //   tempDiv.innerHTML = html;
+  //   return tempDiv.textContent || tempDiv.innerText || '';
+  // };
 
   const handleConnectWallet = async () => {
     if (!wallet) {
@@ -127,9 +127,9 @@ const Page = () => {
   //   return true;
   // };
 
-  const onHandleContent = (e) => {
-    console.log(e.target.value);
-  };
+  // const onHandleContent = (e) => {
+  //   console.log(e.target.value);
+  // };
 
   const uploadFile = async (files) => {
     const formData = new FormData();
@@ -173,9 +173,9 @@ const Page = () => {
       //   console.log(campaignImageIds);
       // }
 
-      if (campaignImage == undefined) {
-        setCamImgFile(null);
-      }
+      // if (campaignImage == undefined) {
+      //   setCamImgFile(null);
+      // }
 
       if (proofDocuments != undefined) {
         // Debugging: Check if proofDocuments contains files
