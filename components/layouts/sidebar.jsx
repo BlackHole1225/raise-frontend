@@ -25,30 +25,30 @@ const Sidebar = ({ navItems }) => {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      if (typeof window !== 'undefined') {
-        const response = await fetch(`${SERVER_IP}/api/logout`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: GetClientSideStorage('userEmail')
-          })
-        });
+  // const handleLogout = async () => {
+  //   try {
+  //     if (typeof window !== 'undefined') {
+  //       const response = await fetch(`${SERVER_IP}/api/logout`, {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json'
+  //         },
+  //         body: JSON.stringify({
+  //           email: GetClientSideStorage('userEmail')
+  //         })
+  //       });
 
-        if (response.ok) {
-          window.location.href = '/login';
-          ClearClientSideStorage();
-        } else {
-          console.error('Failed to logout');
-        }
-      }
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
+  //       if (response.ok) {
+  //         window.location.href = '/login';
+  //         ClearClientSideStorage();
+  //       } else {
+  //         console.error('Failed to logout');
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Error logging out:', error);
+  //   }
+  // };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);

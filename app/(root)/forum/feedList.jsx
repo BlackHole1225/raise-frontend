@@ -26,8 +26,8 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
     const itemsPerPage = 3;
     const [categories, setCategories] = useState([]);
     const [userId, setUserId] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(null);
     // const hasData = true;
     const filteredFeeds = useMemo(() => {
         return feeds.filter((feed) => {
@@ -61,8 +61,8 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setLoading(true);
-                const [categoriesRes, campaignRes] = await Promise.all([
+                // setLoading(true);
+                const [categoriesRes] = await Promise.all([
                     axios.get(`${SERVER_IP}/api/category`),
                     // axios.get(`${SERVER_IP}/api/campaign/category`),
                 ]);
@@ -72,11 +72,11 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
                 { _id: 1, name: 'Popular Donations' },
                 { _id: 2, name: 'Popular Donations' },]);
                 // console.log(campaignRes.data);
-                setLoading(false);
+                // setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
-                setError(error);
-                setLoading(false);
+                // setError(error);
+                // setLoading(false);
             }
         };
         fetchData();
@@ -305,7 +305,7 @@ const FeedItem2 = ({ title, id, comments, votes, imageUrl, fontSize, accessTime,
 
     </article>
 );
-const DeletePost = ({ isDelete, setIsDelete, feed, height, feedfontSize, setPosts }) => {
+const DeletePost = ({ setIsDelete, feed, height, feedfontSize, setPosts }) => {
     const deletePost = async (id) => {
         await apiClient.delete(`/api/post/delete/${id}`)
         setPosts(prevPosts => prevPosts.filter(post => post._id !== id));

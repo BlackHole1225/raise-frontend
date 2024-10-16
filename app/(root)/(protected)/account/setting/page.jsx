@@ -17,29 +17,27 @@ import apiClient from '@/utils/api';
 import { auth } from '@/utils/firebaseConfig';
 import { checkActionCode, sendEmailVerification, updateEmail } from 'firebase/auth';
 
-
-
 const Setting = () => {
   const [openModal, setOpenModal] = useState(null);
   const [file, setFile] = useState(null);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newConfirmPassword, setNewConfirmPassword] = useState('');
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [info, setInfo] = useState(null);
   const router = useRouter()
   const params = useSearchParams();
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
-  };
+  // const validateEmail = (email) => {
+  //   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   return re.test(String(email).toLowerCase());
+  // };
   const getUserInfo = async () => {
     try {
       console.log('here');
       const response = await apiClient.get(`/api/user/`);
       setInfo(response.data.user);
     } catch (error) {
-      setError("Error changing email:");
+      // setError("Error changing email:");
     }
   }
   const updateAvatar = async () => {

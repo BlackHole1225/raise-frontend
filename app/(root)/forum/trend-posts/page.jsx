@@ -8,7 +8,7 @@ import FeedAdvertising from '@/app/(root)/forum/feedAdvertising';
 import FeedGetStart from '@/app/(root)/forum/feedGetStart';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 
-const page = () => {
+const Page = () => {
     const [posts, setPosts] = useState([]);
     const getPost = async () => {
         const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/all`);
@@ -49,4 +49,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;
