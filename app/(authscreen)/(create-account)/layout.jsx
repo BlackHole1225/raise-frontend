@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from 'react';
 const phoneNoContext = createContext();
 export const useProfileInfoContext = () => useContext(phoneNoContext);
 
-const layout = ({ children }) => {
+const Layout = ({ children }) => {
   const [profileInfo, setProfileInfo] = useState({});
   const [phoneVerifyEmail, setPhoneVerifyEmail] = useState('');
   const [phoneVerifyAvatar, setPhoneVerifyAvatar] = useState('');
@@ -54,4 +54,4 @@ const layout = ({ children }) => {
   );
 };
 
-export default layout;
+export default Layout;
