@@ -16,8 +16,9 @@ import { notifySuccess, notifyError } from '@/components/notification';
 import { auth } from '@/utils/firebaseConfig';
 // import { apiClient } from '@/utils/api';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
-
+import { useProfileInfoContext } from '../layout';
 const SignUpPage = () => {
+  const { setPhoneVerifyEmail } = useProfileInfoContext();
   const [formData, setFormData] = useState({ fullName: '', email: '', password: '' });
   const [error, setError] = useState(null); // Error state
   const [user, setUser] = useState(null); // Track user state
@@ -65,7 +66,10 @@ const SignUpPage = () => {
         .then((e) => {
           checkVerify(e.data.email);
           notifySuccess("Email verified successfully!");
-          router.push('/login'); // Redirect to the login page
+          localStorage.setItem('phoneVerifyEmail', e.data.email);
+          setPhoneVerifyEmail(e.data.email);
+          
+          router.push('/profile-info'); // Redirect to the login page
         })
         .catch((error) => {
           console.error('Error verifying email:', error);

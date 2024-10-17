@@ -8,14 +8,16 @@ import apiClient from '@/utils/api';
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { notifySuccess, notifyError } from '@/components/notification';
 import { auth } from '@/utils/firebaseConfig';
+import { useProfileInfoContext } from '../layout';
 auth.languageCode = 'it';
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const [phoneNo, setPhoneNo] = useState('');
   const [address, setAddress] = useState('');
   const [profilePicture, setProfilePicture] = useState('');
   const [verificationId, setVerificationId] = useState(null);
   const [otp, setOtp] = useState('');
+  const { setProfileInfo,profileInfo,setPhoneVerifyAvatar } = useProfileInfoContext();
   const handleProfilePictureChange = (file) => {
     setProfilePicture(file);
   };
@@ -62,7 +64,8 @@ const page = () => {
     try {
       const confirmationResult = await signInWithPhoneNumber(auth, phoneNo, appVerifier);
       setVerificationId(confirmationResult);
-      // router.push('/verify-mo/otp');
+      setProfileInfo({ phoneNo, address, confirmationResult });
+      router.push('/verify-mobile');
       console.log('OTP sent');
     } catch (error) {
       console.error('Error sending OTP', error.message);
@@ -79,10 +82,14 @@ const page = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (phoneNo == '' && address == '') {
       notifyError('Please enter your phone number and address');
       return;
+    }
+    if(profilePicture.length > 0){
+      const avatar = await imageUpload();
+      setPhoneVerifyAvatar(avatar);
     }
     setUpRecaptcha();
     sendOtp();
