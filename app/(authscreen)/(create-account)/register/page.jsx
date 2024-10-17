@@ -73,7 +73,7 @@ const SignUpPage = () => {
           notifyError('Email verification failed.');
         });
     }
-  }, [params, router]);
+  }, [params]);
 
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),

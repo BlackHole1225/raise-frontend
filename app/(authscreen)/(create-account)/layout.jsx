@@ -1,5 +1,7 @@
-import React from 'react';
-
+'use client'
+import React, { createContext, useContext } from 'react';
+const phoneNoContext = createContext();
+export const usePhoneNoContext = () => useContext(phoneNoContext);
 const layout = ({ children }) => {
   return (
     <div className="overflow-hidden p-8 lg:py-14 lg:pr-7 lg:pl-20 bg-brand-ivory max-md:px-5 lg:h-screen">
