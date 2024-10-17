@@ -13,27 +13,27 @@ import { Chip } from '@nextui-org/chip';
 import { SearchIcon } from 'lucide-react';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 // Mock data - replace with your actual data fetching logic
-const mockData = [
-  {
-    id: 1,
-    name: 'Eco Fundraiser',
-    category: 'Environment',
-    createdAt: '2023-08-15',
-    goal: 10000,
-    bannerImage: '/eco-banner.jpg',
-    kycStatus: 'Verified'
-  },
-  {
-    id: 2,
-    name: 'Tech for Kids',
-    category: 'Education',
-    createdAt: '2023-09-01',
-    goal: 5000,
-    bannerImage: '/tech-kids.jpg',
-    kycStatus: 'Pending'
-  }
-  // Add more mock data as needed
-];
+// const mockData = [
+//   {
+//     id: 1,
+//     name: 'Eco Fundraiser',
+//     category: 'Environment',
+//     createdAt: '2023-08-15',
+//     goal: 10000,
+//     bannerImage: '/eco-banner.jpg',
+//     kycStatus: 'Verified'
+//   },
+//   {
+//     id: 2,
+//     name: 'Tech for Kids',
+//     category: 'Education',
+//     createdAt: '2023-09-01',
+//     goal: 5000,
+//     bannerImage: '/tech-kids.jpg',
+//     kycStatus: 'Pending'
+//   }
+//   // Add more mock data as needed
+// ];
 
 const columns = [
   { name: 'CAMPAIGN NAME', uid: 'title' },

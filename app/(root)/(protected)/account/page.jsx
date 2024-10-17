@@ -1,17 +1,17 @@
 "use client"
 import React, { useEffect } from 'react';
-import { useRouter } from "next/navigation"
+// import { useRouter } from "next/navigation"
 import DonationChart from './donationChart';
 import DonationListComponent from './donationList';
 import CampaignListComponent from '@/app/(root)/other/CampaignListComponent';
-import apiClient from '@/utils/api';
+// import apiClient from '@/utils/api';
 
 const Page = ({ params }) => {
-  const router = useRouter();
+  // const router = useRouter();
   const getUserInfo = async () => {
     try {
       console.log('here');
-      const response = await apiClient.get(`/api/tokenlogin/`);
+      // const response = await apiClient.get(`/api/tokenlogin/`);
 
     } catch (error) {
       // notifyError('Token expired, please login again');

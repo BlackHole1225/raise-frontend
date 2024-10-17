@@ -132,7 +132,7 @@ const Page = () => {
     });
 
     try {
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/file/upload`, formData, {
+      const response = await apiClient.post(`${SERVER_LOCAL_IP}/api/file/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -180,16 +180,6 @@ const Page = () => {
         notifyError("Please upload proof document");
         return;
       }
-      // if (!validateInputs()) {
-      //   alert("All fields must be filled!");
-      //   return;
-      // }
-      // Prepare form data
-      // if(campaignImageIds != undefined){
-      //   fileCampaign = campaignImageIds[0];
-      // }
-      // proofDocumentReader.readAsDataURL(proofDocuments)
-
       const file = await uploadFile(campaignImage);
       const fileId = await uploadFile(proofDocuments);
       const formData = {
@@ -197,7 +187,6 @@ const Page = () => {
         categoryId: category,
         countryId: location,
         amount: amount,
-        // file: fileCampaign,
         file,
         kyc: fileId,
         text: description,
@@ -205,10 +194,7 @@ const Page = () => {
         totalAmount: 0
       };
 
-      console.log(formData);
-
-      // Send form data to the server
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/campaign/create`, formData, {
+      const response = await apiClient.post(`${SERVER_LOCAL_IP}/api/campaign/create`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
         },
