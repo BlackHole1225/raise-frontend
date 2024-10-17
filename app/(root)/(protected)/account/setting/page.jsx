@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import { Avatar } from '@nextui-org/avatar';
 import { Input } from '@nextui-org/input';
@@ -17,7 +17,7 @@ import apiClient from '@/utils/api';
 import { auth } from '@/utils/firebaseConfig';
 import { checkActionCode, sendEmailVerification, updateEmail } from 'firebase/auth';
 
-const Setting = () => {
+const SettingContent = () => {
   const [openModal, setOpenModal] = useState(null);
   const [file, setFile] = useState(null);
   const [currentPassword, setCurrentPassword] = useState('');
@@ -618,6 +618,14 @@ const Setting = () => {
         </div>
       )}
     </div>
+  );
+};
+
+const Setting = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SettingContent />
+    </Suspense>
   );
 };
 
