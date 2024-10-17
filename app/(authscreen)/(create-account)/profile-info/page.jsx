@@ -15,9 +15,7 @@ const Page = () => {
   const [phoneNo, setPhoneNo] = useState('');
   const [address, setAddress] = useState('');
   const [profilePicture, setProfilePicture] = useState('');
-  const [verificationId, setVerificationId] = useState(null);
-  const [otp, setOtp] = useState('');
-  const { setProfileInfo,profileInfo,setPhoneVerifyAvatar } = useProfileInfoContext();
+  const { setProfileInfo,setPhoneVerifyAvatar } = useProfileInfoContext();
   const handleProfilePictureChange = (file) => {
     setProfilePicture(file);
   };
@@ -63,7 +61,6 @@ const Page = () => {
     const appVerifier = window.recaptchaVerifier;
     try {
       const confirmationResult = await signInWithPhoneNumber(auth, phoneNo, appVerifier);
-      setVerificationId(confirmationResult);
       setProfileInfo({ phoneNo, address, confirmationResult });
       router.push('/verify-mobile');
       notifySuccess('OTP sent');
