@@ -71,18 +71,19 @@ export default function Page() {
         if (sentComment) {
             setPost((d) => ({
                 ...d,
-                comments: [...d?.comments, sentComment]
+                comments: [...(d?.comments ?? []), sentComment]
             }));
         } else if (votedComment) {
             setPost((d) => ({
                 ...d,
-                comments: [...d?.comments.map((comment) => {
-                    if (comment._id == votedComment._id) {
-                        return votedComment;
-                    } else {
-                        return comment;
-                    }
-                })
+                comments: [
+                    ...(d?.comments ?? []).map((comment) => {
+                        if (comment._id == votedComment._id) {
+                            return votedComment;
+                        } else {
+                            return comment;
+                        }
+                    })
 
                 ]
             }));
