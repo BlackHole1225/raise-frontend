@@ -8,7 +8,7 @@ import { useProfileInfoContext } from '../layout';
 import apiClient from '@/utils/api';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 const Page = () => {
-  const { profileInfo,phoneVerifyEmail,phoneVerifyAvatar } = useProfileInfoContext();
+  const { profileInfo, phoneVerifyEmail, phoneVerifyAvatar } = useProfileInfoContext();
   const router = useRouter();
   const [otp, setOtp] = useState('');
   const addDetailInfo = async () => {
@@ -22,11 +22,11 @@ const Page = () => {
       router.push('/login');
       notifySuccess("Profile info added successfully");
     } catch (error) {
-      notifyError("Error adding profile info",error);
+      notifyError("Error adding profile info", error);
     }
   }
   const handleSubmit = () => {
-    profileInfo.confirmationResult.confirm(otp).then((result) => {
+    profileInfo.confirmationResult.confirm(otp).then(() => {
       addDetailInfo();
     }).catch((error) => {
       console.log(error);

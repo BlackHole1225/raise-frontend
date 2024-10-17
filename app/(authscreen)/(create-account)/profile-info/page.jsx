@@ -15,7 +15,7 @@ const Page = () => {
   const [phoneNo, setPhoneNo] = useState('');
   const [address, setAddress] = useState('');
   const [profilePicture, setProfilePicture] = useState('');
-  const { setProfileInfo,setPhoneVerifyAvatar } = useProfileInfoContext();
+  const { setProfileInfo, setPhoneVerifyAvatar } = useProfileInfoContext();
   const handleProfilePictureChange = (file) => {
     setProfilePicture(file);
   };
@@ -51,7 +51,7 @@ const Page = () => {
       "recaptcha-container",
       {
         'size': 'invisible', // or 'normal'
-        'callback': (response) => {
+        'callback': () => {
           console.log('reCAPTCHA solved');
         }
       }
@@ -68,14 +68,14 @@ const Page = () => {
       notifyError('Error sending OTP', error.message);
     }
   };
- 
+
 
   const handleSubmit = async () => {
     if (phoneNo == '' && address == '') {
       notifyError('Please enter your phone number and address');
       return;
     }
-    if(profilePicture.length > 0){
+    if (profilePicture.length > 0) {
       const avatar = await imageUpload();
       setPhoneVerifyAvatar(avatar);
     }
@@ -129,7 +129,7 @@ const Page = () => {
       >
         Submit
       </Button>
-     
+
       <div id="recaptcha-container"></div>
     </>
   );

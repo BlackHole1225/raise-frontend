@@ -26,7 +26,7 @@ export default function Page() {
             setPost(response.data.post)
         } catch (error) {
             console.error('Error fetching data:', error);
-            setError('Failed to fetch campaign data');
+            // setError('Failed to fetch campaign data');
         }
     }
     const getPosts = async () => {
@@ -35,7 +35,7 @@ export default function Page() {
             setPosts(response.data.Posts)
         } catch (error) {
             console.error('Error fetching data:', error);
-            setError('Failed to fetch campaign data');
+            // setError('Failed to fetch campaign data');
         }
     }
     const voteOnPost = async ({ isVote }) => {
