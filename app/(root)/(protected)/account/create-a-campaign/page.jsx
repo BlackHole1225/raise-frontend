@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Ensure axios is imported
-import RichTextEditor from '@/components/ui/richTextEditor';
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import dynamic from 'next/dynamic';
 import { Input } from '@nextui-org/input';
@@ -9,11 +8,11 @@ import { useRouter } from 'next/navigation';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
 import 'react-quill/dist/quill.snow.css';
 import { Button } from '@nextui-org/button';
-import { SERVER_IP } from '../../../../../utils/constants';
-import { FSERVER_IP, SERVER_LOCAL_IP } from '../../../../../utils/constants';
+import { FSERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import apiClient from '@/utils/api';
 require('@coral-xyz/anchor');
 
-import { TESTNET } from '../../../../../utils/constants';
+import { TESTNET } from '@/utils/constants';
 require('@coral-xyz/anchor');
 
 console.log('>>> connected to ', TESTNET);
@@ -54,7 +53,6 @@ const Page = () => {
   const [campaignTitle, setCampaignTitle] = useState('');
   const [description, setDescription] = useState('');
   // const [campaignImageIds, setCampaignImageId] = useState();
-  const [proofDocumentIds, setProofDocumentIds] = useState('');
 
   const [wallet, setWallet] = useState(null);
   // const [balance, setBalance] = useState(null);
@@ -88,12 +86,7 @@ const Page = () => {
   }, []);
 
   // Helper function to extract plain text from HTML
-  const getInnerText = (html) => {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
-    return tempDiv.textContent || tempDiv.innerText || '';
-  };
-
+ 
   const handleConnectWallet = async () => {
     if (!wallet) {
       if ('solana' in window) {
@@ -129,9 +122,7 @@ const Page = () => {
   //   return true;
   // };
 
-  const onHandleContent = (e) => {
-    console.log(e.target.value);
-  };
+ 
 
   const uploadFile = async (files) => {
     const formData = new FormData();
@@ -140,7 +131,7 @@ const Page = () => {
     });
 
     try {
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/file/upload`, formData, {
+      const response = await apiClient.post(`${SERVER_LOCAL_IP}/api/file/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -168,36 +159,15 @@ const Page = () => {
     console.log('>>> clicked Send For KYC ');
     await handleConnectWallet();
     try {
-      // Upload campaign image
-      // if (campaignImage != undefined) {
-      //   const campaignImageIds = await uploadFile(campaignImage);
-      //   setCampaignImageId(campaignImageIds[0]); // Assuming there's only one campaign
-      //   console.log(campaignImageIds);
-      // }
-
       if (campaignImage == undefined) {
         setCamImgFile(null);
       }
 
       if (proofDocuments != undefined) {
-        // Debugging: Check if proofDocuments contains files
-        // console.log("Proof Documents:", proofDocuments);
-
-        // Upload proof documents and get their IDs
       }else{
         notifyError("Please upload proof document");
         return;
       }
-      // if (!validateInputs()) {
-      //   alert("All fields must be filled!");
-      //   return;
-      // }
-      // Prepare form data
-      // if(campaignImageIds != undefined){
-      //   fileCampaign = campaignImageIds[0];
-      // }
-      // proofDocumentReader.readAsDataURL(proofDocuments)
-
       const file = await uploadFile(campaignImage);
       const fileId = await uploadFile(proofDocuments);
       const formData = {
@@ -205,7 +175,6 @@ const Page = () => {
         categoryId: category,
         countryId: location,
         amount: amount,
-        // file: fileCampaign,
         file,
         kyc: fileId,
         text: description,
@@ -213,10 +182,7 @@ const Page = () => {
         totalAmount: 0
       };
 
-      console.log(formData);
-
-      // Send form data to the server
-      const response = await axios.post(`${SERVER_LOCAL_IP}/api/campaign/create`, formData, {
+      const response = await apiClient.post(`${SERVER_LOCAL_IP}/api/campaign/create`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
         },

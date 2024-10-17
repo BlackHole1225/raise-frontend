@@ -11,7 +11,6 @@ import {
 } from 'firebase/auth';
 import { notifySuccess, errorNotify } from '@/components/notification';
 import { auth } from '@/utils/firebaseConfig'; 
-import { apiClient } from '@/utils/api';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 import axios from 'axios';
 
@@ -71,7 +70,7 @@ const SignUpPage = () => {
           errorNotify('Email verification failed.');
         });
     }
-  }, [params, router]);
+  }, [params]);
 
   return (
     <form onSubmit={handleSubmit}>
