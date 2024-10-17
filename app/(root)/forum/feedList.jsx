@@ -10,7 +10,7 @@ import { formatTimeAgo } from '@/utils/formartTime';
 import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
 import BrandDropdown from '@/components/ui/brandDropdown';
 
-import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, ModalFooter } from '@nextui-org/modal';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/modal';
 
 const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
 

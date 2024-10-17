@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import React, { useState, useEffect } from 'react';
 import CampaignDetailsComponent from './campaignDetailsComponent';
@@ -8,7 +8,7 @@ import { SERVER_IP } from '@/utils/constants';
 const Page = ({ params }) => {
   // State to store a single campaign (not an array)
   const [campaignData, setCampaignData] = useState(null);
-  const [error, setError] = useState(null); // To handle errors
+  // const [error, setError] = useState(null); // To handle errors
   const [loading, setLoading] = useState(true); // Loading state
 
   console.log(`API URL: ${SERVER_IP}/api/campaign/${params.slug}`);
@@ -21,7 +21,7 @@ const Page = ({ params }) => {
         console.log('Fetched Campaign:', campaignsRes.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setError('Failed to fetch campaign data');
+        // setError('Failed to fetch campaign data');
       } finally {
         setLoading(false); // Whether success or failure, loading stops
       }
@@ -32,10 +32,6 @@ const Page = ({ params }) => {
 
   if (loading) {
     return <div>Loading...</div>; // Show loading state
-  }
-
-  if (error) {
-    return <div>{error}</div>; // Show error message
   }
 
   if (!campaignData) {

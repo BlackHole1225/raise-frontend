@@ -146,7 +146,7 @@ const FeedComments = ({ comments }) => {
                                     />
                                 </svg>
                             }
-                            onSelectionChange={(keys) => handleFilterChange('category', keys)}
+                        // onSelectionChange={(keys) => handleFilterChange('category', keys)}
                         />
                     </div>
                     <Input

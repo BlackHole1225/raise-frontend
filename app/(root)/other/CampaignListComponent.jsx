@@ -19,7 +19,7 @@ const CampaignListComponent = ({ params }) => {
   const [searchTerm, setSearchTerm] = useState('');
   // const [currentPage, setCurrentPage] = useState(1);
   // const router = useRouter();
-  const itemsPerPage = 16;
+  // const itemsPerPage = 16;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,13 +66,13 @@ const CampaignListComponent = ({ params }) => {
   }, [filters, searchTerm, campaigns]);
 
   // Sort campaigns by how close they are to their goal
-  const sortedCampaigns = useMemo(() => {
-    return [...filteredCampaigns].sort((a, b) => {
-      const aProgress = a.totalAmount / a.amount;
-      const bProgress = b.totalAmount / b.amount;
-      return bProgress - aProgress;
-    });
-  }, [filteredCampaigns]);
+  // const sortedCampaigns = useMemo(() => {
+  //   return [...filteredCampaigns].sort((a, b) => {
+  //     const aProgress = a.totalAmount / a.amount;
+  //     const bProgress = b.totalAmount / b.amount;
+  //     return bProgress - aProgress;
+  //   });
+  // }, [filteredCampaigns]);
 
   // Paginate campaigns
   // const paginatedCampaigns = useMemo(() => {
@@ -198,16 +198,16 @@ const FilterButton = ({ label, icon }) => (
   </button>
 );
 
-const SearchButton = () => (
-  <button className="flex items-center py-2.5 px-6 border border-stone-700 rounded-full min-w-[240px]">
-    <img
-      src="https://cdn.builder.io/api/v1/image/assets/TEMP/3afaa808a1186e7756ccb078928bf966e3ceee6913b165cb3cb797a3e5bd81ea"
-      alt="search"
-      className="w-[19px] h-[19px] mr-2.5"
-    />
-    Search
-  </button>
-);
+// const SearchButton = () => (
+//   <button className="flex items-center py-2.5 px-6 border border-stone-700 rounded-full min-w-[240px]">
+//     <img
+//       src="https://cdn.builder.io/api/v1/image/assets/TEMP/3afaa808a1186e7756ccb078928bf966e3ceee6913b165cb3cb797a3e5bd81ea"
+//       alt="search"
+//       className="w-[19px] h-[19px] mr-2.5"
+//     />
+//     Search
+//   </button>
+// );
 
 const CampaignItem = ({ title, amountRaised, progressPercentage, imageUrl, id }) => (
   <article className="flex gap-5">

@@ -164,7 +164,7 @@ function CampaignDetailsContent({ campaignData }) {
 
       <section>
         <h2 className="text-4xl mb-8 font-heading">Words of Support ({campaignData.donated.length})</h2>
-        {campaignData.donated.map(() => (
+        {campaignData.donated.map((donation, index) => (
           <SupportComment
             key={index}
             avatar="https://cdn.builder.io/api/v1/image/assets/TEMP/800c932755c7bc3849ae8eed6ce497c46b8421b967fbc1e9da3d1fd7e59c6ee1"
