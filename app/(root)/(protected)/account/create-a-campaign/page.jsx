@@ -9,6 +9,7 @@ import { Button } from '@nextui-org/button';
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { notifyError } from '@/components/notification';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
+import apiClient from '@/utils/api';
 import 'react-quill/dist/quill.snow.css';
 require('@coral-xyz/anchor');
 

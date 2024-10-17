@@ -19,13 +19,7 @@ require('@coral-xyz/anchor');
 console.log('>>> connected to ', TESTNET);
 // const connection = new Connection(TESTNET);
 
-function GetClientSideStorage(key) {
-  let value = '';
-  useEffect(() => {
-    value = localStorage.getItem(key);
-  }, [key]);
-  return value;
-}
+
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 const modules = {
   toolbar: {
@@ -46,17 +40,15 @@ const Page = ({ params }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   // const [camImgFile, setCamImgFile] = useState(null);
-  // const [category, setCategory] = useState();
-  // const [location, setLocation] = useState();
+  const [category, setCategory] = useState();
+  const [location, setLocation] = useState();
   // const [amount, setAmount] = useState();
   const [campaignImage, setCampaignImage] = useState(null);
   const [proofDocuments, setProofDocuments] = useState([]);
 
   // const [campaignTitle, setCampaignTitle] = useState('');
-  const [description, setDescription] = useState('');
   const [campaignData, setCampaignData] = useState(null);
   // const [campaignImageIds, setCampaignImageId] = useState();
-  const [proofDocumentIds, setProofDocumentIds] = useState('');
 
   const [wallet, setWallet] = useState(null);
   // const [balance, setBalance] = useState(null);
@@ -78,9 +70,7 @@ const Page = ({ params }) => {
     };
     fetchData();
   }, [params.id]);
-  useEffect(() => {
-    setDescription('');
-  }, []);
+ 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -145,9 +135,6 @@ const Page = ({ params }) => {
   //   return true;
   // };
 
-  const onHandleContent = (e) => {
-    console.log(e.target.value);
-  };
 
   const uploadFile = async () => {
     const formData = new FormData();
@@ -184,50 +171,14 @@ const Page = ({ params }) => {
     console.log('>>> clicked Send For KYC ');
     await handleConnectWallet();
     try {
-      // Upload campaign image
-      // if (campaignImage != undefined) {
-      //   const campaignImageIds = await uploadFile(campaignImage);
-      //   setCampaignImageId(campaignImageIds[0]); // Assuming there's only one campaign
-      //   console.log(campaignImageIds);
-      // }
-
-      // if (campaignImage == undefined) {
-      //   setCamImgFile(null);
-      // }
-
-      if (proofDocuments != undefined) {
-        // Debugging: Check if proofDocuments contains files
-        // console.log("Proof Documents:", proofDocuments);
-
-        // Upload proof documents and get their IDs
-        const fileId = await uploadFile(proofDocuments);
-        setProofDocumentIds(fileId);
-
-        console.log('Proof Document IDs:', fileId);
-      } else {
-        notifyError("Please upload proof document");
-        return;
-      }
-      // if (!validateInputs()) {
-      //   alert("All fields must be filled!");
-      //   return;
-      // }
-      // Prepare form data
-      // if(campaignImageIds != undefined){
-      //   fileCampaign = campaignImageIds[0];
-      // }
-      // proofDocumentReader.readAsDataURL(proofDocuments)
-
-      console.log('ddesr', description);
+      const proofDocumentId = await uploadFile(proofDocuments);
       const file = await uploadFile(campaignImage);
-
-
       // Send form data to the server
-      // const response = await axios.put(`${SERVER_LOCAL_IP}/api/campaign/edit`, { ...campaignData, file, kyc: proofDocumentIds }, {
-      //   headers: {
-      //     Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
-      //   },
-      // });
+      await axios.put(`${SERVER_LOCAL_IP}/api/campaign/edit`, { ...campaignData, file, kyc: proofDocumentId, categoryId: category, countryId: location }, {
+        headers: {
+          Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+        },
+      });
       notifySuccess("Campaign updated successfully");
       router.push('/campaigns');
       // if (!wallet || !amount) await handleConnectWallet();
@@ -330,9 +281,9 @@ const Page = ({ params }) => {
             label="Where will your funds go? (Country)"
             variant="bordered"
             radius="sm"
-          // onSelectionChange={(key) => {
-          //   setLocation(key);
-          // }}
+            onSelectionChange={(key) => {
+              setLocation(key);
+            }}
           >
             {locations.map((item) => (
               <AutocompleteItem key={item._id} value={item.name}>
@@ -344,9 +295,9 @@ const Page = ({ params }) => {
             label="Why are you raising funds? (Category)"
             variant="bordered"
             radius="sm"
-          // onSelectionChange={(key) => {
-          //   setCategory(key);
-          // }}
+            onSelectionChange={(key) => {
+              setCategory(key);
+            }}
           >
             {categories.map((item) => (
               <AutocompleteItem key={item._id} value={item.name}>

@@ -21,12 +21,22 @@ export default function Page() {
     const params = useParams();
 
     const getPost = async () => {
-        const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/get/${params.id}`);
-        setPost(response.data.post)
+        try {
+            const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/get/${params.id}`);
+            setPost(response.data.post)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setError('Failed to fetch campaign data');
+        }
     }
     const getPosts = async () => {
-        const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/all`);
-        setPosts(response.data.Posts)
+        try {
+            const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/all`);
+            setPosts(response.data.Posts)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setError('Failed to fetch campaign data');
+        }
     }
     const voteOnPost = async ({ isVote }) => {
         try {
