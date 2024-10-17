@@ -1,24 +1,15 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Ensure axios is imported
-<<<<<<< HEAD
-import DragDropUpload from '@/components/ui/dragDropUpload';
-=======
->>>>>>> 0d5a4e1c19dd08de5e4b568bbf743ca079eb8786
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Input } from '@nextui-org/input';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
 import { Button } from '@nextui-org/button';
-<<<<<<< HEAD
-import { FSERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
-import apiClient from '@/utils/api';
-=======
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { notifyError } from '@/components/notification';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 import 'react-quill/dist/quill.snow.css';
->>>>>>> 0d5a4e1c19dd08de5e4b568bbf743ca079eb8786
 require('@coral-xyz/anchor');
 
 import { TESTNET } from '@/utils/constants';
@@ -55,10 +46,7 @@ const Page = () => {
   const [campaignTitle, setCampaignTitle] = useState('');
   const [description, setDescription] = useState('');
   // const [campaignImageIds, setCampaignImageId] = useState();
-<<<<<<< HEAD
-=======
   // const [proofDocumentIds, setProofDocumentIds] = useState('');
->>>>>>> 0d5a4e1c19dd08de5e4b568bbf743ca079eb8786
 
   const [wallet, setWallet] = useState(null);
   // const [balance, setBalance] = useState(null);
@@ -92,16 +80,12 @@ const Page = () => {
   }, []);
 
   // Helper function to extract plain text from HTML
-<<<<<<< HEAD
- 
-=======
   // const getInnerText = (html) => {
   //   const tempDiv = document.createElement('div');
   //   tempDiv.innerHTML = html;
   //   return tempDiv.textContent || tempDiv.innerText || '';
   // };
 
->>>>>>> 0d5a4e1c19dd08de5e4b568bbf743ca079eb8786
   const handleConnectWallet = async () => {
     if (!wallet) {
       if ('solana' in window) {
@@ -137,13 +121,9 @@ const Page = () => {
   //   return true;
   // };
 
-<<<<<<< HEAD
- 
-=======
   // const onHandleContent = (e) => {
   //   console.log(e.target.value);
   // };
->>>>>>> 0d5a4e1c19dd08de5e4b568bbf743ca079eb8786
 
   const uploadFile = async (files) => {
     const formData = new FormData();
@@ -180,14 +160,6 @@ const Page = () => {
     console.log('>>> clicked Send For KYC ');
     await handleConnectWallet();
     try {
-<<<<<<< HEAD
-      if (campaignImage == undefined) {
-        setCamImgFile(null);
-      }
-
-      if (proofDocuments != undefined) {
-      }else{
-=======
       // Upload campaign image
       // if (campaignImage != undefined) {
       //   const campaignImageIds = await uploadFile(campaignImage);
@@ -205,7 +177,6 @@ const Page = () => {
 
         // Upload proof documents and get their IDs
       } else {
->>>>>>> 0d5a4e1c19dd08de5e4b568bbf743ca079eb8786
         notifyError("Please upload proof document");
         return;
       }

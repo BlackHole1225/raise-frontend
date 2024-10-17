@@ -66,21 +66,12 @@ const Page = () => {
       setVerificationId(confirmationResult);
       setProfileInfo({ phoneNo, address, confirmationResult });
       router.push('/verify-mobile');
-      console.log('OTP sent');
+      notifySuccess('OTP sent');
     } catch (error) {
-      console.error('Error sending OTP', error.message);
+      notifyError('Error sending OTP', error.message);
     }
   };
-  const verifyOtp = async () => {
-    if (!verificationId) return;
-    try {
-      const result = await verificationId.confirm(otp);
-      const user = result.user;
-      console.log('User verified:', user);
-    } catch (error) {
-      console.error('Error verifying OTP:', error.message);
-    }
-  };
+ 
 
   const handleSubmit = async () => {
     if (phoneNo == '' && address == '') {
@@ -141,27 +132,7 @@ const Page = () => {
       >
         Submit
       </Button>
-      <Input
-        size="lg"
-        variant="bordered"
-        label="OTP"
-        radius="sm"
-        className="mb-5"
-        classNames={{
-          inputWrapper: 'border border-brand-dark'
-        }}
-        onChange={(e) => {
-          setOtp(e.target.value);
-        }}
-      />
-      <Button
-        size="lg"
-        className="bg-brand-lemon-yellow py-7 border border-brand-dark w-full font-bold"
-        variant="solid"
-        onClick={verifyOtp}
-      >
-        Verify OTP
-      </Button>
+     
       <div id="recaptcha-container"></div>
     </>
   );

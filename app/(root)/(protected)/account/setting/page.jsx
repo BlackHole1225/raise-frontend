@@ -75,7 +75,7 @@ const Setting = () => {
     router.push('/login')
   }
   const updateProfile = async () => {
-    setError(null); // Clear previous errors
+    // setError(null); // Clear previous errors
     const formData = new FormData();
     // formData.append('avatar', file);
     formData.append('fullName', info?.fullName);
@@ -111,13 +111,13 @@ const Setting = () => {
 
     } catch (err) {
       console.error('Login error:', err);
-      setError(err.message || 'Login failed');
+      // setError(err.message || 'Login failed');
     }
   };
   const changePassword = async () => {
     if (newPassword && newConfirmPassword && currentPassword) {
       if (newPassword !== newConfirmPassword) {
-        setError('The passwords for verification do not match.');
+        // setError('The passwords for verification do not match.');
         return;
       }
       try {
@@ -136,7 +136,7 @@ const Setting = () => {
         console.error("Error changing password:", error);
       }
     } else {
-      setError('The input value is incorrect.')
+      // setError('The input value is incorrect.')
     }
 
   };
@@ -183,14 +183,14 @@ const Setting = () => {
 
     if (mode === 'verifyEmail' && oobCode) {
       checkActionCode(auth, oobCode)
-        .then((e) => {
-          checkVerify(e.data.email);
+        .then(() => {
+          // checkVerify(e.data.email);
           notifySuccess("Email verified successfully!");
           router.push('/profile-info'); // Redirect to the login page
         })
         .catch((error) => {
           console.error('Error verifying email:', error);
-          setError('Email verification failed.');
+          // setError('Email verification failed.');
           notifyError('Email verification failed.');
         });
     }

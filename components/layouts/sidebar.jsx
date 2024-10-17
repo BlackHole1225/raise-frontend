@@ -1,25 +1,24 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { SERVER_IP } from '@/utils/constants';
 import { MdOutlineKeyboardDoubleArrowRight, MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
 import { FaFacebook, FaInstagramSquare } from "react-icons/fa";
 import { AiFillTwitterCircle } from "react-icons/ai";
 
-function GetClientSideStorage(key) {
-  let value = '';
-  useEffect(() => {
-    value = localStorage.getItem(key);
-  }, [key]);
-  return value;
-}
+// function GetClientSideStorage(key) {
+//   let value = '';
+//   useEffect(() => {
+//     value = localStorage.getItem(key);
+//   }, [key]);
+//   return value;
+// }
 
-function ClearClientSideStorage() {
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
-}
+// function ClearClientSideStorage() {
+//   useEffect(() => {
+//     localStorage.clear();
+//   }, []);
+// }
 
 const Sidebar = ({ navItems }) => {
   const pathname = usePathname();

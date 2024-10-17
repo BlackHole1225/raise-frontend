@@ -141,7 +141,7 @@ export default function Page() {
                                 Downvote
                             </Button>
                             <Button
-                                onClick={() => { setIsReply(true), setIsOpen(false) }}
+                                onClick={() => { setIsReply(true) }}
                                 variant="bordered"
                                 radius="full"
                                 size="lg"
@@ -178,7 +178,7 @@ export default function Page() {
                         </div>
 
                     </div>
-                    {isReply && <CreateComments setIsOpen={(e) => { }} setIsReply={setIsReply} />}
+                    {isReply && <CreateComments setIsOpen={() => { }} setIsReply={setIsReply} />}
                     {post?.comments && <FeedComments comments={post?.comments} />}
                 </div>
                 <div className="2xl:col-span-5 flex flex-col gap-6 mt-8 2xl:mt-0">

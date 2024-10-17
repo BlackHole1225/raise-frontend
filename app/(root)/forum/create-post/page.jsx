@@ -20,8 +20,8 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 const Page = () => {
   const router = useRouter();
   const [title, setTitle] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
   const [file, setFile] = useState(null);
 
   const [categories, setCategories] = useState([]);
@@ -64,7 +64,7 @@ const Page = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
         const [categoriesRes, campaignRes] = await Promise.all([
           axios.get(`${SERVER_IP}/api/category`),
           axios.get(`${SERVER_LOCAL_IP}/api/campaign/`),
@@ -77,11 +77,11 @@ const Page = () => {
         { _id: 2, name: 'Popular Donations' },]);
         // console.log(campaignRes.data);
         setCampains(campaignRes.data.data || []);
-        setLoading(false);
+        // setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setError(error);
-        setLoading(false);
+        // setError(error);
+        // setLoading(false);
       }
     };
     fetchData();
