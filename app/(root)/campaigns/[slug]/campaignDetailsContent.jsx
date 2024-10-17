@@ -1,9 +1,8 @@
 'use client'
-import * as React from 'react';
-import { useState, useEffect } from 'react';
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
-import { notifySuccess } from '@/components/notification';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { notifySuccess } from '@/components/notification';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 
 const SectionDivider = () => <hr className="border-t border-stone-700 my-8 w-full" />;
 function formatDate(isoString) {
@@ -165,8 +164,9 @@ function CampaignDetailsContent({ campaignData }) {
 
       <section>
         <h2 className="text-4xl mb-8 font-heading">Words of Support ({campaignData.donated.length})</h2>
-        {campaignData.donated.map((d) => (
+        {campaignData.donated.map(() => (
           <SupportComment
+            key={index}
             avatar="https://cdn.builder.io/api/v1/image/assets/TEMP/800c932755c7bc3849ae8eed6ce497c46b8421b967fbc1e9da3d1fd7e59c6ee1"
             name="Diana Robert"
             donation="5"

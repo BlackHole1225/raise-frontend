@@ -1,6 +1,6 @@
+import * as React from 'react';
 import { Button } from '@nextui-org/button';
 import { Input, Textarea } from '@nextui-org/input';
-import * as React from 'react';
 
 const ContactInfo = () => (
   <div className="mb-12">

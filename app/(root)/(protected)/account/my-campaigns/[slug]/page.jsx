@@ -1,17 +1,16 @@
 'use client';
 
-import { Button } from '@nextui-org/button';
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation'
-import DonationListComponent from '@/app/(root)/(protected)/account/donationList';
-import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, ModalFooter } from '@nextui-org/modal';
-import 'react-quill/dist/quill.snow.css';
-import dynamic from 'next/dynamic';
-import { SERVER_IP } from '@/utils/constants';
 import axios from 'axios';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation'
+import { Button } from '@nextui-org/button';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/modal';
+import DonationListComponent from '@/app/(root)/(protected)/account/donationList';
 import { notifySuccess } from '@/components/notification';
-import RichTextEditor from '@/components/ui/richTextEditor2';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
+import 'react-quill/dist/quill.snow.css';
+
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 const modules = {
   toolbar: {
@@ -25,11 +24,11 @@ const modules = {
     ],
   }
 };
-const page = ({ params }) => {
+const Page = ({ params }) => {
   const [isDelete, setIsDelete] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [campaignData, setCampaignData] = useState(null);
-  const [update, setUpdate] = useState({});
+  // const [update, setUpdate] = useState({});
   const [isCUModal, setIsCUModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(true);
   const [item, setItem] = useState({});
@@ -45,7 +44,7 @@ const page = ({ params }) => {
         console.error('Error fetching data:', error);
         setError('Failed to fetch campaign data');
       } finally {
-        setLoading(false); // Whether success or failure, loading stops
+        // setLoading(false); // Whether success or failure, loading stops
       }
     };
     fetchData();
@@ -164,7 +163,7 @@ const page = ({ params }) => {
           </Button>
         </div>
         {campaignData?.formattedContent?.map((d, index) => (
-          index > 0 && <UpdateItem isUpdate={isUpdate} setIsUpdate={setIsUpdate} params={params} item={d} setItem={setItem} isDelete={isDelete} isCUModal={isCUModal} setIsCUModal={setIsCUModal} setUpdates={setCampaignData} setIsDelete={setIsDelete} />
+          index > 0 && <UpdateItem key={index} isUpdate={isUpdate} setIsUpdate={setIsUpdate} params={params} item={d} setItem={setItem} isDelete={isDelete} isCUModal={isCUModal} setIsCUModal={setIsCUModal} setUpdates={setCampaignData} setIsDelete={setIsDelete} />
         ))}
       </div>
       <DeleteUpdate params={params} setUpdates={setCampaignData} isDelete={isDelete} setIsDelete={setIsDelete} item={item} />
@@ -267,7 +266,7 @@ const DeleteUpdate = ({ isDelete, setIsDelete, item, setUpdates, params }) => {
                 radius="full"
                 size="sm"
                 startContent={<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6.55316 1.14895L3.70211 4M3.70211 4L0.851055 6.85105M3.70211 4L0.851055 1.14895M3.70211 4L6.55316 6.85105" stroke="#3D4630" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M6.55316 1.14895L3.70211 4M3.70211 4L0.851055 6.85105M3.70211 4L0.851055 1.14895M3.70211 4L6.55316 6.85105" stroke="#3D4630" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 }
                 onClick={() => setIsDelete(false)}
@@ -296,7 +295,7 @@ const DeleteUpdate = ({ isDelete, setIsDelete, item, setUpdates, params }) => {
     </Modal>
   );
 };
-const AddNewUpdate = ({ isUpdate, isCUModal, setIsCUModal, setUpdates, params, item, setItem }) => {
+const AddNewUpdate = ({ isUpdate, isCUModal, setIsCUModal, setUpdates, params, item }) => {
   const [content, setContent] = useState('');
   const addUpdate = async () => {
     const result = await axios.post(`${SERVER_LOCAL_IP}/api/campaign/update`, {
@@ -377,7 +376,7 @@ const AddNewUpdate = ({ isUpdate, isCUModal, setIsCUModal, setUpdates, params, i
                 radius="full"
                 size="sm"
                 startContent={<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6.55316 1.14895L3.70211 4M3.70211 4L0.851055 6.85105M3.70211 4L0.851055 1.14895M3.70211 4L6.55316 6.85105" stroke="#3D4630" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M6.55316 1.14895L3.70211 4M3.70211 4L0.851055 6.85105M3.70211 4L0.851055 1.14895M3.70211 4L6.55316 6.85105" stroke="#3D4630" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 }
                 onClick={() => setIsCUModal(false)}
@@ -392,7 +391,7 @@ const AddNewUpdate = ({ isUpdate, isCUModal, setIsCUModal, setUpdates, params, i
                 onClick={() => { isUpdate ? editUpdate() : addUpdate() }}
                 startContent={
                   <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1.1543 4.75L4.6543 8.25L11.6543 0.75" stroke="#3D4630" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M1.1543 4.75L4.6543 8.25L11.6543 0.75" stroke="#3D4630" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
 
                 }
@@ -408,4 +407,4 @@ const AddNewUpdate = ({ isUpdate, isCUModal, setIsCUModal, setUpdates, params, i
   );
 };
 
-export default page;
+export default Page;

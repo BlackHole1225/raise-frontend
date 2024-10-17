@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
-import CampaignCard from '../../components/ui/campainCard';
-import { Button } from '@nextui-org/button';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import apiClient from '../../utils/api';
-import { SERVER_IP, SERVER_LOCAL_IP } from '../../utils/constants';
+import { Button } from '@nextui-org/button';
+import CampaignCard from '@/components/ui/campainCard';
+import apiClient from '@/utils/api';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 
 const FundraisersSection = () => {
   const [campaigns, setCampaigns] = useState([]);

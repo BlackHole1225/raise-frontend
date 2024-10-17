@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidebar from '../../../components/layouts/sidebar';
+import Sidebar from '@/components/layouts/sidebar';
 
 const layout = ({ children }) => {
   // write project route code here

@@ -1,8 +1,8 @@
 'use client';
 import React, { useState, useCallback, useRef } from 'react';
 import { Editor, EditorState, RichUtils, AtomicBlockUtils } from 'draft-js';
+import { Bold, Italic, Link, List, ListOrdered, Image } from 'lucide-react';
 import 'draft-js/dist/Draft.css';
-import { ChevronDown, Bold, Italic, Link, List, ListOrdered, Image } from 'lucide-react';
 
 const BLOCK_TYPES = [
   { label: 'Paragraph', style: 'paragraph' },

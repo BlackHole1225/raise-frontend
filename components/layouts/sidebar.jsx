@@ -1,9 +1,9 @@
 'use client';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
+import { SERVER_IP } from '@/utils/constants';
 import { MdOutlineKeyboardDoubleArrowRight, MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
-import { SERVER_IP } from '../../utils/constants';
 import { FaFacebook, FaInstagramSquare } from "react-icons/fa";
 import { AiFillTwitterCircle } from "react-icons/ai";
 
@@ -25,30 +25,30 @@ const Sidebar = ({ navItems }) => {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      if (typeof window !== 'undefined') {
-        const response = await fetch(`${SERVER_IP}/api/logout`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: GetClientSideStorage('userEmail')
-          })
-        });
+  // const handleLogout = async () => {
+  //   try {
+  //     if (typeof window !== 'undefined') {
+  //       const response = await fetch(`${SERVER_IP}/api/logout`, {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json'
+  //         },
+  //         body: JSON.stringify({
+  //           email: GetClientSideStorage('userEmail')
+  //         })
+  //       });
 
-        if (response.ok) {
-          window.location.href = '/login';
-          ClearClientSideStorage();
-        } else {
-          console.error('Failed to logout');
-        }
-      }
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
+  //       if (response.ok) {
+  //         window.location.href = '/login';
+  //         ClearClientSideStorage();
+  //       } else {
+  //         console.error('Failed to logout');
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Error logging out:', error);
+  //   }
+  // };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);

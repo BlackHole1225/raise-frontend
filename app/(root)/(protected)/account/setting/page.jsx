@@ -14,10 +14,8 @@ import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { useRouter, useSearchParams } from "next/navigation"
 import { notifySuccess, notifyError } from '@/components/notification';
 import apiClient from '@/utils/api';
-import { auth } from '@/utils/firebaseConfig'; 
-import { checkActionCode, createUserWithEmailAndPassword, sendEmailVerification, updateEmail } from 'firebase/auth';
-
-
+import { auth } from '@/utils/firebaseConfig';
+import { checkActionCode, sendEmailVerification, updateEmail } from 'firebase/auth';
 
 const Setting = () => {
   const [openModal, setOpenModal] = useState(null);
@@ -25,21 +23,21 @@ const Setting = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newConfirmPassword, setNewConfirmPassword] = useState('');
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [info, setInfo] = useState(null);
   const router = useRouter()
   const params = useSearchParams();
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
-  };
+  // const validateEmail = (email) => {
+  //   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   return re.test(String(email).toLowerCase());
+  // };
   const getUserInfo = async () => {
     try {
       console.log('here');
       const response = await apiClient.get(`/api/user/`);
       setInfo(response.data.user);
     } catch (error) {
-      setError("Error changing email:");
+      // setError("Error changing email:");
     }
   }
   const updateAvatar = async () => {
@@ -144,25 +142,25 @@ const Setting = () => {
   };
   const changeEmail = async () => {
     try {
-      const user = auth.currentUser;  
+      const user = auth.currentUser;
       console.log(user);
       if (!user) {
         throw new Error("No user is currently authenticated.");
       }
-      if(!user.emailVerified){
+      if (!user.emailVerified) {
         await sendEmailVerification(user);
         notifySuccess("Verification email sent! Please check your inbox.");
       }
-  
-      await updateEmail(user,info?.email);
-      
+
+      await updateEmail(user, info?.email);
+
       console.log(user);
       // Send email verification
       await sendEmailVerification(user);
       notifySuccess("Verification email sent! Please check your inbox.");
 
     } catch (error) {
-      console.log(error.message); // Use errorNotify for handling errors
+      console.log(error.message); // Use notifyError for handling errors
     }
   }
   const handleOpenModal = (modalNumber) => {
@@ -193,7 +191,7 @@ const Setting = () => {
         .catch((error) => {
           console.error('Error verifying email:', error);
           setError('Email verification failed.');
-          errorNotify('Email verification failed.');
+          notifyError('Email verification failed.');
         });
     }
   }, [params, router]);

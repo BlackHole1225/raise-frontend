@@ -1,21 +1,19 @@
 'use client';
 
-import { Button } from '@nextui-org/button';
-import { Input } from '@nextui-org/input';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios'
-import React, { useState, useEffect } from 'react';
-import { SERVER_LOCAL_IP, GOOGLE_CLIENT_ID } from '@/utils/constants';
-import { notifySuccess } from '@/components/notification';
-import { useRouter } from 'next/navigation';
-import jwtDecode from 'jwt-decode';
-// import GoogleLogin from 'react-google-login';
 import { useGoogleLogin } from '@react-oauth/google';
+import { useRouter } from 'next/navigation';
+import { Button } from '@nextui-org/button';
+import { Input } from '@nextui-org/input';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
+import { notifySuccess } from '@/components/notification';
+
 const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const [profile, setProfile] = useState(null);
   const router = useRouter();
   const [user, setUser] = useState(null);
   const handleSubmit = async (event) => {
@@ -152,7 +150,7 @@ const Page = () => {
               Continue with Google
             </Button>
             <div className="flex gap-1 self-center mt-12 max-w-full justify-center text-dark">
-              <div className="opacity-70">Don't have an account? </div>
+              <div className="opacity-70">Don&apos;t have an account? </div>
               <Link href="/register">Sign Up</Link>
             </div>
           </div>

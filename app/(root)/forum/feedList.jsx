@@ -1,18 +1,15 @@
 'use client';
-import React from 'react';
-
+import React, { useState, useEffect, useMemo } from 'react';
+import axios from 'axios';
+import Link from 'next/link';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
-import { useState, useEffect } from 'react';
-import { useMemo } from 'react';
+import { Pagination } from '@nextui-org/pagination';
 import apiClient from '@/utils/api';
 import { formatTimeAgo } from '@/utils/formartTime';
-import { Pagination } from '@nextui-org/pagination';
 import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
 import BrandDropdown from '@/components/ui/brandDropdown';
 
-import axios from 'axios';
-import Link from 'next/link';
 import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, ModalFooter } from '@nextui-org/modal';
 
 const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
@@ -29,8 +26,8 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
     const itemsPerPage = 3;
     const [categories, setCategories] = useState([]);
     const [userId, setUserId] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(null);
     // const hasData = true;
     const filteredFeeds = useMemo(() => {
         return feeds.filter((feed) => {
@@ -64,8 +61,8 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setLoading(true);
-                const [categoriesRes, campaignRes] = await Promise.all([
+                // setLoading(true);
+                const [categoriesRes] = await Promise.all([
                     axios.get(`${SERVER_IP}/api/category`),
                     // axios.get(`${SERVER_IP}/api/campaign/category`),
                 ]);
@@ -75,11 +72,11 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
                 { _id: 1, name: 'Popular Donations' },
                 { _id: 2, name: 'Popular Donations' },]);
                 // console.log(campaignRes.data);
-                setLoading(false);
+                // setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
-                setError(error);
-                setLoading(false);
+                // setError(error);
+                // setLoading(false);
             }
         };
         fetchData();
@@ -308,7 +305,7 @@ const FeedItem2 = ({ title, id, comments, votes, imageUrl, fontSize, accessTime,
 
     </article>
 );
-const DeletePost = ({ isDelete, setIsDelete, feed, height, feedfontSize, setPosts }) => {
+const DeletePost = ({ setIsDelete, feed, height, feedfontSize, setPosts }) => {
     const deletePost = async (id) => {
         await apiClient.delete(`/api/post/delete/${id}`)
         setPosts(prevPosts => prevPosts.filter(post => post._id !== id));

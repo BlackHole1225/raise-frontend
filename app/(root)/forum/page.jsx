@@ -1,14 +1,14 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import FeedList from './feedList';
+import axios from "axios";
 import { Button } from '@nextui-org/button';
-import { useState, useEffect } from 'react';
+import FeedList from './feedList';
 import FeedAdvertising from './feedAdvertising';
 import FeedGetStart from './feedGetStart';
-import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
-import axios from "axios";
-const page = () => {
+import { SERVER_LOCAL_IP } from '@/utils/constants';
+
+const Page = () => {
     const [posts, setPosts] = useState([]);
     const getPost = async () => {
         const response = await axios.get(`${SERVER_LOCAL_IP}/api/post/all`);
@@ -49,4 +49,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

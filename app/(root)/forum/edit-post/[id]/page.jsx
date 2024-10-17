@@ -1,41 +1,40 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import { useParams, useRouter } from 'next/navigation'
+import { Input } from '@nextui-org/input';
+import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
 import FeedAdvertising from '@/app/(root)/forum/feedAdvertising';
 import FeedGetStart from '@/app/(root)/forum/feedGetStart';
-import { Input } from '@nextui-org/input';
 import DragDropUpload from '@/components/ui/dragDropUpload';
-import dynamic from 'next/dynamic';
 import { notifySuccess } from '@/components/notification';
-import 'react-quill/dist/quill.snow.css';
+import apiClient from '@/utils/api';
+import { SERVER_IP } from '@/utils/constants';
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
-import { useParams } from 'next/navigation'
-import apiClient from '@/utils/api';
-import { useRouter } from 'next/navigation';
-import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
-import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
+import 'react-quill/dist/quill.snow.css';
 
 import axios from "axios";
 // Dynamically import ReactQuill for client-side rendering only
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const Page = () => {
-  const [title, setTitle] = useState('');
+  // const [title, setTitle] = useState('');
   const params = useParams();
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
   const [file, setFile] = useState(null);
   const [post, setPost] = useState({});
   const [categories, setCategories] = useState([]);
   const [campaigns, setCampains] = useState([
     { _id: 0, name: 'Popular Donations' },
   ]);
-  const [category, setCategory] = useState();
+  // const [category, setCategory] = useState();
 
   // const [donation, setDonation] = useState('');
-  const [campaign, setCampagin] = useState('');
-  const [content, setContent] = useState('');
+  // const [campaign, setCampagin] = useState('');
+  // const [content, setContent] = useState('');
   // const [image, setImage] = useState();
   const imageUpload = async () => {
     const formData = new FormData();
@@ -68,7 +67,7 @@ const Page = () => {
     getPost();
     const fetchData = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
         const [categoriesRes, campaignRes] = await Promise.all([
           axios.get(`${SERVER_IP}/api/category`),
           axios.get(`${SERVER_IP}/api/campaign/`),
@@ -81,11 +80,11 @@ const Page = () => {
         { _id: 2, name: 'Popular Donations' },]);
         // console.log(campaignRes.data);
         setCampains(campaignRes.data.data || []);
-        setLoading(false);
+        // setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setError(error);
-        setLoading(false);
+        // setError(error);
+        // setLoading(false);
       }
     };
     fetchData();

@@ -8,7 +8,8 @@ import CampaignListComponent from './CampaignListComponent';
 import PricingPlansComponent from './PricingPlansComponent';
 import PlanUpgradeComponent from './PlanUpgradeComponent';
 import AccountSettingsComponent from './AccountSettingsComponent';
-const page = () => {
+
+const Page = () => {
   return (
     <div className="flex flex-col gap-8 py-[100px]">
       <DonationsComponent />
@@ -24,4 +25,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

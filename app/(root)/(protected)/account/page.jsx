@@ -1,12 +1,12 @@
 "use client"
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRouter } from "next/navigation"
 import DonationChart from './donationChart';
 import DonationListComponent from './donationList';
-import CampaignListComponent from '../../other/CampaignListComponent';
+import CampaignListComponent from '@/app/(root)/other/CampaignListComponent';
 import apiClient from '@/utils/api';
-import { useRouter } from "next/navigation"
-import { useEffect } from 'react';
-const page = ({ params }) => {
+
+const Page = ({ params }) => {
   const router = useRouter();
   const getUserInfo = async () => {
     try {
@@ -37,4 +37,4 @@ const page = ({ params }) => {
   );
 };
 
-export default page;
+export default Page;
