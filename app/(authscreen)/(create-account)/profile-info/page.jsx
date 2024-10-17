@@ -2,15 +2,15 @@
 import React, { useState } from 'react';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import DragDropUpload from '../../../../components/ui/dragDropUpload';
 import apiClient from '@/utils/api';
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { notifySuccess, notifyError } from '@/components/notification';
+import { notifyError } from '@/components/notification';
 import { auth } from '@/utils/firebaseConfig';
 auth.languageCode = 'it';
-const page = () => {
-  const router = useRouter();
+const Page = () => {
+  // const router = useRouter();
   const [phoneNo, setPhoneNo] = useState('');
   const [address, setAddress] = useState('');
   const [profilePicture, setProfilePicture] = useState('');
@@ -51,7 +51,7 @@ const page = () => {
       "recaptcha-container",
       {
         'size': 'invisible', // or 'normal'
-        'callback': (response) => {
+        'callback': () => {
           console.log('reCAPTCHA solved');
         }
       }

@@ -42,7 +42,7 @@ const Page = ({ params }) => {
         console.log('Fetched Campaign:', campaignsRes.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setError('Failed to fetch campaign data');
+        // setError('Failed to fetch campaign data');
       } finally {
         // setLoading(false); // Whether success or failure, loading stops
       }

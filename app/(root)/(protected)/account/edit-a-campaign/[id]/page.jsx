@@ -45,14 +45,14 @@ const Page = ({ params }) => {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [camImgFile, setCamImgFile] = useState(null);
-  const [category, setCategory] = useState();
-  const [location, setLocation] = useState();
-  const [amount, setAmount] = useState();
+  // const [camImgFile, setCamImgFile] = useState(null);
+  // const [category, setCategory] = useState();
+  // const [location, setLocation] = useState();
+  // const [amount, setAmount] = useState();
   const [campaignImage, setCampaignImage] = useState(null);
   const [proofDocuments, setProofDocuments] = useState([]);
 
-  const [campaignTitle, setCampaignTitle] = useState('');
+  // const [campaignTitle, setCampaignTitle] = useState('');
   const [description, setDescription] = useState('');
   const [campaignData, setCampaignData] = useState(null);
   // const [campaignImageIds, setCampaignImageId] = useState();
@@ -62,7 +62,7 @@ const Page = ({ params }) => {
   // const [balance, setBalance] = useState(null);
 
   // const userID = window.localStorage.getItem('userID');
-  const userID = GetClientSideStorage('userID');
+  // const userID = GetClientSideStorage('userID');
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -104,11 +104,11 @@ const Page = ({ params }) => {
   }, []);
 
   // Helper function to extract plain text from HTML
-  const getInnerText = (html) => {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
-    return tempDiv.textContent || tempDiv.innerText || '';
-  };
+  // const getInnerText = (html) => {
+  //   const tempDiv = document.createElement('div');
+  //   tempDiv.innerHTML = html;
+  //   return tempDiv.textContent || tempDiv.innerText || '';
+  // };
 
   const handleConnectWallet = async () => {
     if (!wallet) {
@@ -191,9 +191,9 @@ const Page = ({ params }) => {
       //   console.log(campaignImageIds);
       // }
 
-      if (campaignImage == undefined) {
-        setCamImgFile(null);
-      }
+      // if (campaignImage == undefined) {
+      //   setCamImgFile(null);
+      // }
 
       if (proofDocuments != undefined) {
         // Debugging: Check if proofDocuments contains files
@@ -223,11 +223,11 @@ const Page = ({ params }) => {
 
 
       // Send form data to the server
-      const response = await axios.put(`${SERVER_LOCAL_IP}/api/campaign/edit`, { ...campaignData, file, kyc: proofDocumentIds }, {
-        headers: {
-          Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
-        },
-      });
+      // const response = await axios.put(`${SERVER_LOCAL_IP}/api/campaign/edit`, { ...campaignData, file, kyc: proofDocumentIds }, {
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
+      //   },
+      // });
       notifySuccess("Campaign updated successfully");
       router.push('/campaigns');
       // if (!wallet || !amount) await handleConnectWallet();
@@ -330,9 +330,10 @@ const Page = ({ params }) => {
             label="Where will your funds go? (Country)"
             variant="bordered"
             radius="sm"
-            onSelectionChange={(key) => {
-              setLocation(key);
-            }}>
+          // onSelectionChange={(key) => {
+          //   setLocation(key);
+          // }}
+          >
             {locations.map((item) => (
               <AutocompleteItem key={item._id} value={item.name}>
                 {item.name}
@@ -343,9 +344,10 @@ const Page = ({ params }) => {
             label="Why are you raising funds? (Category)"
             variant="bordered"
             radius="sm"
-            onSelectionChange={(key) => {
-              setCategory(key);
-            }}>
+          // onSelectionChange={(key) => {
+          //   setCategory(key);
+          // }}
+          >
             {categories.map((item) => (
               <AutocompleteItem key={item._id} value={item.name}>
                 {item.name}

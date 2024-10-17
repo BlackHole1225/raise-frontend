@@ -183,7 +183,7 @@ const Setting = () => {
 
     if (mode === 'verifyEmail' && oobCode) {
       checkActionCode(auth, oobCode)
-        .then((e) => {
+        .then(() => {
           // checkVerify(e.data.email);
           notifySuccess("Email verified successfully!");
           router.push('/profile-info'); // Redirect to the login page
