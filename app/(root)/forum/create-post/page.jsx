@@ -91,7 +91,7 @@ const Page = () => {
     const file = await imageUpload();
     if (title && category && campaign && content) {
       try {
-        const response = await axios.post(`${SERVER_LOCAL_IP}/api/post/create`, {
+        await axios.post(`${SERVER_LOCAL_IP}/api/post/create`, {
           title,
           categoryId: category,
           campaignId: campaign,
