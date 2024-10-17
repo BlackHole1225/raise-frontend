@@ -210,12 +210,12 @@ const FilterButton = ({ label, icon }) => (
 // );
 
 const CampaignItem = ({ title, amountRaised, progressPercentage, imageUrl, id }) => (
-  <article className="flex gap-5">
+  <article className="flex gap-5 overflow-hidden">
     <div>
-      <img src={imageUrl} alt={imageUrl} className="w-[121px] h-full md:h-[111px] object-cover" />
+      <img src={imageUrl} alt={imageUrl} className="w-[121px] min-w-[121px] h-full md:h-[111px] object-cover" />
     </div>
-    <div className="flex-1">
-      <h2 className="text-2xl font-bold tracking-wider uppercase text-stone-700">{title}</h2>
+    <div>
+      <h2 className="text-2xl font-bold tracking-wider uppercase text-stone-700 text-wrap">{title}</h2>
       <p className="text-base font-bold tracking-wider text-stone-700">Raised {amountRaised}</p>
       <ProgressBar percentage={progressPercentage} />
       <div className="flex flex-wrap md:flex-nowrap gap-1.5 mt-3.5 text-sm font-bold">

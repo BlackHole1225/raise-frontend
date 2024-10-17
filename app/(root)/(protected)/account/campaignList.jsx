@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import BrandDropdown from '@/components/ui/brandDropdown';
+import Image from 'next/image';
 
 const CampaignListComponent = () => {
   const hasData = true;
@@ -118,7 +119,13 @@ const FilterSection = () => (
 
 const CampaignItem = ({ title, amountRaised, progressPercentage, imageUrl }) => (
   <article className="flex gap-5">
-    <img src={imageUrl} alt={imageUrl} className="w-[121px] h-[111px] object-cover" />
+    <Image
+      src={imageUrl}
+      alt={title}
+      width={121}
+      height={111}
+      className="object-cover"
+    />
     <div className="flex-1">
       <h2 className="text-2xl font-bold tracking-wider uppercase text-brand-dark font-heading">
         {title}
@@ -151,7 +158,13 @@ const ProgressBar = ({ percentage }) => (
 
 const ActionButton = ({ label, icon }) => (
   <button className="flex items-center px-5 py-2 border border-stone-700 rounded-full">
-    <img src={icon} alt="icon" className="w-3 h-3 mr-1.5" />
+    <Image
+      src={icon}
+      alt={`${label} icon`}
+      width={12}
+      height={12}
+      className="mr-1.5"
+    />
     {label}
   </button>
 );

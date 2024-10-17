@@ -2,6 +2,7 @@
 import React from 'react';
 import { Input } from '@nextui-org/input';
 import BrandDropdown from '@/components/ui/brandDropdown';
+import Image from 'next/image';
 
 const DonationListComponent = ({ compFor = 'home' }) => {
   const hasData = false;
@@ -159,7 +160,13 @@ const DonationItem = ({ name, amount, time, transactionHash, imageUrl, expanded 
   <>
     <div className="flex justify-between items-start mt-8">
       <div className="flex items-start gap-3">
-        <img src={imageUrl} alt={imageUrl} className="w-[50px] h-[50px] rounded-full" />
+        <Image
+          src={imageUrl}
+          alt={`Profile picture of ${name}`}
+          width={50}
+          height={50}
+          className="rounded-full"
+        />
         <div>
           <h2 className="text-2xl md:text-3xl tracking-wider uppercase font-heading">{name}</h2>
           <div className="flex flex-col md:flex-row gap-1 md:gap-3.5 text-base">
@@ -170,14 +177,15 @@ const DonationItem = ({ name, amount, time, transactionHash, imageUrl, expanded 
         </div>
       </div>
       <button>
-        <img
+        <Image
           src={
             expanded
               ? 'https://cdn.builder.io/api/v1/image/assets/TEMP/a91228f6ddc373ddc213c1ace6df31c7940a272b0d1a20b6e240a1dcd0c15982?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded'
               : 'https://cdn.builder.io/api/v1/image/assets/TEMP/44316956e0a7ad01d201b711b748606fd22e6d4311b56265c1ecc7f1a77d3228?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded'
           }
           alt={expanded ? 'Collapse' : 'Expand'}
-          className="w-5 h-5"
+          width={20}
+          height={20}
         />
       </button>
     </div>

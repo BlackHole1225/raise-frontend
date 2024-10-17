@@ -8,7 +8,7 @@ import apiClient from '@/utils/api';
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { notifySuccess, notifyError } from '@/components/notification';
 import { auth } from '@/utils/firebaseConfig';
-import { useProfileInfoContext } from '../layout';
+import { useProfileInfoContext } from '@/app/providers';
 auth.languageCode = 'it';
 const Page = () => {
   const router = useRouter();
