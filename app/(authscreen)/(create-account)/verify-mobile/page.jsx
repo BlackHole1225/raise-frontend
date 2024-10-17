@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/otpInput';
 import { notifySuccess, notifyError } from '@/components/notification';
-import { useProfileInfoContext } from '../layout';
+import { useProfileInfoContext } from '@/app/providers';
 import apiClient from '@/utils/api';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 const Page = () => {

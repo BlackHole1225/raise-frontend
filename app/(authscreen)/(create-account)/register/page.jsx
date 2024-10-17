@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -16,7 +17,8 @@ import { notifySuccess, notifyError } from '@/components/notification';
 import { auth } from '@/utils/firebaseConfig';
 // import { apiClient } from '@/utils/api';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
-import { useProfileInfoContext } from '../layout';
+import { useProfileInfoContext } from '@/app/providers';
+
 const SignUpPage = () => {
   const { setPhoneVerifyEmail } = useProfileInfoContext();
   const [formData, setFormData] = useState({ fullName: '', email: '', password: '' });
@@ -162,11 +164,12 @@ const SignUpPage = () => {
         variant="solid"
         onClick={login}
       >
-        <img
-          loading="lazy"
+        <Image
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/4afcf1048ae3f4852061b80f8ea5990ac5796d08b00ed5201f740025245bf9e8?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded"
-          className="object-contain w-5 aspect-square"
-          alt="lazy"
+          width={20}
+          height={20}
+          alt="Google logo"
+          className="object-contain aspect-square"
         />
         Continue with Google
       </Button>

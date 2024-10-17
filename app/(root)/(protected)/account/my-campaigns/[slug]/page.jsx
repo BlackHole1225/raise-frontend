@@ -10,6 +10,7 @@ import DonationListComponent from '@/app/(root)/(protected)/account/donationList
 import { notifySuccess } from '@/components/notification';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 import 'react-quill/dist/quill.snow.css';
+import Image from 'next/image';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 const modules = {
@@ -136,10 +137,13 @@ const Page = ({ params }) => {
       </div>
       <div className="xl:grid xl:grid-cols-12 gap-8 my-12 ">
         <div className="col-span-7 ">
-          <img
+          <Image
             src={campaignData?.campaign ? `${SERVER_LOCAL_IP}/api/file/download/${campaignData?.campaign.file}` : 'https://s3-alpha-sig.figma.com/img/69b4/9b7c/bea611754ba89c8c84900d1625376b57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=WOrJ-rrwSA2dmaFOhbmf992ZTzm-JobuwQTbSJP7956dI2OOU1Gp999WJrjzlKtP8s1XhEZE4glIT3BHMF5n-cU0FVDLnX7pIsPB~pXbeknvTw4lIJjWSVwuGi4~6AUfBcTPi6NmNe2SDe52GkC9t0NspSOcNwkndeWaxS16o9WiQSVbLxMXQZw4iDrgHgNg8~JxThQeHk6aIjnHY5yQl8QHg6BFXZtxO8wUY0o~1Y2IVdEN1JDhsXkgur1V2ElagdCKQ7lJhp9gSNsyxZh-pBVtpziF89wKD7kMCaeNNLPPLpOpb~DDkofjJBi4w9uCuaW262W0Nc5HYn587ih10Q__'}
             alt="Campaign"
+            width={1000}
+            height={484}
             className="w-full object-cover h-[484px]"
+            priority
           />
         </div>
         <div className="col-span-5 h-full xl:h-[484px] mt-8 xl:mt-0">

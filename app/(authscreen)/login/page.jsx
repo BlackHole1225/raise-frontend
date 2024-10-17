@@ -9,6 +9,7 @@ import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { notifySuccess } from '@/components/notification';
+import Image from 'next/image';
 
 const Page = () => {
   const [email, setEmail] = useState('');
@@ -77,11 +78,12 @@ const Page = () => {
         <div className="flex flex-col w-[35%] max-md:ml-0 max-lg:w-full">
           <div className="flex flex-col self-stretch my-auto w-full text-xl font-bold text-zinc-800 max-md:mt-10 max-md:max-w-full">
             <div className="flex gap-5 self-start text-5xl whitespace-nowrap max-md:text-4xl">
-              <img
-                loading="lazy"
+              <Image
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/2dc00ade95da09b368c1fef8bf0b3dc9966c324e821b245532ac1b2f21e73e3d?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded"
-                className="object-contain shrink-0 rounded-lg aspect-square w-[60px]"
-                alt="lazy"
+                width={60}
+                height={60}
+                className="object-contain shrink-0 rounded-lg"
+                alt="Raise logo"
               />
               <div className="self-start mt-2.5 basis-auto max-md:text-4xl">Raise.</div>
             </div>
@@ -141,11 +143,12 @@ const Page = () => {
               variant="solid"
               onClick={login}
             >
-              <img
-                loading="lazy"
+              <Image
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/4afcf1048ae3f4852061b80f8ea5990ac5796d08b00ed5201f740025245bf9e8?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded"
-                className="object-contain w-5 aspect-square"
-                alt="lazy"
+                width={20}
+                height={20}
+                className="object-contain"
+                alt="Google logo"
               />
               Continue with Google
             </Button>
@@ -157,11 +160,11 @@ const Page = () => {
         </div>
         <div className="flex flex-col lg:ml-5 w-[65%] max-md:ml-0 max-lg:w-full h-full">
           <div className="flex overflow-hidden relative flex-col items-end grow text-2xl font-bold text-amber-50 rounded-3xl max-md:max-w-full h-full">
-            <img
-              loading="lazy"
-              srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/a2846126ea60dff5330f24631ee622ef87f7eb9be682a41444620bdd1e674324?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2846126ea60dff5330f24631ee622ef87f7eb9be682a41444620bdd1e674324?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2846126ea60dff5330f24631ee622ef87f7eb9be682a41444620bdd1e674324?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2846126ea60dff5330f24631ee622ef87f7eb9be682a41444620bdd1e674324?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2846126ea60dff5330f24631ee622ef87f7eb9be682a41444620bdd1e674324?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2846126ea60dff5330f24631ee622ef87f7eb9be682a41444620bdd1e674324?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2846126ea60dff5330f24631ee622ef87f7eb9be682a41444620bdd1e674324?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2846126ea60dff5330f24631ee622ef87f7eb9be682a41444620bdd1e674324?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded"
-              className="object-cover absolute inset-0 size-full"
-              alt="lazy"
+            <Image
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/a2846126ea60dff5330f24631ee622ef87f7eb9be682a41444620bdd1e674324?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded"
+              layout="fill"
+              objectFit="cover"
+              alt="Background image"
             />
             <div className="min-h-[450px] flex overflow-hidden relative flex-col px-11 pb-11 rounded-3xl max-md:px-5 max-md:max-w-full h-full justify-end">
               <div className="max-md:max-w-full">

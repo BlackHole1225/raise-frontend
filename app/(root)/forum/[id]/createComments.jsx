@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation'
 import { Button } from '@nextui-org/button';
 import apiClient from '@/utils/api';
-import { usePostContext } from './page';
+import { usePostContext } from '@/app/providers';
 
 const CreateComments = ({ setIsReply, setIsOpen, parentId }) => {
 
