@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import axios from 'axios';
@@ -19,7 +19,7 @@ import { auth } from '@/utils/firebaseConfig';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { useProfileInfoContext } from '@/app/providers';
 
-const SignUpPage = () => {
+const SignUpPageContent = () => {
   const { setPhoneVerifyEmail } = useProfileInfoContext();
   const [formData, setFormData] = useState({ fullName: '', email: '', password: '' });
   const [error, setError] = useState(null); // Error state
@@ -178,6 +178,14 @@ const SignUpPage = () => {
         <Link href="/login">Sign In</Link>
       </div>
     </>
+  );
+};
+
+const SignUpPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SignUpPageContent />
+    </Suspense>
   );
 };
 
