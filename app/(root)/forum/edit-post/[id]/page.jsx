@@ -9,7 +9,7 @@ import FeedGetStart from '@/app/(root)/forum/feedGetStart';
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { notifySuccess } from '@/components/notification';
 import apiClient from '@/utils/api';
-import { SERVER_IP } from '@/utils/constants';
+import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import 'react-quill/dist/quill.snow.css';
@@ -69,22 +69,16 @@ const Page = () => {
       try {
         // setLoading(true);
         const [categoriesRes, campaignRes] = await Promise.all([
-          axios.get(`${SERVER_IP}/api/category`),
-          axios.get(`${SERVER_IP}/api/campaign/`),
-          // axios.get(`${SERVER_IP}/api/campaign/category`),
+          axios.get(`${SERVER_LOCAL_IP}/api/category`),
+          axios.get(`${SERVER_LOCAL_IP}/api/campaign/`),
         ]);
-        // axios.get(`${SERVER_IP}/api/campaign`)
 
         setCategories(categoriesRes.data.category || [{ _id: 0, name: 'Popular Donations' },
         { _id: 1, name: 'Popular Donations' },
         { _id: 2, name: 'Popular Donations' },]);
-        // console.log(campaignRes.data);
         setCampains(campaignRes.data.data || []);
-        // setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        // setError(error);
-        // setLoading(false);
       }
     };
     fetchData();

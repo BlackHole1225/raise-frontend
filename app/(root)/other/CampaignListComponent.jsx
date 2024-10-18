@@ -165,7 +165,7 @@ const CampaignListComponent = ({ params }) => {
               id={d._id}
               amountRaised={d.totalAmount}
               progressPercentage={d.amount / d.totalAmount * 100}
-              imageUrl={d?.file ? ` ${SERVER_LOCAL_IP}/api/file/download/${d?.file}` : `https://cdn.builder.io/api/v1/image/assets/TEMP/793c80c23e08cf30921f97c1e260306f28c41ce2839846dc1ecfd8f2bded4309`}
+              imageUrl={d?.file ? ` ${d?.file}` : `https://cdn.builder.io/api/v1/image/assets/TEMP/793c80c23e08cf30921f97c1e260306f28c41ce2839846dc1ecfd8f2bded4309`}
             />
             <hr className="border-stone-700 my-4" />
           </>

@@ -33,8 +33,8 @@ const FeedList2 = () => {
                                 fontSize={feedfontSize}
                                 onClick
 
-                                imageUrl={feed?.file ? `${SERVER_LOCAL_IP}/api/file/download/${feed?.file}` : ''}
-                                reporterPhoto={feed?.poster?.avatar ? `${SERVER_LOCAL_IP}/api/file/download/${feed?.poster?.avatar}` : ''}
+                                imageUrl={feed?.file ? `${feed?.file}` : ''}
+                                reporterPhoto={feed?.poster?.avatar ? `${feed?.poster?.avatar}` : ''}
                             />
                         </Link>
 

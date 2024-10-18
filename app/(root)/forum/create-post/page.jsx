@@ -12,8 +12,8 @@ import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
 import 'react-quill/dist/quill.snow.css';
-
-import axios from "axios";
+import axios from 'axios';
+import apiClient from "@/utils/api";
 // Dynamically import ReactQuill for client-side rendering only
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -66,7 +66,7 @@ const Page = () => {
       try {
         // setLoading(true);
         const [categoriesRes, campaignRes] = await Promise.all([
-          axios.get(`${SERVER_IP}/api/category`),
+          axios.get(`${SERVER_LOCAL_IP}/api/category`),
           axios.get(`${SERVER_LOCAL_IP}/api/campaign/`),
           // axios.get(`${SERVER_IP}/api/campaign/category`),
         ]);
@@ -87,20 +87,20 @@ const Page = () => {
     fetchData();
   }, []);
   const createPost = async () => {
-    console.log(title, category, campaign, content);
     const file = await imageUpload();
     if (title && category && campaign && content) {
+      console.log(title, category, campaign, content, file);
       try {
-        await axios.post(`${SERVER_LOCAL_IP}/api/post/create`, {
+        await apiClient.post(`${SERVER_LOCAL_IP}/api/post/create`, {
           title,
           categoryId: category,
           campaignId: campaign,
           content,
-          file
+          file: file
         }, {
           headers: {
             Authorization: `Bearer ${localStorage?.getItem("authToken")}`, // JWT token for auth
-          },
+          }
         });
 
         notifySuccess("Post created successfully");
