@@ -59,7 +59,7 @@ const SettingContent = () => {
 
       if (uploadedFiles != undefined) {
         // Map the file IDs
-        const avatar = uploadedFiles[0]?._id;
+        const avatar = uploadedFiles[0]?.imgUrl;
         return avatar;
       }
     } catch (error) {
@@ -203,7 +203,7 @@ const SettingContent = () => {
       <div className="xl:grid xl:grid-cols-12 gap-5 mt-5 text-xl md:text-2xl">
         <div className="bg-brand-eucalyptus pt-[46px] px-10 pb-[90px] col-span-6 text-brand-olive-green font-bold">
           {info?.avatar ? <Avatar
-            src={`${SERVER_LOCAL_IP}/api/file/download/${info?.avatar}`}
+            src={`${info?.avatar}`}
             className="w-[180px] h-[180px]"
           /> : <Avatar
             src={``}

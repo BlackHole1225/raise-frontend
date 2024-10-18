@@ -78,7 +78,7 @@ const Page = () => {
         <div className="flex flex-col w-[35%] max-md:ml-0 max-lg:w-full">
           <div className="flex flex-col self-stretch my-auto w-full text-xl font-bold text-zinc-800 max-md:mt-10 max-md:max-w-full">
             <div className="flex gap-5 self-start text-5xl whitespace-nowrap max-md:text-4xl">
-              <Image
+              <img
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/2dc00ade95da09b368c1fef8bf0b3dc9966c324e821b245532ac1b2f21e73e3d?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded"
                 width={60}
                 height={60}
@@ -143,7 +143,7 @@ const Page = () => {
               variant="solid"
               onClick={login}
             >
-              <Image
+              <img
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/4afcf1048ae3f4852061b80f8ea5990ac5796d08b00ed5201f740025245bf9e8?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded"
                 width={20}
                 height={20}
@@ -160,7 +160,7 @@ const Page = () => {
         </div>
         <div className="flex flex-col lg:ml-5 w-[65%] max-md:ml-0 max-lg:w-full h-full">
           <div className="flex overflow-hidden relative flex-col items-end grow text-2xl font-bold text-amber-50 rounded-3xl max-md:max-w-full h-full">
-            <Image
+            <img
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/a2846126ea60dff5330f24631ee622ef87f7eb9be682a41444620bdd1e674324?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded"
               layout="fill"
               objectFit="cover"
