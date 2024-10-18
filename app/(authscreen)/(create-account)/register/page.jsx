@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -70,7 +69,7 @@ const SignUpPageContent = () => {
           notifySuccess("Email verified successfully!");
           localStorage.setItem('phoneVerifyEmail', e.data.email);
           setPhoneVerifyEmail(e.data.email);
-          
+
           router.push('/profile-info'); // Redirect to the login page
         })
         .catch((error) => {
@@ -164,10 +163,8 @@ const SignUpPageContent = () => {
         variant="solid"
         onClick={login}
       >
-        <Image
+        <img
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/4afcf1048ae3f4852061b80f8ea5990ac5796d08b00ed5201f740025245bf9e8?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded"
-          width={20}
-          height={20}
           alt="Google logo"
           className="object-contain aspect-square"
         />
