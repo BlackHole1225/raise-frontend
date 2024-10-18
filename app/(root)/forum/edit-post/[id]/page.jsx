@@ -9,7 +9,7 @@ import FeedGetStart from '@/app/(root)/forum/feedGetStart';
 import DragDropUpload from '@/components/ui/dragDropUpload';
 import { notifySuccess } from '@/components/notification';
 import apiClient from '@/utils/api';
-import { SERVER_IP, SERVER_LOCAL_IP } from '@/utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import 'react-quill/dist/quill.snow.css';

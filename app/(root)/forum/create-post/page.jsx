@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic';
 import { notifySuccess } from '@/components/notification';
 import { FaCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
-import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import apiClient from "@/utils/api";

@@ -7,7 +7,7 @@ import { Input } from '@nextui-org/input';
 import { Pagination } from '@nextui-org/pagination';
 import apiClient from '@/utils/api';
 import { formatTimeAgo } from '@/utils/formartTime';
-import { SERVER_LOCAL_IP, SERVER_IP } from '@/utils/constants';
+import { SERVER_LOCAL_IP } from '@/utils/constants';
 import BrandDropdown from '@/components/ui/brandDropdown';
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/modal';
@@ -63,10 +63,10 @@ const FeedList = ({ feedfontSize, height, feeds, isPagination, setPosts }) => {
             try {
                 // setLoading(true);
                 const [categoriesRes] = await Promise.all([
-                    axios.get(`${SERVER_IP}/api/category`),
-                    // axios.get(`${SERVER_IP}/api/campaign/category`),
+                    axios.get(`${SERVER_LOCAL_IP}/api/category`),
+                    // axios.get(`${SERVER_LOCAL_IP}/api/campaign/category`),
                 ]);
-                // axios.get(`${SERVER_IP}/api/campaign`)
+                // axios.get(`${SERVER_LOCAL_IP}/api/campaign`)
 
                 setCategories(categoriesRes.data.category || [{ _id: 0, name: 'Popular Donations' },
                 { _id: 1, name: 'Popular Donations' },

@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Button } from '@nextui-org/button';
 import CampaignCard from '@/components/ui/campainCard';
 import apiClient from '@/utils/api';
-import { SERVER_LOCAL_IP } from '@/utils/constants';
 
 const FundraisersSection = () => {
   const [campaigns, setCampaigns] = useState([]);
