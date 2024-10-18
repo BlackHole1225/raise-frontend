@@ -9,7 +9,6 @@ import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import { SERVER_LOCAL_IP } from '@/utils/constants';
 import { notifySuccess } from '@/components/notification';
-import Image from 'next/image';
 
 const Page = () => {
   const [email, setEmail] = useState('');
@@ -162,8 +161,6 @@ const Page = () => {
           <div className="flex overflow-hidden relative flex-col items-end grow text-2xl font-bold text-amber-50 rounded-3xl max-md:max-w-full h-full">
             <img
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/a2846126ea60dff5330f24631ee622ef87f7eb9be682a41444620bdd1e674324?placeholderIfAbsent=true&apiKey=766be46e9945400fb0d82367510acded"
-              layout="fill"
-              objectFit="cover"
               alt="Background image"
             />
             <div className="min-h-[450px] flex overflow-hidden relative flex-col px-11 pb-11 rounded-3xl max-md:px-5 max-md:max-w-full h-full justify-end">

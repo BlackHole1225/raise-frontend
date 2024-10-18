@@ -70,7 +70,7 @@ const Page = ({ params }) => {
     };
     fetchData();
   }, [params.id]);
- 
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -155,7 +155,7 @@ const Page = ({ params }) => {
 
       if (uploadedFiles != undefined) {
         // Map the file IDs
-        const avatar = uploadedFiles[0]?._id;
+        const avatar = uploadedFiles[0]?.imgUrl;
         return avatar;
       }
     } catch (error) {

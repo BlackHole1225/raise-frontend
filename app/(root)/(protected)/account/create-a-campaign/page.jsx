@@ -145,7 +145,7 @@ const Page = () => {
 
       if (uploadedFiles != undefined) {
         // Map the file IDs
-        const avatar = uploadedFiles[0]?._id;
+        const avatar = uploadedFiles[0]?.imgUrl;
         return avatar;
       }
     } catch (error) {
