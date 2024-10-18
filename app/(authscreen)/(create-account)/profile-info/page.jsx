@@ -99,7 +99,7 @@ const Page = () => {
       <Input
         size="lg"
         variant="bordered"
-        label="Phone No"
+        label="Phone Number"
         radius="sm"
         className="my-5"
         classNames={{
